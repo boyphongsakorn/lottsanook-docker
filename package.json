@@ -1,0 +1,23 @@
+{
+  "name": "lottsanook-docker",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/boyphongsakorn/lottsanook-docker.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/boyphongsakorn/lottsanook-docker/issues"
+  },
+  "homepage": "https://github.com/boyphongsakorn/lottsanook-docker#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
