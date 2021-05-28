@@ -2,13 +2,6 @@ const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 const express = require('express')
 var fs = require('fs')
-const util = require('util');
-
-const readFile = util.promisify(fs.readFile);
-
-function getStuff(damnpath) {
-    return readFile(damnpath);
-}
   
 const app = express()
 const port = process.env.PORT || 3000;
