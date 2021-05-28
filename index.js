@@ -233,14 +233,14 @@ app.get('/god', async (req, res) => {
     let yearlist = [];
     let nextyear = new Date().getFullYear()+543;
     let channel = [];
-    let jdata
+    //let jdata
     let countloveme = 0
     var fileContents = null;
     try {
         fileContents = fs.readFileSync('tmp/cache.txt');
     } catch (err) {
     }
-    if (fileContents) {
+    /*if (fileContents) {
         jdata = JSON.parse(fileContents);
         if (
             jdata[jdata.length - 1].substring(4, 8) ==
@@ -259,6 +259,26 @@ app.get('/god', async (req, res) => {
             }
         });
         jdata.splice(countloveme);
+    }*/
+    if (fileContents) {
+        yearlist = JSON.parse(fileContents);
+        if (
+            yearlist[yearlist.length - 1].substring(4, 8) ==
+            new Date().getFullYear() + 543
+        ) {
+            year = new Date().getFullYear() + 543;
+        }else{
+            year = yearlist[yearlist.length - 1].substring(4, 8)
+        }
+        yearlist.forEach(function (value, i) {
+            if (
+                value.substring(4, 8) ==
+                year
+            ) {
+                countloveme--;
+            }
+        });
+        yearlist.splice(countloveme);
     }
     let day
     while(year <= nextyear){
@@ -299,9 +319,9 @@ app.get('/god', async (req, res) => {
                 }
                 for (const val of peryear){
                     yearlist.push(val)
-                    if(jdata){
+                    /*if(jdata){
                         jdata.push(val)
-                    }
+                    }*/
                 }
                 for(const val of preyearsuperlist){
                     preyearlist.push(val)
@@ -321,17 +341,17 @@ app.get('/god', async (req, res) => {
         }
         year += 10
     }
-    if(jdata){
+    /*if(jdata){
         fs.writeFile('tmp/cache.txt', JSON.stringify(jdata), function (err) {
             if (err) throw err;
             res.send(jdata)
         });
-    }else{
+    }else{*/
         fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), function (err) {
             if (err) throw err;
             res.send(yearlist)
         });
-    }
+    //}
 })
 
 app.get('/gdpy', (req, res) => {
