@@ -240,26 +240,6 @@ app.get('/god', async (req, res) => {
         fileContents = fs.readFileSync('tmp/cache.txt');
     } catch (err) {
     }
-    /*if (fileContents) {
-        jdata = JSON.parse(fileContents);
-        if (
-            jdata[jdata.length - 1].substring(4, 8) ==
-            new Date().getFullYear() + 543
-        ) {
-            year = new Date().getFullYear() + 543;
-        }else{
-            year = jdata[jdata.length - 1].substring(4, 8)
-        }
-        jdata.forEach(function (value, i) {
-            if (
-                value.substring(4, 8) ==
-                year
-            ) {
-                countloveme--;
-            }
-        });
-        jdata.splice(countloveme);
-    }*/
     if (fileContents) {
         yearlist = JSON.parse(fileContents);
         if (
@@ -319,9 +299,6 @@ app.get('/god', async (req, res) => {
                 }
                 for (const val of peryear){
                     yearlist.push(val)
-                    /*if(jdata){
-                        jdata.push(val)
-                    }*/
                 }
                 for(const val of preyearsuperlist){
                     preyearlist.push(val)
@@ -341,17 +318,10 @@ app.get('/god', async (req, res) => {
         }
         year += 10
     }
-    /*if(jdata){
-        fs.writeFile('tmp/cache.txt', JSON.stringify(jdata), function (err) {
-            if (err) throw err;
-            res.send(jdata)
-        });
-    }else{*/
-        fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), function (err) {
-            if (err) throw err;
-            res.send(yearlist)
-        });
-    //}
+    fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), function (err) {
+        if (err) throw err;
+        res.send(yearlist)
+    });
 })
 
 app.get('/gdpy', (req, res) => {
