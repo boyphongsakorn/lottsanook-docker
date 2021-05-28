@@ -13,10 +13,11 @@ function padLeadingZeros(num, size) {
 }
 
 app.get('/', (req, res) => {
-    var fileDelete = null;
+    //var fileDelete = null;
     try {
         if(req.query.fresh !== undefined){
-            fileDelete = fs.unlinkSync('tmp/'+req.query.date+'.txt');
+            //fileDelete = fs.unlinkSync('tmp/'+req.query.date+'.txt');
+            fs.unlinkSync('tmp/'+req.query.date+'.txt');
         }
     } catch (err) {
 
@@ -142,10 +143,11 @@ app.get('/index2', (req, res) => {
       case '11' : monthtext="พฤศจิกายน"; break;
       case '12' : monthtext="ธันวาคม"; break;
     }
-    var fileDelete = null;
+    //var fileDelete = null;
     try {
         if(req.query.fresh !== undefined){
-            fileDelete = fs.unlinkSync('tmp/'+req.query.date+'.txt');
+            //fileDelete = fs.unlinkSync('tmp/'+req.query.date+'.txt');
+            fs.unlinkSync('tmp/'+req.query.date+'.txt');
         }
     } catch (err) {
 
@@ -348,7 +350,8 @@ app.get('/god', async (req, res) => {
                     preyearlist.push(val)
                     try {
                         if(day[3] == new Date().getFullYear() + 543){
-                            fileDelete = fs.unlinkSync('tmp/'+req.query.date+'.txt');
+                            //fileDelete = fs.unlinkSync('tmp/'+req.query.date+'.txt');
+                            fs.unlinkSync('tmp/'+req.query.date+'.txt');
                             console.log('yes this year')
                         }
                     } catch (err) {
@@ -385,10 +388,11 @@ app.get('/gdpy', (req, res) => {
     let peryear = []
     let yearlist = []
     var fileContents = null;
-    var fileDelete = null;
+    //var fileDelete = null;
     try {
         if(req.query.year == new Date().getFullYear() + 543){
-            fileDelete = fs.unlinkSync('tmp/'+req.query.year+'.txt');
+            //fileDelete = fs.unlinkSync('tmp/'+req.query.year+'.txt');
+            fs.unlinkSync('tmp/'+req.query.year+'.txt');
             console.log('yes this year')
         }
         fileContents = fs.readFileSync('tmp/'+req.query.year+'.txt');
