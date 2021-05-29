@@ -96,9 +96,31 @@ app.get('/', (req, res) => {
                     }
                 }
             }
-            fs.writeFile('tmp/'+req.query.date+'.txt', JSON.stringify(data), function (err) {
-                if (err) throw err;
-
+            if($('div').toArray()[2].firstChild.data.match('~[0-9]+~')){
+                fs.writeFile('tmp/'+req.query.date+'.txt', JSON.stringify(data), function (err) {
+                    if (err) throw err;
+                    //console.log('Saved!');
+                    if(req.query.from !== undefined){
+                        switch (req.query.date.substr(2, 2)){
+                            case '01' : monthtext="มกราคม"; break;
+                            case '02' : monthtext="กุมภาพันธ์"; break;
+                            case '03' : monthtext="มีนาคม"; break;
+                            case '04' : monthtext="เมษายน"; break;
+                            case '05' : monthtext="พฤษภาคม"; break;
+                            case '06' : monthtext="มิถุนายน"; break;
+                            case '07' : monthtext="กรกฎาคม"; break;
+                            case '08' : monthtext="สิงหาคม"; break;
+                            case '09' : monthtext="กันยายน"; break;
+                            case '10' : monthtext="ตุลาคม"; break;
+                            case '11' : monthtext="พฤศจิกายน"; break;
+                            case '12' : monthtext="ธันวาคม"; break;
+                        }
+        
+                        data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
+                    }
+                    res.send(data)
+                });
+            }else{
                 if(req.query.from !== undefined){
                     switch (req.query.date.substr(2, 2)){
                         case '01' : monthtext="มกราคม"; break;
@@ -117,9 +139,8 @@ app.get('/', (req, res) => {
     
                     data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
                 }
-
                 res.send(data)
-            });
+            }
         })
         .catch((err) => {
             let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481",0],["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27",0,0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27",0,0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27",0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481",0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482",0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483",0,0,0,0,0,0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
@@ -226,13 +247,21 @@ app.get('/index2', (req, res) => {
                 }
             }
 
-            fs.writeFile('tmp/'+req.query.date+'.txt', JSON.stringify(data), function (err) {
-                if (err) throw err;
+            if($('div').toArray()[2].firstChild.data != null && $('div').toArray()[2].firstChild.data != ' เวลา 14:30-16:00น.'){
+                fs.writeFile('tmp/'+req.query.date+'.txt', JSON.stringify(data), function (err) {
+                    if (err) throw err;
+                    //console.log('Saved!');
+                    if(req.query.from !== undefined){
+                        data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
+                    }
+                    res.send(data)
+                });
+            }else{
                 if(req.query.from !== undefined){
                     data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
                 }
                 res.send(data)
-            });
+            }
         });
     }
 })
