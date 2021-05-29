@@ -28,32 +28,32 @@ app.get('/', (req, res) => {
 
     }
     if(fileContents){
-        res.send(JSON.parse(fileContents));
+        data = JSON.parse(fileContents)
+        if(req.query.from !== undefined){
+            switch (req.query.date.substr(2, 2)){
+                case '01' : monthtext="มกราคม"; break;
+                case '02' : monthtext="กุมภาพันธ์"; break;
+                case '03' : monthtext="มีนาคม"; break;
+                case '04' : monthtext="เมษายน"; break;
+                case '05' : monthtext="พฤษภาคม"; break;
+                case '06' : monthtext="มิถุนายน"; break;
+                case '07' : monthtext="กรกฎาคม"; break;
+                case '08' : monthtext="สิงหาคม"; break;
+                case '09' : monthtext="กันยายน"; break;
+                case '10' : monthtext="ตุลาคม"; break;
+                case '11' : monthtext="พฤศจิกายน"; break;
+                case '12' : monthtext="ธันวาคม"; break;
+            }
+
+            data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
+        }
+        res.send(data);
     }else{
         fetch('https://news.sanook.com/lotto/check/'+req.query.date+'/',{redirect: 'error'})
         .then(res => res.text())
         .then((body) => {
             let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481",0],["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27",0,0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27",0,0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27",0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481",0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482",0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483",0,0,0,0,0,0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
             let $ = cheerio.load(body)
-
-            if(req.query.from !== undefined){
-                switch (req.query.date.substr(2, 2)){
-                    case '01' : monthtext="มกราคม"; break;
-                    case '02' : monthtext="กุมภาพันธ์"; break;
-                    case '03' : monthtext="มีนาคม"; break;
-                    case '04' : monthtext="เมษายน"; break;
-                    case '05' : monthtext="พฤษภาคม"; break;
-                    case '06' : monthtext="มิถุนายน"; break;
-                    case '07' : monthtext="กรกฎาคม"; break;
-                    case '08' : monthtext="สิงหาคม"; break;
-                    case '09' : monthtext="กันยายน"; break;
-                    case '10' : monthtext="ตุลาคม"; break;
-                    case '11' : monthtext="พฤศจิกายน"; break;
-                    case '12' : monthtext="ธันวาคม"; break;
-                }
-
-                data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
-            }
 
             data[0][1] = $('strong').toArray()[0].firstChild.data
             data[1][1] = $('strong').toArray()[1].firstChild.data
@@ -98,6 +98,26 @@ app.get('/', (req, res) => {
             }
             fs.writeFile('tmp/'+req.query.date+'.txt', JSON.stringify(data), function (err) {
                 if (err) throw err;
+
+                if(req.query.from !== undefined){
+                    switch (req.query.date.substr(2, 2)){
+                        case '01' : monthtext="มกราคม"; break;
+                        case '02' : monthtext="กุมภาพันธ์"; break;
+                        case '03' : monthtext="มีนาคม"; break;
+                        case '04' : monthtext="เมษายน"; break;
+                        case '05' : monthtext="พฤษภาคม"; break;
+                        case '06' : monthtext="มิถุนายน"; break;
+                        case '07' : monthtext="กรกฎาคม"; break;
+                        case '08' : monthtext="สิงหาคม"; break;
+                        case '09' : monthtext="กันยายน"; break;
+                        case '10' : monthtext="ตุลาคม"; break;
+                        case '11' : monthtext="พฤศจิกายน"; break;
+                        case '12' : monthtext="ธันวาคม"; break;
+                    }
+    
+                    data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
+                }
+
                 res.send(data)
             });
         })
@@ -141,17 +161,17 @@ app.get('/index2', (req, res) => {
 
     }
     if(fileContents){
-        res.send(JSON.parse(fileContents));
+        data = JSON.parse(fileContents)
+        if(req.query.from !== undefined){
+            data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
+        }
+        res.send(data);
     }else{
         fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-'+req.query.date.substring(0, 2)+'-'+encodeURI(monthtext)+'-'+req.query.date.substring(4, 8)+'.aspx')
         .then(res => res.text())
         .then((body) => {
             data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481",0],["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27",0,0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27",0,0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27",0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481",0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482",0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483",0,0,0,0,0,0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
             let $ = cheerio.load(body)
-
-            if(req.query.from !== undefined){
-                data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
-            }
 
             if($('b').toArray()[2] == null){
                 res.send(data)
@@ -208,6 +228,9 @@ app.get('/index2', (req, res) => {
 
             fs.writeFile('tmp/'+req.query.date+'.txt', JSON.stringify(data), function (err) {
                 if (err) throw err;
+                if(req.query.from !== undefined){
+                    data[0][0] = req.query.date.substring(0, 2)+monthtext+req.query.date.substring(4, 8)
+                }
                 res.send(data)
             });
         });
