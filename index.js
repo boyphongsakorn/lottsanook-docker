@@ -151,6 +151,13 @@ app.get('/', (req, res) => {
 })
 
 app.get('/index2', (req, res) => {
+    if(req.query.date.substring(4, 8) == new Date().getFullYear()+543){
+        fetch('http://localhost:'+port+'/?date='+req.query.date)
+        .then(res => res.json())
+        .then((body) => {
+            res.send(body)
+        })
+    }
     let data = ""
     let monthtext
     switch (req.query.date.substring(2, 4))
