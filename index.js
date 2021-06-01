@@ -278,10 +278,10 @@ app.get('/reto', (req, res) => {
     fetch('http://localhost:'+port+'/?date='+padLeadingZeros(new Date().getDate(),2)+''+padLeadingZeros((new Date().getMonth()+1),2)+''+(new Date().getFullYear()+543))
     .then(res => res.json())
     .then((body) => {
-        if(body[0][1] === "0" || body[0][1] === 0){
-            res.send('no')
-        }else{
+        if(body[0][1] === "XXXXXX" || body[0][1] === "xxxxxx"){
             res.send('yes')
+        }else{
+            res.send('no')
         }
     })
 })
