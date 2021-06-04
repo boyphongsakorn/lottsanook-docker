@@ -546,5 +546,5 @@ app.get('/finddol', async (req, res) => {
 })
 
 app.listen(port, '0.0.0.0', () => {
-    console.log('Example app listening at http://localhost:' + port)
+    console.log('lottsanook app listening at port: ' + port)
 })
