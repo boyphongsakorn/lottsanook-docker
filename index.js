@@ -13,6 +13,9 @@ function padLeadingZeros(num, size) {
 }
 
 app.get('/', (req, res) => {
+    if(!req.query.date){
+        req.query.date=padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
+    }
     if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
         fetch('http://localhost:' + port + '/index2?date=' + req.query.date)
             .then(res => res.json())
