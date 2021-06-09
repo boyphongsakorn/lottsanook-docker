@@ -482,6 +482,7 @@ app.get('/checklottery', (req, res) => {
 
 app.get('/lastlot', async (req, res) => {
     let lastdate
+    let viewer
     await fetch('http://localhost:'+port+'/gdpy?year='+(new Date().getFullYear()+543))
     .then(res => res.json())
     .then((body) => {
@@ -490,11 +491,23 @@ app.get('/lastlot', async (req, res) => {
     await fetch('http://localhost:'+port+'/?date='+lastdate)
     .then(res => res.json())
     .then((body) => {
-        let viewer = {
-            win: body[0][1],
-            threefirst: body[1][1]+','+body[1][2],
-            threeend: body[2][1]+','+body[2][2],
-            twoend: body[3][1]
+        if(req.query.info){
+            viewer = {
+                info: {
+                    date: lastdate
+                },
+                win: body[0][1],
+                threefirst: body[1][1]+','+body[1][2],
+                threeend: body[2][1]+','+body[2][2],
+                twoend: body[3][1]
+            }
+        }else{
+            viewer = {
+                win: body[0][1],
+                threefirst: body[1][1]+','+body[1][2],
+                threeend: body[2][1]+','+body[2][2],
+                twoend: body[3][1]
+            }
         }
         res.send(viewer)
     })
