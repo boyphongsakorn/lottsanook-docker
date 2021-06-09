@@ -491,7 +491,7 @@ app.get('/lastlot', async (req, res) => {
     await fetch('http://localhost:'+port+'/?date='+lastdate)
     .then(res => res.json())
     .then((body) => {
-        if(req.query.info){
+        if(req.query.info !== undefined){
             viewer = {
                 info: {
                     date: lastdate
