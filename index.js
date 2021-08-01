@@ -71,8 +71,8 @@ app.get('/', (req, res) => {
                     }
 
                     data[0][1] = $('b').toArray()[2].firstChild.data
-                    let threefirst
-                    let threeend
+                    let threefirst = []
+                    let threeend = []
                     try {
                         threefirst = $('b').toArray()[3].firstChild.data.split(" ")
                         threeend = $('b').toArray()[4].firstChild.data.split(" ")
@@ -88,7 +88,7 @@ app.get('/', (req, res) => {
                     /*let threefirst = $('b').toArray()[3].firstChild.data.split(" ")
                     let threeend = $('b').toArray()[4].firstChild.data.split(" ")*/
 
-                    if (threefirst.length == 1) {
+                    if (threefirst.length <= 1) {
                         data[1][1] = 0;
                         data[1][2] = 0;
                         /*data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
