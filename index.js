@@ -71,14 +71,28 @@ app.get('/', (req, res) => {
                     }
 
                     data[0][1] = $('b').toArray()[2].firstChild.data
-                    let threefirst = $('b').toArray()[3].firstChild.data.split(" ")
-                    let threeend = $('b').toArray()[4].firstChild.data.split(" ")
+                    let threefirst
+                    let threeend
+                    try {
+                        threefirst = $('b').toArray()[3].firstChild.data.split(" ")
+                        threeend = $('b').toArray()[4].firstChild.data.split(" ")
+                    } catch (error) {
+                        /*threefirst = $('b').toArray()[4].firstChild.data.split(" ")
+                        threeend = $('b').toArray()[5].firstChild.data.split(" ")*/
+                        threeend = $('b').toArray()[4].firstChild.data.split(" ")
+                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
+                        data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
+                        data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
+                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
+                    }
+                    /*let threefirst = $('b').toArray()[3].firstChild.data.split(" ")
+                    let threeend = $('b').toArray()[4].firstChild.data.split(" ")*/
 
                     if (threefirst.length == 1) {
                         data[1][1] = 0;
                         data[1][2] = 0;
-                        data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
-                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
+                        /*data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
+                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '');*/
                     } else {
                         data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
                         data[1][2] = threefirst[1].replace(/\xc2\xa0/, '');
