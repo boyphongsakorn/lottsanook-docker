@@ -17,11 +17,19 @@ app.get('/', (req, res) => {
         req.query.date=padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
     }
     if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
-        fetch('http://localhost:' + port + '/index2?date=' + req.query.date)
+        if(req.query.from !== undefined){
+            fetch('http://localhost:' + port + '/index2?date=' + req.query.date + '&from')
             .then(res => res.json())
             .then((body) => {
                 res.send(body)
             })
+        }else{
+            fetch('http://localhost:' + port + '/index2?date=' + req.query.date)
+            .then(res => res.json())
+            .then((body) => {
+                res.send(body)
+            })
+        }
     } else {
         let data = ""
         let monthtext
@@ -567,6 +575,7 @@ app.get('/finddol', async (req, res) => {
                     const element = body[index];
                     if (element.includes(req.query.search.toString())) {
                         allwin.push(body[0][0])
+                        console.log('http://localhost:' + port + '/?date=' + val + '&from')
                     }
                 }
 
