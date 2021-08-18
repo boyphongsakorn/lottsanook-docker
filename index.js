@@ -73,20 +73,31 @@ app.get('/', (req, res) => {
                     data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                     let $ = cheerio.load(body)
 
-                    if ($('b').toArray()[2] == null) {
+                    let numberpush = []
+
+                    $('.lot-dc').toArray().forEach(element => {
+                        try {
+                            //console.log(element.firstChild.data)
+                            numberpush.push(element.firstChild.data)
+                        } catch (error) {
+                            
+                        }
+                    });
+
+                    if ($('div').toArray()[2] == null) {
                         res.send(data)
                         return
                     }
 
-                    data[0][1] = $('b').toArray()[2].firstChild.data
+                    //data[0][1] = $('b').toArray()[2].firstChild.data
                     let threefirst = []
                     let threeend = []
-                    try {
+                    /*try {
                         threefirst = $('b').toArray()[3].firstChild.data.split(" ")
                         threeend = $('b').toArray()[4].firstChild.data.split(" ")
                     } catch (error) {
                         /*threefirst = $('b').toArray()[4].firstChild.data.split(" ")
-                        threeend = $('b').toArray()[5].firstChild.data.split(" ")*/
+                        threeend = $('b').toArray()[5].firstChild.data.split(" ")
                         threeend = $('b').toArray()[4].firstChild.data.split(" ")
                         data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
                         data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
@@ -94,13 +105,13 @@ app.get('/', (req, res) => {
                         data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
                     }
                     /*let threefirst = $('b').toArray()[3].firstChild.data.split(" ")
-                    let threeend = $('b').toArray()[4].firstChild.data.split(" ")*/
+                    let threeend = $('b').toArray()[4].firstChild.data.split(" ")
 
                     if (threefirst.length <= 1) {
                         data[1][1] = 0;
                         data[1][2] = 0;
                         /*data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
-                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '');*/
+                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
                     } else {
                         data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
                         data[1][2] = threefirst[1].replace(/\xc2\xa0/, '');
@@ -110,19 +121,183 @@ app.get('/', (req, res) => {
                     data[3][1] = $('b').toArray()[5].firstChild.data;
 
                     data[4][1] = padLeadingZeros(data[0][1] - 1, 6);
-                    data[4][2] = padLeadingZeros(data[0][1] + 1, 6);
+                    data[4][2] = padLeadingZeros(data[0][1] + 1, 6);*/
+
+                    /*let wave = 5;
+                    let minwave = 0;
+                    let maxwave = 5;*/
+
+                    /*for (const type of $('div').toArray()) {
+                        if(wave >= 5){
+                            if (type.attribs.class == 'lot-dc lotto-fx lot-c20') {
+                                if (minwave < maxwave) {
+                                    minwave++;
+                                    data[wave][minwave] = type.firstChild.data;
+                                }
+                            }
+                        }else{
+                            minwave++;
+                        }
+                        if (minwave == maxwave && wave == 0) {
+                            date[0][1] = type.firstChild.data
+                            minwave = 0;
+                            maxwave = 1;
+                            wave = 1;
+                        }
+                        if (minwave == maxwave && wave == 1) {
+                            if(type.firstChild.data.split(" ").length > 2){
+                                threeend = type.firstChild.data.split(" ")
+                                data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
+                                data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
+                                data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
+                                data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
+                            }else{
+                                threefirst = type.firstChild.data.split(" ")
+                                data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
+                                data[1][2] = threefirst[1].replace(/\xc2\xa0/, '');
+                            }
+                            minwave = 0;
+                            maxwave = 1;
+                            wave = 2;
+                        }
+                        if (minwave == maxwave && wave == 2) {
+                            if(data[2].length == 5){
+                                data[3][1] = type.firstChild.data
+                            }else{
+                                threeend = type.firstChild.data.split(" ")
+                                data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
+                                data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
+                            }
+                            minwave = 0;
+                            maxwave = 1;
+                            wave = 3;
+                        }
+                        if (minwave == maxwave && wave == 3) {
+                            if(data[2].length != 5){
+                                data[3][1] = type.firstChild.data
+                            }
+                            minwave = 0;
+                            maxwave = 1;
+                            wave = 4;
+                        }
+                        if (minwave == maxwave && wave == 4) {
+                            data[4][1] = padLeadingZeros(data[0][1] - 1, 6);
+                            data[4][2] = padLeadingZeros(data[0][1] + 1, 6);
+                            minwave = 0;
+                            maxwave = 5;
+                            wave = 5;
+                        }
+                        if (minwave == maxwave && wave == 5) {
+                            minwave = 0;
+                            maxwave = 10;
+                            wave = 6;
+                        }
+                        if (minwave == maxwave && wave == 6) {
+                            minwave = 0;
+                            maxwave = 50;
+                            wave = 7;
+                        }
+                        if (minwave == maxwave && wave == 7) {
+                            minwave = 0;
+                            maxwave = 100;
+                            wave = 8;
+                        }
+                    }*/
+
+                    /*let wave = 0;
+                    let minwave = 0;
+                    let maxwave = 1;*/
+
+                    data[0][1] = numberpush[0]
+                    numberpush.shift()
+                    if(numberpush[0].split(" ").length > 2){
+                        threeend = numberpush[0].split(" ")
+                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
+                        data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
+                        data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
+                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
+                    }else{
+                        threefirst = numberpush[0].split(" ")
+                        data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
+                        data[1][2] = threefirst[1].replace(/\xc2\xa0/, '');
+                    }
+                    numberpush.shift()
+                    if(numberpush[0].length == 2){
+                        data[3][1] = numberpush[0]
+                        numberpush.shift()
+                    }else{
+                        threeend = numberpush[0].split(" ")
+                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
+                        data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
+                        numberpush.shift()
+                        data[3][1] = numberpush[0]
+                        numberpush.shift()
+                    }
+                    data[4][1] = padLeadingZeros((data[0][1] - 1), 6);
+                    data[4][2] = padLeadingZeros((data[0][1] + 1), 6);
 
                     let wave = 5;
                     let minwave = 0;
                     let maxwave = 5;
 
-                    for (const type of $('div').toArray()) {
-                        if (type.attribs.class == 'ltr_dc ltr-fx ltr_c20') {
+                    for (const type of numberpush) {
+                        if(wave >= 5){
                             if (minwave < maxwave) {
                                 minwave++;
-                                data[wave][minwave] = type.firstChild.data;
+                                data[wave][minwave] = type
                             }
+                        }/*else{
+                            minwave++;
+                        }*/
+                        /*if (minwave == maxwave && wave == 0) {
+                            data[0][1] = type
+                            minwave = 0;
+                            maxwave = 1;
+                            wave = 1;
                         }
+                        if (minwave == maxwave && wave == 1) {
+                            if(type.split(" ").length > 2){
+                                threeend = type.split(" ")
+                                data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
+                                data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
+                                data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
+                                data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
+                            }else{
+                                threefirst = type.split(" ")
+                                data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
+                                data[1][2] = threefirst[1].replace(/\xc2\xa0/, '');
+                            }
+                            minwave = 0;
+                            maxwave = 1;
+                            wave = 2;
+                        }
+                        if (minwave == maxwave && wave == 2) {
+                            if(data[2].length == 5){
+                                data[3][1] = type
+                            }else{
+                                threeend = type.split(" ")
+                                data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
+                                data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
+                            }
+                            minwave = 0;
+                            maxwave = 1;
+                            wave = 3;
+                        }
+                        if (minwave == maxwave && wave == 3) {
+                            if(data[2].length != 5){
+                                data[3][1] = type
+                            }
+                            minwave = 0;
+                            maxwave = 1;
+                            wave = 4;
+                        }
+                        if (minwave == maxwave && wave == 4) {
+                            data[4][1] = padLeadingZeros((data[0][1] - 1), 6);
+                            data[4][2] = padLeadingZeros((data[0][1] + 1), 6);
+                            minwave = 0;
+                            maxwave = 5;
+                            wave = 5;
+                        }*/
                         if (minwave == maxwave && wave == 5) {
                             minwave = 0;
                             maxwave = 10;
@@ -566,8 +741,10 @@ app.get('/finddol', async (req, res) => {
         .then(res => res.json())
         .then((body) => {
             channels = body.splice(408)
+            console.log(channels)
         })
     for (const val of channels) {
+        console.log(val)
         await fetch('http://localhost:' + port + '/?date=' + val + '&from')
             .then(res => res.json())
             .then((body) => {
