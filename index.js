@@ -737,6 +737,7 @@ app.get('/getchit', (req, res) => {
 app.get('/finddol', async (req, res) => {
     let channels
     let allwin = []
+    if (req.query.search.length > 3) {
     await fetch('http://localhost:' + port + '/god')
         .then(res => res.json())
         .then((body) => {
@@ -759,6 +760,21 @@ app.get('/finddol', async (req, res) => {
             })
     }
     res.send(allwin)
+    } else {
+        fetch('https://astro.meemodel.com/%E0%B8%A7%E0%B8%B4%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B2%E0%B8%B0%E0%B8%AB%E0%B9%8C%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B8%AB%E0%B8%A7%E0%B8%A2/' + req.query.search, { redirect: 'error' })
+            .then(res => res.text())
+            .then((body) => {
+                let $ = cheerio.load(body)
+                $('td').toArray().forEach(element => {
+                    let sl = element.firstChild.data
+                    if(sl != null && sl.split(" ").length == 3 && sl.split(" ")[2] >= 2550){
+                        allwin.unshift(sl)
+                    }
+                    
+                });
+                res.send(allwin)
+            });
+    }
 })
 
 app.listen(port, '0.0.0.0', () => {
