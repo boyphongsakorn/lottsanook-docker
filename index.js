@@ -3,8 +3,11 @@ const cheerio = require('cheerio')
 const express = require('express')
 var fs = require('fs')
 
+var cors = require('cors')
 const app = express()
 const port = process.env.PORT || 3000;
+
+app.use(cors());
 
 function padLeadingZeros(num, size) {
     var s = num + "";
