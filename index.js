@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
         }
         try {
             data = JSON.parse(fileContents)
-        } catch (error) {
+        } catch (err) {
             fileContents = false
         }
         if (fileContents) {
