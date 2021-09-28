@@ -509,26 +509,31 @@ app.get('/god', async (req, res) => {
         fileContents = fs.readFileSync('tmp/cache.txt');
     } catch (err) {
     }
-    if (fileContents) {
-        yearlist = JSON.parse(fileContents);
-        if (
-            yearlist[yearlist.length - 1].substring(4, 8) ==
-            new Date().getFullYear() + 543
-        ) {
-            year = new Date().getFullYear() + 543;
-        } else {
-            year = yearlist[yearlist.length - 1].substring(4, 8)
-        }
-        yearlist.forEach(function (value, i) {
+    try {
+        if (fileContents) {
+            yearlist = JSON.parse(fileContents);
             if (
-                value.substring(4, 8) ==
-                year
+                yearlist[yearlist.length - 1].substring(4, 8) ==
+                new Date().getFullYear() + 543
             ) {
-                countloveme--;
+                year = new Date().getFullYear() + 543;
+            } else {
+                year = yearlist[yearlist.length - 1].substring(4, 8)
             }
-        });
-        yearlist.splice(countloveme);
+            yearlist.forEach(function (value, i) {
+                if (
+                    value.substring(4, 8) ==
+                    year
+                ) {
+                    countloveme--;
+                }
+            });
+            yearlist.splice(countloveme);
+        }
+    } catch (err) {
+        fileContents = false
     }
+    
     let day
     while (year <= nextyear) {
         channel = []
