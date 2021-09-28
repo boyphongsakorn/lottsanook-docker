@@ -63,6 +63,11 @@ app.get('/', (req, res) => {
         } catch (err) {
 
         }
+        try {
+            data = JSON.parse(fileContents)
+        } catch (error) {
+            fileContents = false
+        }
         if (fileContents) {
             data = JSON.parse(fileContents)
             if (req.query.from !== undefined) {
