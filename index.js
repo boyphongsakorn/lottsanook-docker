@@ -800,6 +800,7 @@ app.get('/finddol', async (req, res) => {
         reqtwo.write(postData);
 
         reqtwo.end();
+        
         await fetch('http://localhost:' + port + '/god')
             .then(res => res.json())
             .then((body) => {
