@@ -758,30 +758,6 @@ app.get('/finddol', async (req, res) => {
     let channels
     let allwin = []
     if (req.query.search.length > 3) {
-        var myHeaders = new Headers();
-        myHeaders.append("Accept", "application/vnd.github.v3+json");
-        myHeaders.append("Authorization", "token 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");
-        myHeaders.append("Content-Type", "application/json");
-
-        var raw = JSON.stringify({
-         "inputs": {
-            "number": req.query.search.toString()
-         },
-         "ref": "refs/heads/main"
-        });
-
-        var requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: raw,
-          redirect: 'follow'
-        };
-
-        await fetch("https://api.github.com/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches", requestOptions)
-          .then(response => response.text())
-          .then(result => console.log(result))
-          .catch(error => console.log('error', error));
-        
         await fetch('http://localhost:' + port + '/god')
             .then(res => res.json())
             .then((body) => {
