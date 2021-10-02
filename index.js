@@ -758,28 +758,52 @@ app.get('/finddol', async (req, res) => {
     let channels
     let allwin = []
     if (req.query.search.length > 3) {
-    await fetch('http://localhost:' + port + '/god')
-        .then(res => res.json())
-        .then((body) => {
-            channels = body.splice(408)
-            console.log(channels)
-        })
-    for (const val of channels) {
-        console.log(val)
-        await fetch('http://localhost:' + port + '/?date=' + val + '&from')
+        var myHeaders = new Headers();
+        myHeaders.append("Accept", "application/vnd.github.v3+json");
+        myHeaders.append("Authorization", "token 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");
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+         "inputs": {
+            "number": req.query.search.toString()
+         },
+         "ref": "refs/heads/main"
+        });
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+
+        await fetch("https://api.github.com/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error));
+        
+        await fetch('http://localhost:' + port + '/god')
             .then(res => res.json())
             .then((body) => {
-                for (let index = 0; index < body.length; index++) {
-                    const element = body[index];
-                    if (element.includes(req.query.search.toString())) {
-                        allwin.push(body[0][0])
-                        console.log('http://localhost:' + port + '/?date=' + val + '&from')
-                    }
-                }
-
+                channels = body.splice(408)
+                console.log(channels)
             })
-    }
-    res.send(allwin)
+        for (const val of channels) {
+            console.log(val)
+            await fetch('http://localhost:' + port + '/?date=' + val + '&from')
+                .then(res => res.json())
+                .then((body) => {
+                    for (let index = 0; index < body.length; index++) {
+                        const element = body[index];
+                        if (element.includes(req.query.search.toString())) {
+                            allwin.push(body[0][0])
+                            console.log('http://localhost:' + port + '/?date=' + val + '&from')
+                        }
+                    }
+
+                })
+        }
+        res.send(allwin)
     } else {
         fetch('https://astro.meemodel.com/%E0%B8%A7%E0%B8%B4%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B2%E0%B8%B0%E0%B8%AB%E0%B9%8C%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B8%AB%E0%B8%A7%E0%B8%A2/' + req.query.search, { redirect: 'error' })
             .then(res => res.text())
