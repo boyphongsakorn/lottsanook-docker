@@ -16,22 +16,22 @@ function padLeadingZeros(num, size) {
 }
 
 app.get('/', (req, res) => {
-    if(!req.query.date){
-        req.query.date=padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
+    if (!req.query.date) {
+        req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
     }
     if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
-        if(req.query.from !== undefined){
+        if (req.query.from !== undefined) {
             fetch('http://localhost:' + port + '/index2?date=' + req.query.date + '&from')
-            .then(res => res.json())
-            .then((body) => {
-                res.send(body)
-            })
-        }else{
+                .then(res => res.json())
+                .then((body) => {
+                    res.send(body)
+                })
+        } else {
             fetch('http://localhost:' + port + '/index2?date=' + req.query.date)
-            .then(res => res.json())
-            .then((body) => {
-                res.send(body)
-            })
+                .then(res => res.json())
+                .then((body) => {
+                    res.send(body)
+                })
         }
     } else {
         let data = ""
@@ -75,7 +75,7 @@ app.get('/', (req, res) => {
             }
             res.send(data);
         } else {
-            fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-' + req.query.date.substring(0, 2) + '-' + encodeURI(monthtext) + '-' + req.query.date.substring(4, 8) + '.aspx',{redirect: 'error'})
+            fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-' + req.query.date.substring(0, 2) + '-' + encodeURI(monthtext) + '-' + req.query.date.substring(4, 8) + '.aspx', { redirect: 'error' })
                 .then(res => res.text())
                 .then((body) => {
                     data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
@@ -88,7 +88,7 @@ app.get('/', (req, res) => {
                             //console.log(element.firstChild.data)
                             numberpush.push(element.firstChild.data)
                         } catch (error) {
-                            
+
                         }
                     });
 
@@ -218,22 +218,22 @@ app.get('/', (req, res) => {
 
                     data[0][1] = numberpush[0]
                     numberpush.shift()
-                    if(numberpush[0].split(" ").length > 2){
+                    if (numberpush[0].split(" ").length > 2) {
                         threeend = numberpush[0].split(" ")
                         data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
                         data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
                         data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
                         data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
-                    }else{
+                    } else {
                         threefirst = numberpush[0].split(" ")
                         data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
                         data[1][2] = threefirst[1].replace(/\xc2\xa0/, '');
                     }
                     numberpush.shift()
-                    if(numberpush[0].length == 2){
+                    if (numberpush[0].length == 2) {
                         data[3][1] = numberpush[0]
                         numberpush.shift()
-                    }else{
+                    } else {
                         threeend = numberpush[0].split(" ")
                         data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
                         data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
@@ -249,7 +249,7 @@ app.get('/', (req, res) => {
                     let maxwave = 5;
 
                     for (const type of numberpush) {
-                        if(wave >= 5){
+                        if (wave >= 5) {
                             if (minwave < maxwave) {
                                 minwave++;
                                 data[wave][minwave] = type
@@ -538,7 +538,7 @@ app.get('/god', async (req, res) => {
     } catch (err) {
         fileContents = false
     }
-    
+
     let day
     while (year <= nextyear) {
         channel = []
@@ -700,34 +700,34 @@ app.get('/checklottery', (req, res) => {
 app.get('/lastlot', async (req, res) => {
     let lastdate
     let viewer
-    await fetch('http://localhost:'+port+'/gdpy?year='+(new Date().getFullYear()+543))
-    .then(res => res.json())
-    .then((body) => {
-        lastdate = body[body.length-1]
-    })
-    await fetch('http://localhost:'+port+'/?date='+lastdate)
-    .then(res => res.json())
-    .then((body) => {
-        if(req.query.info !== undefined){
-            viewer = {
-                info: {
-                    date: lastdate
-                },
-                win: body[0][1],
-                threefirst: body[1][1]+','+body[1][2],
-                threeend: body[2][1]+','+body[2][2],
-                twoend: body[3][1]
+    await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543))
+        .then(res => res.json())
+        .then((body) => {
+            lastdate = body[body.length - 1]
+        })
+    await fetch('http://localhost:' + port + '/?date=' + lastdate)
+        .then(res => res.json())
+        .then((body) => {
+            if (req.query.info !== undefined) {
+                viewer = {
+                    info: {
+                        date: lastdate
+                    },
+                    win: body[0][1],
+                    threefirst: body[1][1] + ',' + body[1][2],
+                    threeend: body[2][1] + ',' + body[2][2],
+                    twoend: body[3][1]
+                }
+            } else {
+                viewer = {
+                    win: body[0][1],
+                    threefirst: body[1][1] + ',' + body[1][2],
+                    threeend: body[2][1] + ',' + body[2][2],
+                    twoend: body[3][1]
+                }
             }
-        }else{
-            viewer = {
-                win: body[0][1],
-                threefirst: body[1][1]+','+body[1][2],
-                threeend: body[2][1]+','+body[2][2],
-                twoend: body[3][1]
-            }
-        }
-        res.send(viewer)
-    })
+            res.send(viewer)
+        })
 })
 
 app.get('/getchit', (req, res) => {
@@ -758,6 +758,48 @@ app.get('/finddol', async (req, res) => {
     let channels
     let allwin = []
     if (req.query.search.length > 3) {
+        var https = require('follow-redirects').https;
+
+        var options = {
+            'method': 'POST',
+            'hostname': 'api.github.com',
+            'path': '/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches',
+            'headers': {
+                'Accept': 'application/vnd.github.v3+json',
+                'Authorization': 'token ' + process.env.gtoken,
+                'Content-Type': 'application/json',
+                'User-Agent': 'PostmanRuntime/7.28.4'
+            },
+            'maxRedirects': 20
+        };
+
+        var reqtwo = https.request(options, function (res) {
+            var chunks = [];
+
+            res.on("data", function (chunk) {
+                chunks.push(chunk);
+            });
+
+            res.on("end", function (chunk) {
+                var body = Buffer.concat(chunks);
+                console.log(body.toString());
+            });
+
+            res.on("error", function (error) {
+                console.error(error);
+            });
+        });
+
+        var postData = JSON.stringify({
+            "inputs": {
+                "number": req.query.search.toString()
+            },
+            "ref": "refs/heads/main"
+        });
+
+        reqtwo.write(postData);
+
+        reqtwo.end();
         await fetch('http://localhost:' + port + '/god')
             .then(res => res.json())
             .then((body) => {
@@ -787,10 +829,10 @@ app.get('/finddol', async (req, res) => {
                 let $ = cheerio.load(body)
                 $('td').toArray().forEach(element => {
                     let sl = element.firstChild.data
-                    if(sl != null && sl.split(" ").length == 3 && sl.split(" ")[2] >= 2550){
+                    if (sl != null && sl.split(" ").length == 3 && sl.split(" ")[2] >= 2550) {
                         allwin.unshift(sl)
                     }
-                    
+
                 });
                 res.send(allwin)
             });
