@@ -7,7 +7,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 
 var cors = require('cors')
 const app = express()
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 
@@ -353,6 +353,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/index2', (req, res) => {
+    if (!req.query.date) {
+        req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
+    }
     try {
         if (req.query.fresh !== undefined) {
             fs.unlinkSync('tmp/' + req.query.date + '.txt');
@@ -601,7 +604,54 @@ app.get('/god', async (req, res) => {
     }
     fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), function (err) {
         if (err) throw err;
-        res.send(yearlist)
+        if(req.query.format == "thtext"){
+            yearlist.forEach(element => {
+                let monthtext
+                switch (element.slice(2, 4)) {
+                    case '01': monthtext = "มกราคม"; break;
+                    case '02': monthtext = "กุมภาพันธ์"; break;
+                    case '03': monthtext = "มีนาคม"; break;
+                    case '04': monthtext = "เมษายน"; break;
+                    case '05': monthtext = "พฤษภาคม"; break;
+                    case '06': monthtext = "มิถุนายน"; break;
+                    case '07': monthtext = "กรกฎาคม"; break;
+                    case '08': monthtext = "สิงหาคม"; break;
+                    case '09': monthtext = "กันยายน"; break;
+                    case '10': monthtext = "ตุลาคม"; break;
+                    case '11': monthtext = "พฤศจิกายน"; break;
+                    case '12': monthtext = "ธันวาคม"; break;
+                }
+                //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
+                //yearlist.indexOf(element)
+                yearlist[yearlist.indexOf(element)] = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
+            });
+            res.send(yearlist)
+        }else if(req.query.format == "combothtext"){
+            yearlist.forEach(element => {
+                let monthtext
+                let array
+                switch (element.slice(2, 4)) {
+                    case '01': monthtext = "มกราคม"; break;
+                    case '02': monthtext = "กุมภาพันธ์"; break;
+                    case '03': monthtext = "มีนาคม"; break;
+                    case '04': monthtext = "เมษายน"; break;
+                    case '05': monthtext = "พฤษภาคม"; break;
+                    case '06': monthtext = "มิถุนายน"; break;
+                    case '07': monthtext = "กรกฎาคม"; break;
+                    case '08': monthtext = "สิงหาคม"; break;
+                    case '09': monthtext = "กันยายน"; break;
+                    case '10': monthtext = "ตุลาคม"; break;
+                    case '11': monthtext = "พฤศจิกายน"; break;
+                    case '12': monthtext = "ธันวาคม"; break;
+                }
+                //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
+                //yearlist.indexOf(element)
+                yearlist[yearlist.indexOf(element)] = [element,element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)]
+            });
+            res.send(yearlist)
+        }else{
+            res.send(yearlist)
+        }
     });
 })
 
@@ -760,7 +810,30 @@ app.get('/finddol', async (req, res) => {
     let channels
     let allwin = []
     if (req.query.search.length > 3) {
-        var https = require('follow-redirects').https;
+        await fetch('http://localhost:' + port + '/god')
+            .then(res => res.json())
+            .then((body) => {
+                channels = body.splice(408)
+                console.log(channels)
+            })
+        for (const val of channels) {
+            console.log(val)
+            await fetch('http://localhost:' + port + '/?date=' + val + '&from')
+                .then(res => res.json())
+                .then((body) => {
+                    for (let index = 0; index < body.length; index++) {
+                        const element = body[index];
+                        if (element.includes(req.query.search.toString())) {
+                            allwin.push(body[0][0])
+                            console.log('http://localhost:' + port + '/?date=' + val + '&from')
+                        }
+                    }
+
+                })
+        }
+        res.send(allwin)
+        
+        /*var https = require('follow-redirects').https;
 
         var options = {
             'method': 'POST',
@@ -801,29 +874,7 @@ app.get('/finddol', async (req, res) => {
 
         reqtwo.write(postData);
 
-        reqtwo.end();
-        await fetch('http://localhost:' + port + '/god')
-            .then(res => res.json())
-            .then((body) => {
-                channels = body.splice(408)
-                console.log(channels)
-            })
-        for (const val of channels) {
-            console.log(val)
-            await fetch('http://localhost:' + port + '/?date=' + val + '&from')
-                .then(res => res.json())
-                .then((body) => {
-                    for (let index = 0; index < body.length; index++) {
-                        const element = body[index];
-                        if (element.includes(req.query.search.toString())) {
-                            allwin.push(body[0][0])
-                            console.log('http://localhost:' + port + '/?date=' + val + '&from')
-                        }
-                    }
-
-                })
-        }
-        res.send(allwin)
+        reqtwo.end();*/
     } else {
         fetch('https://astro.meemodel.com/%E0%B8%A7%E0%B8%B4%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B2%E0%B8%B0%E0%B8%AB%E0%B9%8C%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B8%AB%E0%B8%A7%E0%B8%A2/' + req.query.search, { redirect: 'error' })
             .then(res => res.text())
