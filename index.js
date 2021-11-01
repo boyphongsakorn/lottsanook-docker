@@ -627,6 +627,7 @@ app.get('/god', async (req, res) => {
         }else if(req.query.format == "combothtext"){
             yearlist.forEach(element => {
                 let monthtext
+                let array
                 switch (element.slice(2, 4)) {
                     case '01': monthtext = "มกราคม"; break;
                     case '02': monthtext = "กุมภาพันธ์"; break;
@@ -643,7 +644,7 @@ app.get('/god', async (req, res) => {
                 }
                 //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
                 //yearlist.indexOf(element)
-                yearlist[yearlist.indexOf(element)] = [element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8),yearlist]
+                yearlist[yearlist.indexOf(element)] = [element,element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)]
             });
             res.send(yearlist)
         }else{
