@@ -2,10 +2,12 @@ const fetch = require('node-fetch')
 const cheerio = require('cheerio')
 const express = require('express')
 var fs = require('fs')
+const HttpsProxyAgent = require('https-proxy-agent');
 
 var cors = require('cors')
 const app = express()
 const port = process.env.PORT || 5000;
+let proxylist = ['202.62.111.171:8080', '24.172.34.114:49920', '203.192.217.11:8080', '118.70.12.171:53281', '45.70.14.226:999'];
 
 app.use(cors());
 
@@ -351,6 +353,30 @@ app.get('/', (req, res) => {
 })
 
 app.get('/index2', (req, res) => {
+    fetch('https://www.proxy-list.download/api/v1/get?type=https')
+        .then(res => res.text())
+        .then((body) => {
+            proxylist = []
+            //console.log(body.split("\r\n"))
+            proxylist = body.split("\r\n")
+            proxylist.pop()
+            //console.log(proxylist)
+        })
+
+    fetch('https://proxylist.geonode.com/api/proxy-list?limit=50&page=1&sort_by=lastChecked&sort_type=desc&protocols=https')
+        .then(res => res.json())
+        .then((body) => {
+            console.log(body.data)
+            for (const iterator of body.data) {
+                //console.log(iterator.ip)
+                proxylist.push(iterator.ip + ':' + iterator.port)
+            }
+            /*console.log(body.split("\r\n"))
+            proxylist = body.split("\r\n")
+            proxylist.pop()
+            console.log(proxylist)*/
+        })
+
     if (!req.query.date) {
         req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
     }
@@ -393,7 +419,9 @@ app.get('/index2', (req, res) => {
 
         process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
-        fetch('https://news.sanook.com/lotto/check/' + req.query.date + '/', { redirect: 'error' })
+        const proxyAgent = new HttpsProxyAgent("http://" + random_item(proxylist));
+
+        fetch('https://news.sanook.com/lotto/check/' + req.query.date + '/', { redirect: 'error', agent: proxyAgent })
             .then(res => res.text())
             .then((body) => {
                 let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
