@@ -603,7 +603,6 @@ app.get('/god', async (req, res) => {
     fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), function (err) {
         if (err) throw err;
         if(req.query.format == "thtext"){
-            console.log("test")
             yearlist.forEach(element => {
                 let monthtext
                 switch (element.slice(2, 4)) {
@@ -620,8 +619,9 @@ app.get('/god', async (req, res) => {
                     case '11': monthtext = "พฤศจิกายน"; break;
                     case '12': monthtext = "ธันวาคม"; break;
                 }
-                element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
+                //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
                 //yearlist.indexOf(element)
+                yearlist[yearlist.indexOf(element)] = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
             });
             res.send(yearlist)
         }else{
