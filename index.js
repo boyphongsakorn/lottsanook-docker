@@ -9,8 +9,6 @@ const port = process.env.PORT || 5000;
 
 app.use(cors());
 
-const httpsAgent = new https.Agent({rejectUnauthorized: false});
-
 function padLeadingZeros(num, size) {
     var s = num + "";
     while (s.length < size) s = "0" + s;
@@ -392,7 +390,7 @@ app.get('/index2', (req, res) => {
         }
         res.send(data);
     } else {
-        
+
         process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
         fetch('https://news.sanook.com/lotto/check/' + req.query.date + '/', { redirect: 'error' })
