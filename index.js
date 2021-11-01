@@ -17,6 +17,10 @@ function padLeadingZeros(num, size) {
     return s;
 }
 
+function random_item(items) {
+    return items[Math.floor(Math.random() * items.length)];
+}
+
 app.get('/', (req, res) => {
     if (!req.query.date) {
         req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
