@@ -620,6 +620,7 @@ app.get('/god', async (req, res) => {
                     case '12': monthtext = "ธันวาคม"; break;
                 }
                 element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
+                yearlist.indexOf(element)
             });
             res.send(yearlist)
         }else{
