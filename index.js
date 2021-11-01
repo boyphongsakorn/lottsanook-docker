@@ -357,29 +357,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/index2', (req, res) => {
-    /*fetch('https://www.proxy-list.download/api/v1/get?type=https')
-        .then(res => res.text())
-        .then((body) => {
-            proxylist = []
-            //console.log(body.split("\r\n"))
-            proxylist = body.split("\r\n")
-            proxylist.pop()
-            //console.log(proxylist)
-        })
-
-    fetch('https://proxylist.geonode.com/api/proxy-list?limit=50&page=1&sort_by=lastChecked&sort_type=desc&protocols=https')
-        .then(res => res.json())
-        .then((body) => {
-            console.log(body.data)
-            for (const iterator of body.data) {
-                //console.log(iterator.ip)
-                proxylist.push(iterator.ip + ':' + iterator.port)
-            }
-            /*console.log(body.split("\r\n"))
-            proxylist = body.split("\r\n")
-            proxylist.pop()
-            console.log(proxylist)*/
-        //})
 
     if (!req.query.date) {
         req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
@@ -421,11 +398,6 @@ app.get('/index2', (req, res) => {
         res.send(data);
     } else {
 
-        process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-
-        //const proxyAgent = new HttpsProxyAgent("http://" + random_item(proxylist));
-
-        //fetch('https://news.sanook.com/lotto/check/' + req.query.date + '/', { redirect: 'error', agent: proxyAgent })
         fetch('https://news.sanook.com/lotto/check/' + req.query.date + '/', { redirect: 'error' })
             .then(res => res.text())
             .then((body) => {
