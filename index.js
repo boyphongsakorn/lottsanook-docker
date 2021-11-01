@@ -3,6 +3,8 @@ const cheerio = require('cheerio')
 const express = require('express')
 var fs = require('fs')
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+
 var cors = require('cors')
 const app = express()
 const port = process.env.PORT || 3000;
