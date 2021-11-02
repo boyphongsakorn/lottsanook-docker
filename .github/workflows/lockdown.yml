@@ -20,4 +20,4 @@ jobs:
           pr-comment: >
             ถ้าคุณต้องการช่วยเราในการแก้ไขบัค หรือ เพิ่มฟังก์ชั่น ได้โปรดส่งคำขอไปยังที่ https://github.com/quad-b/lottsanook-nodejs สำหรับ NodeJS หรือ https://github.com/quad-b/lottsanook สำหรับ PHP |
             This repository does not accept pull requests, if your want to pull requests for NodeJS,JS code
-            please pull requests to https://github.com/quad-b/lottsanook
+            please pull requests to https://github.com/quad-b/lottsanook-nodejs
