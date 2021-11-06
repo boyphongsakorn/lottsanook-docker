@@ -43,18 +43,42 @@ app.get('/', (req, res) => {
         let data = ""
         let monthtext
         switch (req.query.date.substring(2, 4)) {
-            case '01': monthtext = "มกราคม"; break;
-            case '02': monthtext = "กุมภาพันธ์"; break;
-            case '03': monthtext = "มีนาคม"; break;
-            case '04': monthtext = "เมษายน"; break;
-            case '05': monthtext = "พฤษภาคม"; break;
-            case '06': monthtext = "มิถุนายน"; break;
-            case '07': monthtext = "กรกฎาคม"; break;
-            case '08': monthtext = "สิงหาคม"; break;
-            case '09': monthtext = "กันยายน"; break;
-            case '10': monthtext = "ตุลาคม"; break;
-            case '11': monthtext = "พฤศจิกายน"; break;
-            case '12': monthtext = "ธันวาคม"; break;
+            case '01':
+                monthtext = "มกราคม";
+                break;
+            case '02':
+                monthtext = "กุมภาพันธ์";
+                break;
+            case '03':
+                monthtext = "มีนาคม";
+                break;
+            case '04':
+                monthtext = "เมษายน";
+                break;
+            case '05':
+                monthtext = "พฤษภาคม";
+                break;
+            case '06':
+                monthtext = "มิถุนายน";
+                break;
+            case '07':
+                monthtext = "กรกฎาคม";
+                break;
+            case '08':
+                monthtext = "สิงหาคม";
+                break;
+            case '09':
+                monthtext = "กันยายน";
+                break;
+            case '10':
+                monthtext = "ตุลาคม";
+                break;
+            case '11':
+                monthtext = "พฤศจิกายน";
+                break;
+            case '12':
+                monthtext = "ธันวาคม";
+                break;
         }
         try {
             if (req.query.fresh !== undefined) {
@@ -84,7 +108,7 @@ app.get('/', (req, res) => {
             fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-' + req.query.date.substring(0, 2) + '-' + encodeURI(monthtext) + '-' + req.query.date.substring(4, 8) + '.aspx', { redirect: 'error' })
                 .then(res => res.text())
                 .then((body) => {
-                    data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+                    let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0],["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                     let $ = cheerio.load(body)
 
                     let numberpush = []
@@ -260,9 +284,10 @@ app.get('/', (req, res) => {
                                 minwave++;
                                 data[wave][minwave] = type
                             }
-                        }/*else{
-                            minwave++;
-                        }*/
+                        }
+                        /*else{
+                                                    minwave++;
+                                                }*/
                         /*if (minwave == maxwave && wave == 0) {
                             data[0][1] = type
                             minwave = 0;
@@ -346,7 +371,7 @@ app.get('/', (req, res) => {
                     }
                 }).catch(error => {
                     //console.log(error);
-                    data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+                    let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0],["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                     /*res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.write(JSON.stringify(data));
                     res.end();*/
@@ -376,32 +401,55 @@ app.get('/index2', (req, res) => {
 
     }
     if (fileContents) {
-        data = JSON.parse(fileContents)
+        let data = JSON.parse(fileContents)
         if (req.query.from !== undefined) {
             switch (req.query.date.substr(2, 2)) {
-                case '01': monthtext = "มกราคม"; break;
-                case '02': monthtext = "กุมภาพันธ์"; break;
-                case '03': monthtext = "มีนาคม"; break;
-                case '04': monthtext = "เมษายน"; break;
-                case '05': monthtext = "พฤษภาคม"; break;
-                case '06': monthtext = "มิถุนายน"; break;
-                case '07': monthtext = "กรกฎาคม"; break;
-                case '08': monthtext = "สิงหาคม"; break;
-                case '09': monthtext = "กันยายน"; break;
-                case '10': monthtext = "ตุลาคม"; break;
-                case '11': monthtext = "พฤศจิกายน"; break;
-                case '12': monthtext = "ธันวาคม"; break;
+                case '01':
+                    monthtext = "มกราคม";
+                    break;
+                case '02':
+                    monthtext = "กุมภาพันธ์";
+                    break;
+                case '03':
+                    monthtext = "มีนาคม";
+                    break;
+                case '04':
+                    monthtext = "เมษายน";
+                    break;
+                case '05':
+                    monthtext = "พฤษภาคม";
+                    break;
+                case '06':
+                    monthtext = "มิถุนายน";
+                    break;
+                case '07':
+                    monthtext = "กรกฎาคม";
+                    break;
+                case '08':
+                    monthtext = "สิงหาคม";
+                    break;
+                case '09':
+                    monthtext = "กันยายน";
+                    break;
+                case '10':
+                    monthtext = "ตุลาคม";
+                    break;
+                case '11':
+                    monthtext = "พฤศจิกายน";
+                    break;
+                case '12':
+                    monthtext = "ธันวาคม";
+                    break;
             }
 
             data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
         }
         res.send(data);
     } else {
-
-        fetch('https://news.sanook.com/lotto/check/' + req.query.date + '/', { redirect: 'error',headers: {'Cache-Control': 'no-cache'}})
+        fetch('https://news.sanook.com/lotto/check/' + req.query.date + '/', { redirect: 'error' })
             .then(res => res.text())
             .then((body) => {
-                let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+                let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0],["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                 let $ = cheerio.load(body)
 
                 data[0][1] = $('strong').toArray()[0].firstChild.data
@@ -451,18 +499,42 @@ app.get('/index2', (req, res) => {
                         //console.log('Saved!');
                         if (req.query.from !== undefined) {
                             switch (req.query.date.substr(2, 2)) {
-                                case '01': monthtext = "มกราคม"; break;
-                                case '02': monthtext = "กุมภาพันธ์"; break;
-                                case '03': monthtext = "มีนาคม"; break;
-                                case '04': monthtext = "เมษายน"; break;
-                                case '05': monthtext = "พฤษภาคม"; break;
-                                case '06': monthtext = "มิถุนายน"; break;
-                                case '07': monthtext = "กรกฎาคม"; break;
-                                case '08': monthtext = "สิงหาคม"; break;
-                                case '09': monthtext = "กันยายน"; break;
-                                case '10': monthtext = "ตุลาคม"; break;
-                                case '11': monthtext = "พฤศจิกายน"; break;
-                                case '12': monthtext = "ธันวาคม"; break;
+                                case '01':
+                                    monthtext = "มกราคม";
+                                    break;
+                                case '02':
+                                    monthtext = "กุมภาพันธ์";
+                                    break;
+                                case '03':
+                                    monthtext = "มีนาคม";
+                                    break;
+                                case '04':
+                                    monthtext = "เมษายน";
+                                    break;
+                                case '05':
+                                    monthtext = "พฤษภาคม";
+                                    break;
+                                case '06':
+                                    monthtext = "มิถุนายน";
+                                    break;
+                                case '07':
+                                    monthtext = "กรกฎาคม";
+                                    break;
+                                case '08':
+                                    monthtext = "สิงหาคม";
+                                    break;
+                                case '09':
+                                    monthtext = "กันยายน";
+                                    break;
+                                case '10':
+                                    monthtext = "ตุลาคม";
+                                    break;
+                                case '11':
+                                    monthtext = "พฤศจิกายน";
+                                    break;
+                                case '12':
+                                    monthtext = "ธันวาคม";
+                                    break;
                             }
 
                             data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
@@ -472,18 +544,42 @@ app.get('/index2', (req, res) => {
                 } else {
                     if (req.query.from !== undefined) {
                         switch (req.query.date.substr(2, 2)) {
-                            case '01': monthtext = "มกราคม"; break;
-                            case '02': monthtext = "กุมภาพันธ์"; break;
-                            case '03': monthtext = "มีนาคม"; break;
-                            case '04': monthtext = "เมษายน"; break;
-                            case '05': monthtext = "พฤษภาคม"; break;
-                            case '06': monthtext = "มิถุนายน"; break;
-                            case '07': monthtext = "กรกฎาคม"; break;
-                            case '08': monthtext = "สิงหาคม"; break;
-                            case '09': monthtext = "กันยายน"; break;
-                            case '10': monthtext = "ตุลาคม"; break;
-                            case '11': monthtext = "พฤศจิกายน"; break;
-                            case '12': monthtext = "ธันวาคม"; break;
+                            case '01':
+                                monthtext = "มกราคม";
+                                break;
+                            case '02':
+                                monthtext = "กุมภาพันธ์";
+                                break;
+                            case '03':
+                                monthtext = "มีนาคม";
+                                break;
+                            case '04':
+                                monthtext = "เมษายน";
+                                break;
+                            case '05':
+                                monthtext = "พฤษภาคม";
+                                break;
+                            case '06':
+                                monthtext = "มิถุนายน";
+                                break;
+                            case '07':
+                                monthtext = "กรกฎาคม";
+                                break;
+                            case '08':
+                                monthtext = "สิงหาคม";
+                                break;
+                            case '09':
+                                monthtext = "กันยายน";
+                                break;
+                            case '10':
+                                monthtext = "ตุลาคม";
+                                break;
+                            case '11':
+                                monthtext = "พฤศจิกายน";
+                                break;
+                            case '12':
+                                monthtext = "ธันวาคม";
+                                break;
                         }
 
                         data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
@@ -492,12 +588,39 @@ app.get('/index2', (req, res) => {
                 }
             })
             .catch((err) => {
-                let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+                let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0],["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                 res.send(data)
                 console.log(err)
             });
     }
 })
+
+app.get('/index3', (req, res) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+        "date": "01",
+        "month": "11",
+        "year": "2021"
+    });
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("https://cors-anywhere.herokuapp.com/https://www.glo.or.th/api/lottery/getLotteryAward", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0],["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0],["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+            data[0][1] = result["response"]["data"]["first"]["number"][0]["value"]
+            res.send(data)
+        })
+        .catch(error => console.log('error', error));
+});
 
 app.get('/reto', (req, res) => {
     fetch('http://localhost:' + port + '/?date=' + padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543))
@@ -523,8 +646,7 @@ app.get('/god', async (req, res) => {
     var fileContents = null;
     try {
         fileContents = fs.readFileSync('tmp/cache.txt');
-    } catch (err) {
-    }
+    } catch (err) { }
     try {
         if (fileContents) {
             yearlist = JSON.parse(fileContents);
@@ -570,18 +692,42 @@ app.get('/god', async (req, res) => {
                             day = val.firstChild.data.split(" ").splice(2)
                             let monthnum
                             switch (day[2]) {
-                                case 'มกราคม': monthnum = "01"; break;
-                                case 'กุมภาพันธ์': monthnum = "02"; break;
-                                case 'มีนาคม': monthnum = "03"; break;
-                                case 'เมษายน': monthnum = "04"; break;
-                                case 'พฤษภาคม': monthnum = "05"; break;
-                                case 'มิถุนายน': monthnum = "06"; break;
-                                case 'กรกฎาคม': monthnum = "07"; break;
-                                case 'สิงหาคม': monthnum = "08"; break;
-                                case 'กันยายน': monthnum = "09"; break;
-                                case 'ตุลาคม': monthnum = "10"; break;
-                                case 'พฤศจิกายน': monthnum = "11"; break;
-                                case 'ธันวาคม': monthnum = "12"; break;
+                                case 'มกราคม':
+                                    monthnum = "01";
+                                    break;
+                                case 'กุมภาพันธ์':
+                                    monthnum = "02";
+                                    break;
+                                case 'มีนาคม':
+                                    monthnum = "03";
+                                    break;
+                                case 'เมษายน':
+                                    monthnum = "04";
+                                    break;
+                                case 'พฤษภาคม':
+                                    monthnum = "05";
+                                    break;
+                                case 'มิถุนายน':
+                                    monthnum = "06";
+                                    break;
+                                case 'กรกฎาคม':
+                                    monthnum = "07";
+                                    break;
+                                case 'สิงหาคม':
+                                    monthnum = "08";
+                                    break;
+                                case 'กันยายน':
+                                    monthnum = "09";
+                                    break;
+                                case 'ตุลาคม':
+                                    monthnum = "10";
+                                    break;
+                                case 'พฤศจิกายน':
+                                    monthnum = "11";
+                                    break;
+                                case 'ธันวาคม':
+                                    monthnum = "12";
+                                    break;
                             }
                             peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
                             preyearsuperlist.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
@@ -610,52 +756,100 @@ app.get('/god', async (req, res) => {
     }
     fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), function (err) {
         if (err) throw err;
-        if(req.query.format == "thtext"){
+        if (req.query.format == "thtext") {
             yearlist.forEach(element => {
                 let monthtext
                 switch (element.slice(2, 4)) {
-                    case '01': monthtext = "มกราคม"; break;
-                    case '02': monthtext = "กุมภาพันธ์"; break;
-                    case '03': monthtext = "มีนาคม"; break;
-                    case '04': monthtext = "เมษายน"; break;
-                    case '05': monthtext = "พฤษภาคม"; break;
-                    case '06': monthtext = "มิถุนายน"; break;
-                    case '07': monthtext = "กรกฎาคม"; break;
-                    case '08': monthtext = "สิงหาคม"; break;
-                    case '09': monthtext = "กันยายน"; break;
-                    case '10': monthtext = "ตุลาคม"; break;
-                    case '11': monthtext = "พฤศจิกายน"; break;
-                    case '12': monthtext = "ธันวาคม"; break;
+                    case '01':
+                        monthtext = "มกราคม";
+                        break;
+                    case '02':
+                        monthtext = "กุมภาพันธ์";
+                        break;
+                    case '03':
+                        monthtext = "มีนาคม";
+                        break;
+                    case '04':
+                        monthtext = "เมษายน";
+                        break;
+                    case '05':
+                        monthtext = "พฤษภาคม";
+                        break;
+                    case '06':
+                        monthtext = "มิถุนายน";
+                        break;
+                    case '07':
+                        monthtext = "กรกฎาคม";
+                        break;
+                    case '08':
+                        monthtext = "สิงหาคม";
+                        break;
+                    case '09':
+                        monthtext = "กันยายน";
+                        break;
+                    case '10':
+                        monthtext = "ตุลาคม";
+                        break;
+                    case '11':
+                        monthtext = "พฤศจิกายน";
+                        break;
+                    case '12':
+                        monthtext = "ธันวาคม";
+                        break;
                 }
                 //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
                 //yearlist.indexOf(element)
                 yearlist[yearlist.indexOf(element)] = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
             });
             res.send(yearlist)
-        }else if(req.query.format == "combothtext"){
+        } else if (req.query.format == "combothtext") {
             yearlist.forEach(element => {
                 let monthtext
                 let array
                 switch (element.slice(2, 4)) {
-                    case '01': monthtext = "มกราคม"; break;
-                    case '02': monthtext = "กุมภาพันธ์"; break;
-                    case '03': monthtext = "มีนาคม"; break;
-                    case '04': monthtext = "เมษายน"; break;
-                    case '05': monthtext = "พฤษภาคม"; break;
-                    case '06': monthtext = "มิถุนายน"; break;
-                    case '07': monthtext = "กรกฎาคม"; break;
-                    case '08': monthtext = "สิงหาคม"; break;
-                    case '09': monthtext = "กันยายน"; break;
-                    case '10': monthtext = "ตุลาคม"; break;
-                    case '11': monthtext = "พฤศจิกายน"; break;
-                    case '12': monthtext = "ธันวาคม"; break;
+                    case '01':
+                        monthtext = "มกราคม";
+                        break;
+                    case '02':
+                        monthtext = "กุมภาพันธ์";
+                        break;
+                    case '03':
+                        monthtext = "มีนาคม";
+                        break;
+                    case '04':
+                        monthtext = "เมษายน";
+                        break;
+                    case '05':
+                        monthtext = "พฤษภาคม";
+                        break;
+                    case '06':
+                        monthtext = "มิถุนายน";
+                        break;
+                    case '07':
+                        monthtext = "กรกฎาคม";
+                        break;
+                    case '08':
+                        monthtext = "สิงหาคม";
+                        break;
+                    case '09':
+                        monthtext = "กันยายน";
+                        break;
+                    case '10':
+                        monthtext = "ตุลาคม";
+                        break;
+                    case '11':
+                        monthtext = "พฤศจิกายน";
+                        break;
+                    case '12':
+                        monthtext = "ธันวาคม";
+                        break;
                 }
                 //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
                 //yearlist.indexOf(element)
-                yearlist[yearlist.indexOf(element)] = [element,element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)]
+                yearlist[yearlist.indexOf(element)] = [element, element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)]
             });
             res.send(yearlist)
-        }else{
+        } else {
             res.send(yearlist)
         }
     });
@@ -686,18 +880,42 @@ app.get('/gdpy', (req, res) => {
                         let day = val.firstChild.data.split(" ").splice(2)
                         let monthnum
                         switch (day[2]) {
-                            case 'มกราคม': monthnum = "01"; break;
-                            case 'กุมภาพันธ์': monthnum = "02"; break;
-                            case 'มีนาคม': monthnum = "03"; break;
-                            case 'เมษายน': monthnum = "04"; break;
-                            case 'พฤษภาคม': monthnum = "05"; break;
-                            case 'มิถุนายน': monthnum = "06"; break;
-                            case 'กรกฎาคม': monthnum = "07"; break;
-                            case 'สิงหาคม': monthnum = "08"; break;
-                            case 'กันยายน': monthnum = "09"; break;
-                            case 'ตุลาคม': monthnum = "10"; break;
-                            case 'พฤศจิกายน': monthnum = "11"; break;
-                            case 'ธันวาคม': monthnum = "12"; break;
+                            case 'มกราคม':
+                                monthnum = "01";
+                                break;
+                            case 'กุมภาพันธ์':
+                                monthnum = "02";
+                                break;
+                            case 'มีนาคม':
+                                monthnum = "03";
+                                break;
+                            case 'เมษายน':
+                                monthnum = "04";
+                                break;
+                            case 'พฤษภาคม':
+                                monthnum = "05";
+                                break;
+                            case 'มิถุนายน':
+                                monthnum = "06";
+                                break;
+                            case 'กรกฎาคม':
+                                monthnum = "07";
+                                break;
+                            case 'สิงหาคม':
+                                monthnum = "08";
+                                break;
+                            case 'กันยายน':
+                                monthnum = "09";
+                                break;
+                            case 'ตุลาคม':
+                                monthnum = "10";
+                                break;
+                            case 'พฤศจิกายน':
+                                monthnum = "11";
+                                break;
+                            case 'ธันวาคม':
+                                monthnum = "12";
+                                break;
                         }
                         peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
                     }
@@ -838,7 +1056,7 @@ app.get('/finddol', async (req, res) => {
                 })
         }
         res.send(allwin)
-        
+
         /*var https = require('follow-redirects').https;
 
         var options = {
