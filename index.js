@@ -596,9 +596,6 @@ app.get('/index2', (req, res) => {
 })
 
 app.get('/index3', (req, res) => {
-    /*var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");*/
-
     var raw = JSON.stringify({
         "date": "01",
         "month": "11",
@@ -607,8 +604,8 @@ app.get('/index3', (req, res) => {
 
     var requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: raw,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(raw),
         redirect: 'follow'
     };
 
