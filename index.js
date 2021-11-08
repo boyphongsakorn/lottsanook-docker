@@ -1205,11 +1205,19 @@ app.get('/lotnews', async (req, res) => {
     let arrayofnews = [0,0,0]
     let check = req.query.count % 3
     if (check != 0) {
-        //ceil number
-        arrayofnews[0] = Math.floor(req.query.count / 3)
-        arrayofnews[1] = Math.ceil(req.query.count / 3)
-        //floor number
-        arrayofnews[2] = Math.floor(req.query.count / 3)
+        if(check == 1){
+            //ceil number
+            arrayofnews[0] = Math.floor(req.query.count / 3)
+            arrayofnews[1] = Math.ceil(req.query.count / 3)
+            //floor number
+            arrayofnews[2] = Math.floor(req.query.count / 3)
+        }else{
+            //ceil number
+            arrayofnews[0] = Math.floor(req.query.count / 3)
+            arrayofnews[1] = Math.ceil(req.query.count / 3)
+            //floor number
+            arrayofnews[2] = Math.floor(req.query.count / 3)+1
+        }
     }else{
         arrayofnews[0] = req.query.count/ 3
         arrayofnews[1] = req.query.count/ 3
