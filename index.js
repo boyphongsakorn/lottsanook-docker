@@ -22,6 +22,21 @@ function padLeadingZeros(num, size) {
 }*/
 
 app.get('/', (req, res) => {
+    if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
+        if (req.query.from !== undefined) {
+            fetch('http://localhost:' + port + '/index3?date=' + req.query.date + '&from')
+                .then(res => res.json())
+                .then((body) => {
+                    res.send(body)
+                })
+        } else {
+            fetch('http://localhost:' + port + '/index3?date=' + req.query.date)
+                .then(res => res.json())
+                .then((body) => {
+                    res.send(body)
+                })
+        }
+    }else{
     var raw
     if (!req.query.date) {
         raw = JSON.stringify({
@@ -131,6 +146,7 @@ app.get('/', (req, res) => {
                     })
             }
         });
+    }
 });
 
 app.get('/index2', (req, res) => {
