@@ -22,7 +22,7 @@ function padLeadingZeros(num, size) {
 }*/
 
 app.get('/', (req, res) => {
-    if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
+    /*if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
         if (req.query.from !== undefined) {
             fetch('http://localhost:' + port + '/index3?date=' + req.query.date + '&from')
                 .then(res => res.json())
@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
                     res.send(body)
                 })
         }
-    }else{
+    }else{*/
     var raw
     if (!req.query.date) {
         raw = JSON.stringify({
@@ -61,73 +61,89 @@ app.get('/', (req, res) => {
     fetch("https://www.glo.or.th/api/lottery/getLotteryAward", requestOptions)
         .then(response => response.json())
         .then(result => {
-            let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-            data[0][1] = result["response"]["data"]["first"]["number"][0]["value"]
-            for (let [index, val] of result["response"]["data"]["last3f"]["number"].entries()) {
-                data[1][index + 1] = val["value"]
-            }
-            for (let [index, val] of result["response"]["data"]["last3b"]["number"].entries()) {
-                data[2][index + 1] = val["value"]
-            }
-            data[3][1] = result["response"]["data"]["last2"]["number"][0]["value"]
-            for (let [index, val] of result["response"]["data"]["near1"]["number"].entries()) {
-                data[4][index + 1] = val["value"]
-            }
-            for (let [index, val] of result["response"]["data"]["second"]["number"].entries()) {
-                data[5][index + 1] = val["value"]
-            }
-            for (let [index, val] of result["response"]["data"]["third"]["number"].entries()) {
-                data[6][index + 1] = val["value"]
-            }
-            for (let [index, val] of result["response"]["data"]["fourth"]["number"].entries()) {
-                data[7][index + 1] = val["value"]
-            }
-            for (let [index, val] of result["response"]["data"]["fifth"]["number"].entries()) {
-                data[8][index + 1] = val["value"]
-            }
-            if (req.query.from !== undefined) {
-                switch (req.query.date.substr(2, 2)) {
-                    case '01':
-                        monthtext = "มกราคม";
-                        break;
-                    case '02':
-                        monthtext = "กุมภาพันธ์";
-                        break;
-                    case '03':
-                        monthtext = "มีนาคม";
-                        break;
-                    case '04':
-                        monthtext = "เมษายน";
-                        break;
-                    case '05':
-                        monthtext = "พฤษภาคม";
-                        break;
-                    case '06':
-                        monthtext = "มิถุนายน";
-                        break;
-                    case '07':
-                        monthtext = "กรกฎาคม";
-                        break;
-                    case '08':
-                        monthtext = "สิงหาคม";
-                        break;
-                    case '09':
-                        monthtext = "กันยายน";
-                        break;
-                    case '10':
-                        monthtext = "ตุลาคม";
-                        break;
-                    case '11':
-                        monthtext = "พฤศจิกายน";
-                        break;
-                    case '12':
-                        monthtext = "ธันวาคม";
-                        break;
+            if(result["response"] != null){
+                let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+                data[0][1] = result["response"]["data"]["first"]["number"][0]["value"]
+                for (let [index, val] of result["response"]["data"]["last3f"]["number"].entries()) {
+                    data[1][index + 1] = val["value"]
                 }
+                for (let [index, val] of result["response"]["data"]["last3b"]["number"].entries()) {
+                    data[2][index + 1] = val["value"]
+                }
+                data[3][1] = result["response"]["data"]["last2"]["number"][0]["value"]
+                for (let [index, val] of result["response"]["data"]["near1"]["number"].entries()) {
+                    data[4][index + 1] = val["value"]
+                }
+                for (let [index, val] of result["response"]["data"]["second"]["number"].entries()) {
+                    data[5][index + 1] = val["value"]
+                }
+                for (let [index, val] of result["response"]["data"]["third"]["number"].entries()) {
+                    data[6][index + 1] = val["value"]
+                }
+                for (let [index, val] of result["response"]["data"]["fourth"]["number"].entries()) {
+                    data[7][index + 1] = val["value"]
+                }
+                for (let [index, val] of result["response"]["data"]["fifth"]["number"].entries()) {
+                    data[8][index + 1] = val["value"]
+                }
+                if (req.query.from !== undefined) {
+                    switch (req.query.date.substr(2, 2)) {
+                        case '01':
+                            monthtext = "มกราคม";
+                            break;
+                        case '02':
+                            monthtext = "กุมภาพันธ์";
+                            break;
+                        case '03':
+                            monthtext = "มีนาคม";
+                            break;
+                        case '04':
+                            monthtext = "เมษายน";
+                            break;
+                        case '05':
+                            monthtext = "พฤษภาคม";
+                            break;
+                        case '06':
+                            monthtext = "มิถุนายน";
+                            break;
+                        case '07':
+                            monthtext = "กรกฎาคม";
+                            break;
+                        case '08':
+                            monthtext = "สิงหาคม";
+                            break;
+                        case '09':
+                            monthtext = "กันยายน";
+                            break;
+                        case '10':
+                            monthtext = "ตุลาคม";
+                            break;
+                        case '11':
+                            monthtext = "พฤศจิกายน";
+                            break;
+                        case '12':
+                            monthtext = "ธันวาคม";
+                            break;
+                    }
 
-                data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
+                    data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
+                }
+                res.send(data)
+            }else{
+                if (req.query.from !== undefined) {
+                    fetch('http://localhost:' + port + '/index3?date=' + req.query.date + '&from')
+                        .then(res => res.json())
+                        .then((body) => {
+                            res.send(body)
+                        })
+                } else {
+                    fetch('http://localhost:' + port + '/index3?date=' + req.query.date)
+                        .then(res => res.json())
+                        .then((body) => {
+                            res.send(body)
+                        })
+                }
             }
-            res.send(data)
         })
         .catch(error => {
             /*let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
@@ -146,7 +162,7 @@ app.get('/', (req, res) => {
                     })
             }
         });
-    }
+    //}
 });
 
 app.get('/index2', (req, res) => {
