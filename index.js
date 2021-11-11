@@ -22,6 +22,21 @@ function padLeadingZeros(num, size) {
 }*/
 
 app.get('/', (req, res) => {
+    var raw
+        if (!req.query.date) {
+            req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
+            raw = JSON.stringify({
+                date: padLeadingZeros(new Date().getDate(), 2),
+                month: padLeadingZeros((new Date().getMonth() + 1), 2),
+                year: new Date().getFullYear()
+            });
+        } else {
+            raw = JSON.stringify({
+                date: req.query.date.substr(0, 2),
+                month: req.query.date.substr(2, 2),
+                year: parseInt(req.query.date.substr(4, 4)) - 543
+            });
+        }
     if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
         if (req.query.from !== undefined) {
             fetch('http://localhost:' + port + '/index3?date=' + req.query.date + '&from')
@@ -37,20 +52,6 @@ app.get('/', (req, res) => {
                 })
         }
     } else {
-        var raw
-        if (!req.query.date) {
-            raw = JSON.stringify({
-                date: padLeadingZeros(new Date().getDate(), 2),
-                month: padLeadingZeros((new Date().getMonth() + 1), 2),
-                year: new Date().getFullYear()
-            });
-        } else {
-            raw = JSON.stringify({
-                date: req.query.date.substr(0, 2),
-                month: req.query.date.substr(2, 2),
-                year: parseInt(req.query.date.substr(4, 4)) - 543
-            });
-        }
         var requestOptions = {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
