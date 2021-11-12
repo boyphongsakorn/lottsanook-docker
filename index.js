@@ -23,21 +23,32 @@ function padLeadingZeros(num, size) {
 
 app.get('/', (req, res) => {
     var raw
-        if (!req.query.date) {
-            req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
-            raw = JSON.stringify({
-                date: padLeadingZeros(new Date().getDate(), 2),
-                month: padLeadingZeros((new Date().getMonth() + 1), 2),
-                year: new Date().getFullYear()
-            });
-        } else {
-            raw = JSON.stringify({
-                date: req.query.date.substr(0, 2),
-                month: req.query.date.substr(2, 2),
-                year: parseInt(req.query.date.substr(4, 4)) - 543
-            });
-        }
-    if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
+    if (!req.query.date) {
+        req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
+        raw = JSON.stringify({
+            date: padLeadingZeros(new Date().getDate(), 2),
+            month: padLeadingZeros((new Date().getMonth() + 1), 2),
+            year: new Date().getFullYear()
+        });
+    } else {
+        raw = JSON.stringify({
+            date: req.query.date.substr(0, 2),
+            month: req.query.date.substr(2, 2),
+            year: parseInt(req.query.date.substr(4, 4)) - 543
+        });
+    }
+    //if day month year > today
+    var date = new Date(parseInt(req.query.date.substr(4, 4))-543, parseInt(req.query.date.substr(2, 2))-1, parseInt(req.query.date.substr(0, 2))+1);
+    var today = new Date();
+    //console.log(date);
+    //console.log(today);
+    /*if (date.getTime() === today.getTime() || date > today) {
+        res.send('today or > today')
+    } else {
+        res.send('< today')
+    }*/
+    //if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
+    if(date.getTime() === today.getTime() || date > today) {
         if (req.query.from !== undefined) {
             fetch('http://localhost:' + port + '/index3?date=' + req.query.date + '&from')
                 .then(res => res.json())
