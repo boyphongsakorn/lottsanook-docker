@@ -1172,7 +1172,7 @@ app.get('/finddol', async (req, res) => {
     let channels
     let allwin = []
     fetch('https://raw.githubusercontent.com/boyphongsakorn/testrepo/main/tmp/' + req.query.search, { redirect: 'error' })
-        .then(res => res.text())
+        .then(res => res.json())
         .then((body) => {
             res.send(body)
         })
