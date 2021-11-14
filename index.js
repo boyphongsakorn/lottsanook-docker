@@ -1176,7 +1176,7 @@ app.get('/finddol', async (req, res) => {
         .then((body) => {
             res.send(body)
         })
-        .catch((error) => {
+        .catch(async (error) => {
             if (req.query.search.length > 3) {
                 await fetch('http://localhost:' + port + '/god')
                     .then(res => res.json())
