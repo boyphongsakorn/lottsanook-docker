@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
         });
     }
     //if day month year > today
-    var date = new Date(parseInt(req.query.date.substr(4, 4)) - 543, parseInt(req.query.date.substr(2, 2)) - 1, parseInt(req.query.date.substr(0, 2)) + 1);
+    var date = new Date(parseInt(req.query.date.substr(4, 4))-543, parseInt(req.query.date.substr(2, 2))-1, parseInt(req.query.date.substr(0, 2))+1);
     var today = new Date();
     //console.log(date);
     //console.log(today);
@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
         res.send('< today')
     }*/
     //if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
-    if (date.getTime() === today.getTime() || date > today) {
+    if(date.getTime() === today.getTime() || date > today) {
         if (req.query.from !== undefined) {
             fetch('http://localhost:' + port + '/index3?date=' + req.query.date + '&from')
                 .then(res => res.json())
@@ -140,15 +140,13 @@ app.get('/', (req, res) => {
 
                         data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
                     }
-                    res.setHeader('Content-Type', 'application/json');
-                    res.setHeader('origin-server', 'docker');
                     res.send(data)
                 } else {
-                    var date = new Date(parseInt(req.query.date.substr(4, 4)) - 543, parseInt(req.query.date.substr(2, 2)) - 1, parseInt(req.query.date.substr(0, 2)) + 1);
-                    var thatdate = new Date(2010, 02 - 1, 16 + 1);
+                    var date = new Date(parseInt(req.query.date.substr(4, 4))-543, parseInt(req.query.date.substr(2, 2))-1, parseInt(req.query.date.substr(0, 2))+1);
+                    var thatdate = new Date(2010, 02-1, 16+1);
                     console.log(date)
                     console.log(thatdate)
-                    if (date.getTime() === thatdate.getTime() || date < thatdate) {
+                    if(date.getTime() === thatdate.getTime() || date < thatdate) {
                         if (req.query.from !== undefined) {
                             fetch('http://localhost:' + port + '/index2?date=' + req.query.date + '&from')
                                 .then(res => res.json())
@@ -162,7 +160,7 @@ app.get('/', (req, res) => {
                                     res.send(body)
                                 })
                         }
-                    } else {
+                    }else{
                         let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                         res.send(data)
                     }
@@ -1118,18 +1116,17 @@ app.get('/lastlot', async (req, res) => {
     let viewer
     await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543))
         .then(res => res.json())
-        .then(async (body) => {
-            if(body.length > 0){
-                lastdate = body[body.length - 1]
-            }else{
-                //fetch gdpy last year
-                await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543 - 1))
-                .then(res => res.json())
-                .then((body) => {
-                    lastdate = body[body.length - 1]
-                })
-            }
+        .then((body) => {
+            lastdate = body[body.length - 1]
         })
+        // if lastdate is null or undefined then fetch last year
+    if (lastdate == undefined || lastdate == null) {
+        await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543 - 1))
+            .then(res => res.json())
+            .then((body) => {
+                lastdate = body[body.length - 1]
+            })
+    }
     await fetch('http://localhost:' + port + '/?date=' + lastdate)
         .then(res => res.json())
         .then((body) => {
@@ -1182,52 +1179,87 @@ app.get('/getchit', (req, res) => {
 app.get('/finddol', async (req, res) => {
     let channels
     let allwin = []
-    fetch('https://raw.githubusercontent.com/boyphongsakorn/testrepo/main/tmp/' + req.query.search, { redirect: 'error' })
-        .then(res => res.json())
-        .then((body) => {
-            res.send(body)
-        })
-        .catch(async (error) => {
-            if (req.query.search.length > 3) {
-                await fetch('http://localhost:' + port + '/god')
-                    .then(res => res.json())
-                    .then((body) => {
-                        channels = body.splice(408)
-                        console.log(channels)
-                    })
-                for (const val of channels) {
-                    console.log(val)
-                    await fetch('http://localhost:' + port + '/?date=' + val + '&from')
-                        .then(res => res.json())
-                        .then((body) => {
-                            for (let index = 0; index < body.length; index++) {
-                                const element = body[index];
-                                if (element.includes(req.query.search.toString())) {
-                                    allwin.push(body[0][0])
-                                    console.log('http://localhost:' + port + '/?date=' + val + '&from')
-                                }
-                            }
+    if (req.query.search.length > 3) {
+        await fetch('http://localhost:' + port + '/god')
+            .then(res => res.json())
+            .then((body) => {
+                channels = body.splice(408)
+                console.log(channels)
+            })
+        for (const val of channels) {
+            console.log(val)
+            await fetch('http://localhost:' + port + '/?date=' + val + '&from')
+                .then(res => res.json())
+                .then((body) => {
+                    for (let index = 0; index < body.length; index++) {
+                        const element = body[index];
+                        if (element.includes(req.query.search.toString())) {
+                            allwin.push(body[0][0])
+                            console.log('http://localhost:' + port + '/?date=' + val + '&from')
+                        }
+                    }
 
-                        })
-                }
-                res.send(allwin)
-            } else {
-                fetch('https://astro.meemodel.com/%E0%B8%A7%E0%B8%B4%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B2%E0%B8%B0%E0%B8%AB%E0%B9%8C%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B8%AB%E0%B8%A7%E0%B8%A2/' + req.query.search, { redirect: 'error' })
-                    .then(res => res.text())
-                    .then((body) => {
-                        let $ = cheerio.load(body)
-                        $('td').toArray().forEach(element => {
-                            let sl = element.firstChild.data
-                            if (sl != null && sl.split(" ").length == 3 && sl.split(" ")[2] >= 2550) {
-                                allwin.unshift(sl)
-                            }
+                })
+        }
+        res.send(allwin)
 
-                        });
-                        res.send(allwin)
-                    });
-            }
+        /*var https = require('follow-redirects').https;
+
+        var options = {
+            'method': 'POST',
+            'hostname': 'api.github.com',
+            'path': '/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches',
+            'headers': {
+                'Accept': 'application/vnd.github.v3+json',
+                'Authorization': 'token ' + process.env.gtoken,
+                'Content-Type': 'application/json',
+                'User-Agent': 'PostmanRuntime/7.28.4'
+            },
+            'maxRedirects': 20
+        };
+
+        var reqtwo = https.request(options, function (res) {
+            var chunks = [];
+
+            res.on("data", function (chunk) {
+                chunks.push(chunk);
+            });
+
+            res.on("end", function (chunk) {
+                var body = Buffer.concat(chunks);
+                console.log(body.toString());
+            });
+
+            res.on("error", function (error) {
+                console.error(error);
+            });
         });
 
+        var postData = JSON.stringify({
+            "inputs": {
+                "number": req.query.search.toString()
+            },
+            "ref": "refs/heads/main"
+        });
+
+        reqtwo.write(postData);
+
+        reqtwo.end();*/
+    } else {
+        fetch('https://astro.meemodel.com/%E0%B8%A7%E0%B8%B4%E0%B9%80%E0%B8%84%E0%B8%A3%E0%B8%B2%E0%B8%B0%E0%B8%AB%E0%B9%8C%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B8%AB%E0%B8%A7%E0%B8%A2/' + req.query.search, { redirect: 'error' })
+            .then(res => res.text())
+            .then((body) => {
+                let $ = cheerio.load(body)
+                $('td').toArray().forEach(element => {
+                    let sl = element.firstChild.data
+                    if (sl != null && sl.split(" ").length == 3 && sl.split(" ")[2] >= 2550) {
+                        allwin.unshift(sl)
+                    }
+
+                });
+                res.send(allwin)
+            });
+    }
 })
 
 app.get('/lotnews', async (req, res) => {
