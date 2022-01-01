@@ -1116,8 +1116,17 @@ app.get('/lastlot', async (req, res) => {
     let viewer
     await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543))
         .then(res => res.json())
-        .then((body) => {
-            lastdate = body[body.length - 1]
+        .then(async (body) => {
+            if(body.length > 0){
+                lastdate = body[body.length - 1]
+            }else{
+                //fetch gdpy last year
+                await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543 - 1))
+                .then(res => res.json())
+                .then((body) => {
+                    lastdate = body[body.length - 1]
+                })
+            }
         })
     await fetch('http://localhost:' + port + '/?date=' + lastdate)
         .then(res => res.json())
