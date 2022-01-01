@@ -1119,7 +1119,7 @@ app.get('/lastlot', async (req, res) => {
         .then((body) => {
             lastdate = body[body.length - 1]
         })
-        // if lastdate is null or undefined then fetch last year
+    // if lastdate is null or undefined then fetch last year
     if (lastdate == undefined || lastdate == null) {
         await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543 - 1))
             .then(res => res.json())
