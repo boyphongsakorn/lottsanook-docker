@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
         });
     }
     //if day month year > today
-    var date = new Date(parseInt(req.query.date.substr(4, 4))-543, parseInt(req.query.date.substr(2, 2))-1, parseInt(req.query.date.substr(0, 2))+1);
+    var date = new Date(parseInt(req.query.date.substr(4, 4)) - 543, parseInt(req.query.date.substr(2, 2)) - 1, parseInt(req.query.date.substr(0, 2)) + 1);
     var today = new Date();
     //console.log(date);
     //console.log(today);
@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
         res.send('< today')
     }*/
     //if (req.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
-    if(date.getTime() === today.getTime() || date > today) {
+    if (date.getTime() === today.getTime() || date > today) {
         if (req.query.from !== undefined) {
             fetch('http://localhost:' + port + '/index3?date=' + req.query.date + '&from')
                 .then(res => res.json())
@@ -142,11 +142,11 @@ app.get('/', (req, res) => {
                     }
                     res.send(data)
                 } else {
-                    var date = new Date(parseInt(req.query.date.substr(4, 4))-543, parseInt(req.query.date.substr(2, 2))-1, parseInt(req.query.date.substr(0, 2))+1);
-                    var thatdate = new Date(2010, 02-1, 16+1);
+                    var date = new Date(parseInt(req.query.date.substr(4, 4)) - 543, parseInt(req.query.date.substr(2, 2)) - 1, parseInt(req.query.date.substr(0, 2)) + 1);
+                    var thatdate = new Date(2010, 02 - 1, 16 + 1);
                     console.log(date)
                     console.log(thatdate)
-                    if(date.getTime() === thatdate.getTime() || date < thatdate) {
+                    if (date.getTime() === thatdate.getTime() || date < thatdate) {
                         if (req.query.from !== undefined) {
                             fetch('http://localhost:' + port + '/index2?date=' + req.query.date + '&from')
                                 .then(res => res.json())
@@ -160,7 +160,7 @@ app.get('/', (req, res) => {
                                     res.send(body)
                                 })
                         }
-                    }else{
+                    } else {
                         let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                         res.send(data)
                     }
@@ -794,7 +794,8 @@ app.get('/god', async (req, res) => {
             ) {
                 year = new Date().getFullYear() + 543;
             } else {
-                year = yearlist[yearlist.length - 1].substring(4, 8)
+                //year = yearlist[yearlist.length - 1].substring(4, 8)
+                year = new Date().getFullYear() + 543 - 1;
             }
             yearlist.forEach(function (value, i) {
                 if (
