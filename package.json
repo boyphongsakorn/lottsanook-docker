@@ -23,6 +23,6 @@
     "express": "^4.17.1",
     "follow-redirects": "^1.14.7",
     "https-proxy-agent": "^5.0.0",
-    "node-fetch": "^2.6.6"
+    "node-fetch": "^3.1.1"
   }
 }
