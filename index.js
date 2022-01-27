@@ -1366,6 +1366,11 @@ app.get('/lotnews', async (req, res) => {
         array.push(json)
     }
 
+    //order by pubDate
+    array.sort((a, b) => {
+        return new Date(b.pubDate) - new Date(a.pubDate)
+    })
+
     res.send(array)
 })
 
