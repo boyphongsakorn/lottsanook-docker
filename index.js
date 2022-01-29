@@ -1,5 +1,5 @@
 //const fetch = require('node-fetch')
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const cheerio = require('cheerio')
 const express = require('express')
 var fs = require('fs')
@@ -209,42 +209,18 @@ app.get('/index2', (req, res) => {
         let data = ""
         let monthtext
         switch (req.query.date.substring(2, 4)) {
-            case '01':
-                monthtext = "มกราคม";
-                break;
-            case '02':
-                monthtext = "กุมภาพันธ์";
-                break;
-            case '03':
-                monthtext = "มีนาคม";
-                break;
-            case '04':
-                monthtext = "เมษายน";
-                break;
-            case '05':
-                monthtext = "พฤษภาคม";
-                break;
-            case '06':
-                monthtext = "มิถุนายน";
-                break;
-            case '07':
-                monthtext = "กรกฎาคม";
-                break;
-            case '08':
-                monthtext = "สิงหาคม";
-                break;
-            case '09':
-                monthtext = "กันยายน";
-                break;
-            case '10':
-                monthtext = "ตุลาคม";
-                break;
-            case '11':
-                monthtext = "พฤศจิกายน";
-                break;
-            case '12':
-                monthtext = "ธันวาคม";
-                break;
+            case '01': monthtext = "มกราคม"; break;
+            case '02': monthtext = "กุมภาพันธ์"; break;
+            case '03': monthtext = "มีนาคม"; break;
+            case '04': monthtext = "เมษายน"; break;
+            case '05': monthtext = "พฤษภาคม"; break;
+            case '06': monthtext = "มิถุนายน"; break;
+            case '07': monthtext = "กรกฎาคม"; break;
+            case '08': monthtext = "สิงหาคม"; break;
+            case '09': monthtext = "กันยายน"; break;
+            case '10': monthtext = "ตุลาคม"; break;
+            case '11': monthtext = "พฤศจิกายน"; break;
+            case '12': monthtext = "ธันวาคม"; break;
         }
         try {
             if (req.query.fresh !== undefined) {
@@ -256,14 +232,17 @@ app.get('/index2', (req, res) => {
         var fileContents = null;
         try {
             fileContents = fs.readFileSync('tmp/' + req.query.date + '.txt');
-        } catch (err) {
-
-        }
-        try {
             data = JSON.parse(fileContents)
         } catch (err) {
             fileContents = false
         }
+        //start weird
+        /*try {
+            data = JSON.parse(fileContents)
+        } catch (err) {
+            fileContents = false
+        }*/
+        //end weird
         if (fileContents) {
             data = JSON.parse(fileContents)
             if (req.query.from !== undefined) {
@@ -548,7 +527,6 @@ app.get('/index2', (req, res) => {
 })
 
 app.get('/index3', (req, res) => {
-
     if (!req.query.date) {
         req.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
     }
@@ -570,42 +548,18 @@ app.get('/index3', (req, res) => {
         let data = JSON.parse(fileContents)
         if (req.query.from !== undefined) {
             switch (req.query.date.substr(2, 2)) {
-                case '01':
-                    monthtext = "มกราคม";
-                    break;
-                case '02':
-                    monthtext = "กุมภาพันธ์";
-                    break;
-                case '03':
-                    monthtext = "มีนาคม";
-                    break;
-                case '04':
-                    monthtext = "เมษายน";
-                    break;
-                case '05':
-                    monthtext = "พฤษภาคม";
-                    break;
-                case '06':
-                    monthtext = "มิถุนายน";
-                    break;
-                case '07':
-                    monthtext = "กรกฎาคม";
-                    break;
-                case '08':
-                    monthtext = "สิงหาคม";
-                    break;
-                case '09':
-                    monthtext = "กันยายน";
-                    break;
-                case '10':
-                    monthtext = "ตุลาคม";
-                    break;
-                case '11':
-                    monthtext = "พฤศจิกายน";
-                    break;
-                case '12':
-                    monthtext = "ธันวาคม";
-                    break;
+                case '01': monthtext = "มกราคม"; break;
+                case '02': monthtext = "กุมภาพันธ์"; break;
+                case '03': monthtext = "มีนาคม"; break;
+                case '04': monthtext = "เมษายน"; break;
+                case '05': monthtext = "พฤษภาคม"; break;
+                case '06': monthtext = "มิถุนายน"; break;
+                case '07': monthtext = "กรกฎาคม"; break;
+                case '08': monthtext = "สิงหาคม"; break;
+                case '09': monthtext = "กันยายน"; break;
+                case '10': monthtext = "ตุลาคม"; break;
+                case '11': monthtext = "พฤศจิกายน"; break;
+                case '12': monthtext = "ธันวาคม"; break;
             }
 
             data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
@@ -665,42 +619,18 @@ app.get('/index3', (req, res) => {
                         //console.log('Saved!');
                         if (req.query.from !== undefined) {
                             switch (req.query.date.substr(2, 2)) {
-                                case '01':
-                                    monthtext = "มกราคม";
-                                    break;
-                                case '02':
-                                    monthtext = "กุมภาพันธ์";
-                                    break;
-                                case '03':
-                                    monthtext = "มีนาคม";
-                                    break;
-                                case '04':
-                                    monthtext = "เมษายน";
-                                    break;
-                                case '05':
-                                    monthtext = "พฤษภาคม";
-                                    break;
-                                case '06':
-                                    monthtext = "มิถุนายน";
-                                    break;
-                                case '07':
-                                    monthtext = "กรกฎาคม";
-                                    break;
-                                case '08':
-                                    monthtext = "สิงหาคม";
-                                    break;
-                                case '09':
-                                    monthtext = "กันยายน";
-                                    break;
-                                case '10':
-                                    monthtext = "ตุลาคม";
-                                    break;
-                                case '11':
-                                    monthtext = "พฤศจิกายน";
-                                    break;
-                                case '12':
-                                    monthtext = "ธันวาคม";
-                                    break;
+                                case '01': monthtext = "มกราคม"; break;
+                                case '02': monthtext = "กุมภาพันธ์"; break;
+                                case '03': monthtext = "มีนาคม"; break;
+                                case '04': monthtext = "เมษายน"; break;
+                                case '05': monthtext = "พฤษภาคม"; break;
+                                case '06': monthtext = "มิถุนายน"; break;
+                                case '07': monthtext = "กรกฎาคม"; break;
+                                case '08': monthtext = "สิงหาคม"; break;
+                                case '09': monthtext = "กันยายน"; break;
+                                case '10': monthtext = "ตุลาคม"; break;
+                                case '11': monthtext = "พฤศจิกายน"; break;
+                                case '12': monthtext = "ธันวาคม"; break;
                             }
 
                             data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
@@ -710,42 +640,18 @@ app.get('/index3', (req, res) => {
                 } else {
                     if (req.query.from !== undefined) {
                         switch (req.query.date.substr(2, 2)) {
-                            case '01':
-                                monthtext = "มกราคม";
-                                break;
-                            case '02':
-                                monthtext = "กุมภาพันธ์";
-                                break;
-                            case '03':
-                                monthtext = "มีนาคม";
-                                break;
-                            case '04':
-                                monthtext = "เมษายน";
-                                break;
-                            case '05':
-                                monthtext = "พฤษภาคม";
-                                break;
-                            case '06':
-                                monthtext = "มิถุนายน";
-                                break;
-                            case '07':
-                                monthtext = "กรกฎาคม";
-                                break;
-                            case '08':
-                                monthtext = "สิงหาคม";
-                                break;
-                            case '09':
-                                monthtext = "กันยายน";
-                                break;
-                            case '10':
-                                monthtext = "ตุลาคม";
-                                break;
-                            case '11':
-                                monthtext = "พฤศจิกายน";
-                                break;
-                            case '12':
-                                monthtext = "ธันวาคม";
-                                break;
+                            case '01': monthtext = "มกราคม"; break;
+                            case '02': monthtext = "กุมภาพันธ์"; break;
+                            case '03': monthtext = "มีนาคม"; break;
+                            case '04': monthtext = "เมษายน"; break;
+                            case '05': monthtext = "พฤษภาคม"; break;
+                            case '06': monthtext = "มิถุนายน"; break;
+                            case '07': monthtext = "กรกฎาคม"; break;
+                            case '08': monthtext = "สิงหาคม"; break;
+                            case '09': monthtext = "กันยายน"; break;
+                            case '10': monthtext = "ตุลาคม"; break;
+                            case '11': monthtext = "พฤศจิกายน"; break;
+                            case '12': monthtext = "ธันวาคม"; break;
                         }
 
                         data[0][0] = req.query.date.substring(0, 2) + monthtext + req.query.date.substring(4, 8)
@@ -832,42 +738,18 @@ app.get('/god', async (req, res) => {
                             day = val.firstChild.data.split(" ").splice(2)
                             let monthnum
                             switch (day[2]) {
-                                case 'มกราคม':
-                                    monthnum = "01";
-                                    break;
-                                case 'กุมภาพันธ์':
-                                    monthnum = "02";
-                                    break;
-                                case 'มีนาคม':
-                                    monthnum = "03";
-                                    break;
-                                case 'เมษายน':
-                                    monthnum = "04";
-                                    break;
-                                case 'พฤษภาคม':
-                                    monthnum = "05";
-                                    break;
-                                case 'มิถุนายน':
-                                    monthnum = "06";
-                                    break;
-                                case 'กรกฎาคม':
-                                    monthnum = "07";
-                                    break;
-                                case 'สิงหาคม':
-                                    monthnum = "08";
-                                    break;
-                                case 'กันยายน':
-                                    monthnum = "09";
-                                    break;
-                                case 'ตุลาคม':
-                                    monthnum = "10";
-                                    break;
-                                case 'พฤศจิกายน':
-                                    monthnum = "11";
-                                    break;
-                                case 'ธันวาคม':
-                                    monthnum = "12";
-                                    break;
+                                case 'มกราคม': monthnum = "01"; break;
+                                case 'กุมภาพันธ์': monthnum = "02"; break;
+                                case 'มีนาคม': monthnum = "03"; break;
+                                case 'เมษายน': monthnum = "04"; break;
+                                case 'พฤษภาคม': monthnum = "05"; break;
+                                case 'มิถุนายน': monthnum = "06"; break;
+                                case 'กรกฎาคม': monthnum = "07"; break;
+                                case 'สิงหาคม': monthnum = "08"; break;
+                                case 'กันยายน': monthnum = "09"; break;
+                                case 'ตุลาคม': monthnum = "10"; break;
+                                case 'พฤศจิกายน': monthnum = "11"; break;
+                                case 'ธันวาคม': monthnum = "12"; break;
                             }
                             peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
                             preyearsuperlist.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
@@ -900,42 +782,18 @@ app.get('/god', async (req, res) => {
             yearlist.forEach(element => {
                 let monthtext
                 switch (element.slice(2, 4)) {
-                    case '01':
-                        monthtext = "มกราคม";
-                        break;
-                    case '02':
-                        monthtext = "กุมภาพันธ์";
-                        break;
-                    case '03':
-                        monthtext = "มีนาคม";
-                        break;
-                    case '04':
-                        monthtext = "เมษายน";
-                        break;
-                    case '05':
-                        monthtext = "พฤษภาคม";
-                        break;
-                    case '06':
-                        monthtext = "มิถุนายน";
-                        break;
-                    case '07':
-                        monthtext = "กรกฎาคม";
-                        break;
-                    case '08':
-                        monthtext = "สิงหาคม";
-                        break;
-                    case '09':
-                        monthtext = "กันยายน";
-                        break;
-                    case '10':
-                        monthtext = "ตุลาคม";
-                        break;
-                    case '11':
-                        monthtext = "พฤศจิกายน";
-                        break;
-                    case '12':
-                        monthtext = "ธันวาคม";
-                        break;
+                    case '01': monthtext = "มกราคม"; break;
+                    case '02': monthtext = "กุมภาพันธ์"; break;
+                    case '03': monthtext = "มีนาคม"; break;
+                    case '04': monthtext = "เมษายน"; break;
+                    case '05': monthtext = "พฤษภาคม"; break;
+                    case '06': monthtext = "มิถุนายน"; break;
+                    case '07': monthtext = "กรกฎาคม"; break;
+                    case '08': monthtext = "สิงหาคม"; break;
+                    case '09': monthtext = "กันยายน"; break;
+                    case '10': monthtext = "ตุลาคม"; break;
+                    case '11': monthtext = "พฤศจิกายน"; break;
+                    case '12': monthtext = "ธันวาคม"; break;
                 }
                 //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
                 //yearlist.indexOf(element)
@@ -945,44 +803,20 @@ app.get('/god', async (req, res) => {
         } else if (req.query.format == "combothtext") {
             yearlist.forEach(element => {
                 let monthtext
-                let array
+                //let array
                 switch (element.slice(2, 4)) {
-                    case '01':
-                        monthtext = "มกราคม";
-                        break;
-                    case '02':
-                        monthtext = "กุมภาพันธ์";
-                        break;
-                    case '03':
-                        monthtext = "มีนาคม";
-                        break;
-                    case '04':
-                        monthtext = "เมษายน";
-                        break;
-                    case '05':
-                        monthtext = "พฤษภาคม";
-                        break;
-                    case '06':
-                        monthtext = "มิถุนายน";
-                        break;
-                    case '07':
-                        monthtext = "กรกฎาคม";
-                        break;
-                    case '08':
-                        monthtext = "สิงหาคม";
-                        break;
-                    case '09':
-                        monthtext = "กันยายน";
-                        break;
-                    case '10':
-                        monthtext = "ตุลาคม";
-                        break;
-                    case '11':
-                        monthtext = "พฤศจิกายน";
-                        break;
-                    case '12':
-                        monthtext = "ธันวาคม";
-                        break;
+                    case '01': monthtext = "มกราคม"; break;
+                    case '02': monthtext = "กุมภาพันธ์"; break;
+                    case '03': monthtext = "มีนาคม"; break;
+                    case '04': monthtext = "เมษายน"; break;
+                    case '05': monthtext = "พฤษภาคม"; break;
+                    case '06': monthtext = "มิถุนายน"; break;
+                    case '07': monthtext = "กรกฎาคม"; break;
+                    case '08': monthtext = "สิงหาคม"; break;
+                    case '09': monthtext = "กันยายน"; break;
+                    case '10': monthtext = "ตุลาคม"; break;
+                    case '11': monthtext = "พฤศจิกายน"; break;
+                    case '12': monthtext = "ธันวาคม"; break;
                 }
                 //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
                 //yearlist.indexOf(element)
@@ -1020,42 +854,18 @@ app.get('/gdpy', (req, res) => {
                         let day = val.firstChild.data.split(" ").splice(2)
                         let monthnum
                         switch (day[2]) {
-                            case 'มกราคม':
-                                monthnum = "01";
-                                break;
-                            case 'กุมภาพันธ์':
-                                monthnum = "02";
-                                break;
-                            case 'มีนาคม':
-                                monthnum = "03";
-                                break;
-                            case 'เมษายน':
-                                monthnum = "04";
-                                break;
-                            case 'พฤษภาคม':
-                                monthnum = "05";
-                                break;
-                            case 'มิถุนายน':
-                                monthnum = "06";
-                                break;
-                            case 'กรกฎาคม':
-                                monthnum = "07";
-                                break;
-                            case 'สิงหาคม':
-                                monthnum = "08";
-                                break;
-                            case 'กันยายน':
-                                monthnum = "09";
-                                break;
-                            case 'ตุลาคม':
-                                monthnum = "10";
-                                break;
-                            case 'พฤศจิกายน':
-                                monthnum = "11";
-                                break;
-                            case 'ธันวาคม':
-                                monthnum = "12";
-                                break;
+                            case 'มกราคม': monthnum = "01"; break;
+                            case 'กุมภาพันธ์': monthnum = "02"; break;
+                            case 'มีนาคม': monthnum = "03"; break;
+                            case 'เมษายน': monthnum = "04"; break;
+                            case 'พฤษภาคม': monthnum = "05"; break;
+                            case 'มิถุนายน': monthnum = "06"; break;
+                            case 'กรกฎาคม': monthnum = "07"; break;
+                            case 'สิงหาคม': monthnum = "08"; break;
+                            case 'กันยายน': monthnum = "09"; break;
+                            case 'ตุลาคม': monthnum = "10"; break;
+                            case 'พฤศจิกายน': monthnum = "11"; break;
+                            case 'ธันวาคม': monthnum = "12"; break;
                         }
                         peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
                     }
