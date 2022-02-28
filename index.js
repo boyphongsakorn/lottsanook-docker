@@ -1159,15 +1159,18 @@ app.get('/lotnews', async (req, res) => {
     news = xml._posts
     for(let i = 0; i < news.length; i++){
         const title = news[i].post_title
-        const link = news[i].url
+        const link = 'https://www.khaosod.co.th/lottery/news_'+news[i].ID
         const description = news[i].post_content
         const pubDate = news[i].created_at
+        // image
+        const image = news[i].image
         //create new description variable with remove html tag
         let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
         const json = {
             title: title,
             link: link.replace(/\n|\t/g, ''),
             description: description2.substring(0, 100) + '...',
+            image: image,
             pubDate: pubDate,
         }
         array.push(json)
