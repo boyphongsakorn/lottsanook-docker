@@ -1128,7 +1128,7 @@ app.get('/lotnews', async (req, res) => {
         array.push(json)
     }
 
-    response = await fetch('https://www.khaosod.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
+    /*response = await fetch('https://www.khaosod.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
     xml = await response.text()
     $ = cheerio.load(xml)
     news = $('item')
@@ -1143,12 +1143,31 @@ app.get('/lotnews', async (req, res) => {
         /*const date = pubDate.slice(0, 10)
         const time = pubDate.slice(11, 19)
         const dateTime = date + ' ' + time*/
-        const json = {
+        /*const json = {
             title: title,
             //remove \n and \t in string
             link: link.replace(/\n|\t/g, ''),
             description: description.substring(0, 100) + '...',
             image: image,
+            pubDate: pubDate,
+        }
+        array.push(json)
+    }*/
+
+    response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit='+arrayofnews[1])
+    xml = await response.json()
+    news = xml._posts
+    for(let i = 0; i < news.length; i++){
+        const title = news[i].post_title
+        const link = news[i].url
+        const description = news[i].post_content
+        const pubDate = news[i].created_at
+        //create new description variable with remove html tag
+        let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
+        const json = {
+            title: title,
+            link: link.replace(/\n|\t/g, ''),
+            description: description2.substring(0, 100) + '...',
             pubDate: pubDate,
         }
         array.push(json)
