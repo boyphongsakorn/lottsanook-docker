@@ -519,7 +519,7 @@ fastify.get('/reto', async (request, reply) => {
 })
 
 fastify.get('/god', async (request, reply) => {
-    let test
+    //let test = []
 
     let year = 2533;
     let preyearlist = [];
@@ -617,66 +617,68 @@ fastify.get('/god', async (request, reply) => {
         }
         year += 10
     }
-    fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), function (err) {
+    fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), async function (err) {
         if (err) throw err;
-        if (request.query.format == "thtext") {
-            yearlist.forEach(element => {
-                let monthtext
-                switch (element.slice(2, 4)) {
-                    case '01': monthtext = "มกราคม"; break;
-                    case '02': monthtext = "กุมภาพันธ์"; break;
-                    case '03': monthtext = "มีนาคม"; break;
-                    case '04': monthtext = "เมษายน"; break;
-                    case '05': monthtext = "พฤษภาคม"; break;
-                    case '06': monthtext = "มิถุนายน"; break;
-                    case '07': monthtext = "กรกฎาคม"; break;
-                    case '08': monthtext = "สิงหาคม"; break;
-                    case '09': monthtext = "กันยายน"; break;
-                    case '10': monthtext = "ตุลาคม"; break;
-                    case '11': monthtext = "พฤศจิกายน"; break;
-                    case '12': monthtext = "ธันวาคม"; break;
-                }
-                //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
-                //yearlist.indexOf(element)
-                yearlist[yearlist.indexOf(element)] = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
-            });
-            //res.send(yearlist)
-            test = yearlist
-        } else if (request.query.format == "combothtext") {
-            yearlist.forEach(element => {
-                let monthtext
-                //let array
-                switch (element.slice(2, 4)) {
-                    case '01': monthtext = "มกราคม"; break;
-                    case '02': monthtext = "กุมภาพันธ์"; break;
-                    case '03': monthtext = "มีนาคม"; break;
-                    case '04': monthtext = "เมษายน"; break;
-                    case '05': monthtext = "พฤษภาคม"; break;
-                    case '06': monthtext = "มิถุนายน"; break;
-                    case '07': monthtext = "กรกฎาคม"; break;
-                    case '08': monthtext = "สิงหาคม"; break;
-                    case '09': monthtext = "กันยายน"; break;
-                    case '10': monthtext = "ตุลาคม"; break;
-                    case '11': monthtext = "พฤศจิกายน"; break;
-                    case '12': monthtext = "ธันวาคม"; break;
-                }
-                //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
-                //yearlist.indexOf(element)
-                yearlist[yearlist.indexOf(element)] = [element, element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)]
-            });
-            //res.send(yearlist)
-            test = yearlist
-        } else {
-            //res.send(yearlist)
-            test = yearlist
-        }
     });
 
-    return test
+    if (request.query.format == "thtext") {
+        yearlist.forEach(element => {
+            let monthtext
+            switch (element.slice(2, 4)) {
+                case '01': monthtext = "มกราคม"; break;
+                case '02': monthtext = "กุมภาพันธ์"; break;
+                case '03': monthtext = "มีนาคม"; break;
+                case '04': monthtext = "เมษายน"; break;
+                case '05': monthtext = "พฤษภาคม"; break;
+                case '06': monthtext = "มิถุนายน"; break;
+                case '07': monthtext = "กรกฎาคม"; break;
+                case '08': monthtext = "สิงหาคม"; break;
+                case '09': monthtext = "กันยายน"; break;
+                case '10': monthtext = "ตุลาคม"; break;
+                case '11': monthtext = "พฤศจิกายน"; break;
+                case '12': monthtext = "ธันวาคม"; break;
+            }
+            //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
+            //yearlist.indexOf(element)
+            yearlist[yearlist.indexOf(element)] = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
+        });
+        //res.send(yearlist)
+        //test = yearlist
+    } else if (request.query.format == "combothtext") {
+        yearlist.forEach(element => {
+            let monthtext
+            //let array
+            switch (element.slice(2, 4)) {
+                case '01': monthtext = "มกราคม"; break;
+                case '02': monthtext = "กุมภาพันธ์"; break;
+                case '03': monthtext = "มีนาคม"; break;
+                case '04': monthtext = "เมษายน"; break;
+                case '05': monthtext = "พฤษภาคม"; break;
+                case '06': monthtext = "มิถุนายน"; break;
+                case '07': monthtext = "กรกฎาคม"; break;
+                case '08': monthtext = "สิงหาคม"; break;
+                case '09': monthtext = "กันยายน"; break;
+                case '10': monthtext = "ตุลาคม"; break;
+                case '11': monthtext = "พฤศจิกายน"; break;
+                case '12': monthtext = "ธันวาคม"; break;
+            }
+            //element = element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)
+            //yearlist.indexOf(element)
+            yearlist[yearlist.indexOf(element)] = [element, element.slice(0, 2) + " " + monthtext + " " + element.slice(4, 8)]
+        });
+        //res.send(yearlist)
+        //test = yearlist
+    } else {
+        //res.send(yearlist)
+        //test = yearlist
+    }
+
+    //console.log(yearlist)
+    return yearlist
 })
 
 fastify.get('/gdpy', async (request, reply) => {
-    let test
+    //let test
 
     let peryear = []
     let yearlist = []
@@ -687,12 +689,14 @@ fastify.get('/gdpy', async (request, reply) => {
             console.log('yes this year')
         }
         fileContents = fs.readFileSync('tmp/' + request.query.year + '.txt');
+        console.log(JSON.parse(fileContents))
     } catch (err) {
-
+        fileContents = null;
     }
     if (fileContents) {
         //res.send(JSON.parse(fileContents));
-        test = JSON.parse(fileContents)
+        //test = JSON.parse(fileContents)
+        yearlist = JSON.parse(fileContents)
     } else {
         await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + request.query.year + '.aspx')
             .then(res => res.text())
@@ -725,12 +729,12 @@ fastify.get('/gdpy', async (request, reply) => {
                 fs.writeFile('tmp/' + request.query.year + '.txt', JSON.stringify(yearlist), function (err) {
                     if (err) throw err;
                     //res.send(yearlist)
-                    test = yearlist
+                    //test = yearlist
                 });
             })
     }
 
-    return test
+    return yearlist
 })
 
 fastify.get('/checklottery', async (request, reply) => {
@@ -836,10 +840,10 @@ fastify.get('/getchit', async (request, reply) => {
                 if (val.attribs.src.indexOf('BT') > -1) {
                     a.push(val.attribs.src)
                 }
-                /*if (a.length == 3) {
-                    res.send(a)
+                if (a.length == 3) {
+                    //res.send(a)
                     return
-                }*/
+                }
             }
         })
 
