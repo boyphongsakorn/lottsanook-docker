@@ -901,7 +901,7 @@ fastify.get('/finddol', async (request, reply) => {
                     "ref": "refs/heads/main"
                 });
                 const takeres = await fetch('https://api.github.com/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches', { body: postData, method: 'POST', headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'token ' + process.env.gtoken, 'Content-Type': 'application/json', 'User-Agent': 'PostmanRuntime/7.28.4' },redirect: 'follow',follow: 20})
-                const takedata = await takeres.json()
+                const takedata = await takeres.text()
                 console.log(takedata)
                 
                 /*var https = require('follow-redirects').https;
