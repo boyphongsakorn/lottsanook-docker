@@ -1103,7 +1103,7 @@ fastify.get('/lotnews', async (request, reply) => {
     }
 
     //order by pubDate
-    json.sort((a, b) => {
+    array.sort((a, b) => {
         return new Date(b.pubDate) - new Date(a.pubDate)
     })
 
