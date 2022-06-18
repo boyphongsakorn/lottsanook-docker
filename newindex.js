@@ -900,10 +900,10 @@ fastify.get('/finddol', async (request, reply) => {
                     },
                     "ref": "refs/heads/main"
                 });
-                const takeres = await fetch('https://api.github.com/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches', { body: postData, method: 'POST', headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'token ' + process.env.gtoken, 'Content-Type': 'application/json', 'User-Agent': 'PostmanRuntime/7.28.4' },redirect: 'follow',follow: 20})
+                const takeres = await fetch('https://api.github.com/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches', { body: postData, method: 'POST', headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'token ' + process.env.gtoken, 'Content-Type': 'application/json', 'User-Agent': 'PostmanRuntime/7.28.4' }, redirect: 'follow', follow: 20 })
                 const takedata = await takeres.text()
                 console.log(takedata)
-                
+
                 /*var https = require('follow-redirects').https;
 
                 var options = {
@@ -1037,6 +1037,8 @@ fastify.get('/lotnews', async (request, reply) => {
         const link = 'https://www.khaosod.co.th/lottery/news_' + news[i].ID
         const description = news[i].post_content
         const pubDate = news[i].created_at
+        //format pubDate from iso string to date string
+        const event = new Date(pubDate)
         // image
         const image = news[i].image
         //create new description variable with remove html tag
@@ -1046,7 +1048,7 @@ fastify.get('/lotnews', async (request, reply) => {
             link: link.replace(/\n|\t/g, ''),
             description: description2.substring(0, 100) + '...',
             image: image,
-            pubDate: pubDate,
+            pubDate: event.toUTCString(),
         }
         array.push(json)
     }
@@ -1061,14 +1063,12 @@ fastify.get('/lotnews', async (request, reply) => {
         const link = news.eq(i).find('link')[0].next.data
         const description = news.eq(i).find('description').text()
         const pubDate = news.eq(i).find('pubDate').text()
-        //format pubDate from iso string to date string
-        const event = new Date(pubDate)
         const json = {
             title: title,
             //remove \n and \t in string
             link: link.replace(/\n|\t/g, ''),
             description: description.substring(0, 100) + '...',
-            pubDate: event.toLocaleString(),
+            pubDate: pubDate,
         }
         array.push(json)
     }
