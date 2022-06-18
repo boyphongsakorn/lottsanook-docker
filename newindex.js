@@ -1067,7 +1067,7 @@ fastify.get('/lotnews', async (request, reply) => {
         }
         //if new Date(pubDate) < date push to array
         if (request.query.lastweek) {
-            if (new Date(pubDate) < date) {
+            if (event < date) {
                 array.push(json)
             }
         }else{
