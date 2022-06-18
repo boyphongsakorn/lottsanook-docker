@@ -70,3 +70,8 @@ jobs:
         with:
           image: boyphongsakorn/lottsanook:latest
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - uses: wemake-services/docker-image-size-limit@master
+        with:  # we lint this image by itself:
+          image: 'boyphongsakorn/lottsanook:latest'
+          size: 50MB
