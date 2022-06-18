@@ -985,6 +985,9 @@ fastify.get('/finddol', async (request, reply) => {
 fastify.get('/lotnews', async (request, reply) => {
     let arrayofnews = [0, 0, 0]
     let check = request.query.count % 3
+    //get date 7 days ago
+    let date = new Date()
+    date.setDate(date.getDate() - 7)
     if (check != 0) {
         if (check == 1) {
             //ceil number
@@ -1003,6 +1006,11 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[0] = request.query.count / 3
         arrayofnews[1] = request.query.count / 3
         arrayofnews[2] = request.query.count / 3
+    }
+    if(request.query.lastweek && request.query.lastweek == 'true'){
+        arrayofnews[0] = 7
+        arrayofnews[1] = 7
+        arrayofnews[2] = 7
     }
     let array = [];
     let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
@@ -1026,7 +1034,14 @@ fastify.get('/lotnews', async (request, reply) => {
             description: description.substring(0, 100) + '...',
             pubDate: pubDate,
         }
-        array.push(json)
+        //if new Date(pubDate) < date push to array
+        if (request.query.lastweek) {
+            if (new Date(pubDate) < date) {
+                array.push(json)
+            }
+        }else{
+            array.push(json)
+        }
     }
 
     response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
@@ -1050,7 +1065,14 @@ fastify.get('/lotnews', async (request, reply) => {
             image: image,
             pubDate: event.toUTCString(),
         }
-        array.push(json)
+        //if new Date(pubDate) < date push to array
+        if (request.query.lastweek) {
+            if (new Date(pubDate) < date) {
+                array.push(json)
+            }
+        }else{
+            array.push(json)
+        }
     }
 
     response = await fetch('https://www.brighttv.co.th/tag/%E0%B8%AB%E0%B8%A7%E0%B8%A2%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87/feed')
@@ -1070,7 +1092,14 @@ fastify.get('/lotnews', async (request, reply) => {
             description: description.substring(0, 100) + '...',
             pubDate: pubDate,
         }
-        array.push(json)
+        //if new Date(pubDate) < date push to array
+        if (request.query.lastweek) {
+            if (new Date(pubDate) < date) {
+                array.push(json)
+            }
+        }else{
+            array.push(json)
+        }
     }
 
     //order by pubDate
