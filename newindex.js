@@ -1061,15 +1061,14 @@ fastify.get('/lotnews', async (request, reply) => {
         const link = news.eq(i).find('link')[0].next.data
         const description = news.eq(i).find('description').text()
         const pubDate = news.eq(i).find('pubDate').text()
-        /*const date = pubDate.slice(0, 10)
-        const time = pubDate.slice(11, 19)
-        const dateTime = date + ' ' + time*/
+        //format pubDate from iso string to date string
+        const event = new Date(pubDate)
         const json = {
             title: title,
             //remove \n and \t in string
             link: link.replace(/\n|\t/g, ''),
             description: description.substring(0, 100) + '...',
-            pubDate: pubDate,
+            pubDate: event.toLocaleString(),
         }
         array.push(json)
     }
