@@ -68,5 +68,5 @@ jobs:
       - name: Dive
         uses: yuichielectric/dive-action@0.0.4
         with:
-          image: "${DOCKER_IMAGE}:${VERSION}"
+          image: boyphongsakorn/lottsanook:latest
           github-token: ${{ secrets.GITHUB_TOKEN }}
