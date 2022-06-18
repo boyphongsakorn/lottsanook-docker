@@ -2,7 +2,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 const fastify = require('fastify')({ logger: true })
 const cheerio = require('cheerio')
 var fs = require('fs')
-var cors = require('cors')
+//var cors = require('cors')
 
 const port = process.env.PORT || 5000;
 
@@ -402,18 +402,18 @@ fastify.get('/index3', async (request, reply) => {
                 let $ = cheerio.load(body)
 
                 let wow = 0
-                if($('strong').toArray()[0].firstChild.data == 'เว็บไซต์นี้ใช้คุกกี้'){
+                if ($('strong').toArray()[0].firstChild.data == 'เว็บไซต์นี้ใช้คุกกี้') {
                     wow = 1;
                 }
 
-                data[0][1] = $('strong').toArray()[0+wow].firstChild.data
-                data[1][1] = $('strong').toArray()[1+wow].firstChild.data
-                data[1][2] = $('strong').toArray()[2+wow].firstChild.data
-                data[2][1] = $('strong').toArray()[3+wow].firstChild.data
-                data[2][2] = $('strong').toArray()[4+wow].firstChild.data
-                data[3][1] = $('strong').toArray()[5+wow].firstChild.data
-                data[4][1] = $('strong').toArray()[6+wow].firstChild.data
-                data[4][2] = $('strong').toArray()[7+wow].firstChild.data
+                data[0][1] = $('strong').toArray()[0 + wow].firstChild.data
+                data[1][1] = $('strong').toArray()[1 + wow].firstChild.data
+                data[1][2] = $('strong').toArray()[2 + wow].firstChild.data
+                data[2][1] = $('strong').toArray()[3 + wow].firstChild.data
+                data[2][2] = $('strong').toArray()[4 + wow].firstChild.data
+                data[3][1] = $('strong').toArray()[5 + wow].firstChild.data
+                data[4][1] = $('strong').toArray()[6 + wow].firstChild.data
+                data[4][2] = $('strong').toArray()[7 + wow].firstChild.data
 
                 let k = 5
                 let i = 1
@@ -894,7 +894,17 @@ fastify.get('/finddol', async (request, reply) => {
         })
         .catch(async (error) => {
             if (request.query.search.length > 3) {
-                var https = require('follow-redirects').https;
+                var postData = JSON.stringify({
+                    "inputs": {
+                        "number": request.query.search.toString()
+                    },
+                    "ref": "refs/heads/main"
+                });
+                const takeres = await fetch('https://api.github.com/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches', { body: postData, method: 'POST', headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'token ' + process.env.gtoken, 'Content-Type': 'application/json', 'User-Agent': 'PostmanRuntime/7.28.4' },redirect: 'follow',follow: 20})
+                const takedata = await takeres.json()
+                console.log(takedata)
+                
+                /*var https = require('follow-redirects').https;
 
                 var options = {
                     'method': 'POST',
@@ -926,16 +936,9 @@ fastify.get('/finddol', async (request, reply) => {
                     });
                 });
 
-                var postData = JSON.stringify({
-                    "inputs": {
-                        "number": request.query.search.toString()
-                    },
-                    "ref": "refs/heads/main"
-                });
-
                 reqtwo.write(postData);
 
-                reqtwo.end();
+                reqtwo.end();*/
 
                 await fetch('http://localhost:' + port + '/god')
                     .then(res => res.json())
