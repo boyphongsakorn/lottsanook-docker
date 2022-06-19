@@ -1102,6 +1102,16 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
+    if (request.query.lastweek) {
+        //get array.length > request.query.count
+        if (array.length > request.query.count) {
+            //slice array to request.query.count
+            //array = array.slice(0, request.query.count)
+            let wantremove = array.length - request.query.count
+            array.splice(parseInt((request.query.count/2)-wantremove), wantremove)
+        }
+    }
+
     //order by pubDate
     array.sort((a, b) => {
         return new Date(b.pubDate) - new Date(a.pubDate)
