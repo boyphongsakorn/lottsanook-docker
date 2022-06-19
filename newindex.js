@@ -1108,7 +1108,7 @@ fastify.get('/lotnews', async (request, reply) => {
             //slice array to request.query.count
             //array = array.slice(0, request.query.count)
             let wantremove = array.length - request.query.count
-            array.splice(parseInt((request.query.count/2)-wantremove), wantremove)
+            array.splice(parseInt(request.query.count/2), wantremove)
         }
     }
 
