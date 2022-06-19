@@ -984,33 +984,34 @@ fastify.get('/finddol', async (request, reply) => {
 
 fastify.get('/lotnews', async (request, reply) => {
     let arrayofnews = [0, 0, 0]
-    let check = request.query.count % 3
+    let count = request.query.count || 0
+    let check = count % 3
     //get date 7 days ago
     let date = new Date()
     date.setDate(date.getDate() - 7)
     if (check != 0) {
         if (check == 1) {
             //ceil number
-            arrayofnews[0] = Math.floor(request.query.count / 3)
-            arrayofnews[1] = Math.ceil(request.query.count / 3)
+            arrayofnews[0] = Math.floor(count / 3)
+            arrayofnews[1] = Math.ceil(count / 3)
             //floor number
-            arrayofnews[2] = Math.floor(request.query.count / 3)
+            arrayofnews[2] = Math.floor(count / 3)
         } else {
             //ceil number
-            arrayofnews[0] = Math.floor(request.query.count / 3)
-            arrayofnews[1] = Math.ceil(request.query.count / 3)
+            arrayofnews[0] = Math.floor(count / 3)
+            arrayofnews[1] = Math.ceil(count / 3)
             //floor number
-            arrayofnews[2] = Math.floor(request.query.count / 3) + 1
+            arrayofnews[2] = Math.floor(count / 3) + 1
         }
     } else {
-        arrayofnews[0] = request.query.count / 3
-        arrayofnews[1] = request.query.count / 3
-        arrayofnews[2] = request.query.count / 3
+        arrayofnews[0] = count / 3
+        arrayofnews[1] = count / 3
+        arrayofnews[2] = count / 3
     }
     if(request.query.lastweek && request.query.lastweek == 'true'){
-        arrayofnews[0] = 7
-        arrayofnews[1] = 7
-        arrayofnews[2] = 7
+        arrayofnews[0] = count
+        arrayofnews[1] = count
+        arrayofnews[2] = count
     }
     let array = [];
     let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
@@ -1104,11 +1105,11 @@ fastify.get('/lotnews', async (request, reply) => {
 
     if (request.query.lastweek) {
         //get array.length > request.query.count
-        if (array.length > request.query.count) {
+        if (array.length > count) {
             //slice array to request.query.count
             //array = array.slice(0, request.query.count)
-            let wantremove = array.length - request.query.count
-            array.splice(parseInt(request.query.count/2), wantremove)
+            let wantremove = array.length - count
+            array.splice(parseInt(count/2), wantremove)
         }
     }
 
