@@ -1031,6 +1031,28 @@ fastify.get('/lotnews', async (request, reply) => {
         const link = news.eq(i).find('link')[0].next.data
         const description = news.eq(i).find('description').text()
         const pubDate = news.eq(i).find('pubDate').text()
+        const getimage = await fetch(link)
+        const responimage = await getimage.text()
+        //console.log(image)
+        //write to html file
+        //fs.writeFileSync('news.html', responimage)
+        const $ = cheerio.load(responimage)
+        /*$('picture > img').toArray().forEach(element => {
+            try {
+                if(element.attribs.class.includes('wp-post-image')){
+                    console.log(element.attribs['data-src'])
+                }
+                //numberpush.push(element.firstChild.data)
+            } catch (error) {
+
+            }
+        });*/
+        //console.log($('picture > img').toArray()[0].attribs['data-src'])
+        const image = $('picture > img').toArray()[0].attribs['data-src']
+        //loop imageurl
+        /*for (let index = 0; index < imageurl.length; index++) {
+            console.log(imageurl)
+        }*/
         /*const date = pubDate.slice(0, 10)
         const time = pubDate.slice(11, 19)
         const dateTime = date + ' ' + time*/
@@ -1039,6 +1061,7 @@ fastify.get('/lotnews', async (request, reply) => {
             //remove \n and \t in string
             link: link.replace(/\n|\t/g, ''),
             description: description.substring(0, 100) + '...',
+            image: image,
             pubDate: pubDate,
         }
         //if new Date(pubDate) < date push to array
@@ -1092,11 +1115,16 @@ fastify.get('/lotnews', async (request, reply) => {
         const link = news.eq(i).find('link')[0].next.data
         const description = news.eq(i).find('description').text()
         const pubDate = news.eq(i).find('pubDate').text()
+        const getimage = await fetch(link)
+        const responimage = await getimage.text()
+        const $ = cheerio.load(responimage)
+        const image = $('picture > img').toArray()[0].attribs['data-src']
         const json = {
             title: title,
             //remove \n and \t in string
             link: link.replace(/\n|\t/g, ''),
             description: description.substring(0, 100) + '...',
+            image: image,
             pubDate: pubDate,
         }
         //if new Date(pubDate) < date push to array
