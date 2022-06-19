@@ -1009,9 +1009,15 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[2] = count / 3
     }
     if(request.query.lastweek && request.query.lastweek == 'true'){
-        arrayofnews[0] = count
-        arrayofnews[1] = count
-        arrayofnews[2] = count
+        if(count > 10){
+            arrayofnews[0] = 10
+            arrayofnews[1] = 10
+            arrayofnews[2] = 10
+        }else{
+            arrayofnews[0] = count
+            arrayofnews[1] = count
+            arrayofnews[2] = count
+        }
     }
     let array = [];
     let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
