@@ -1159,10 +1159,10 @@ fastify.get('/lotnews', async (request, reply) => {
 
 const start = async () => {
     try {
-        await fastify.listen(port, '0.0.0.0')
+      await fastify.listen({ port: port, host: '0.0.0.0' })
     } catch (err) {
-        fastify.log.error(err)
-        process.exit(1)
+      fastify.log.error(err)
+      process.exit(1)
     }
-}
+  }
 start()
