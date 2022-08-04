@@ -1037,6 +1037,8 @@ fastify.get('/lotnews', async (request, reply) => {
         }else{
             description = description.substring(0, 100) + '...'
         }
+        //remove /r/n from description
+        description = description.replace(/\r?\n|\r/g, '')
         const pubDate = news.eq(i).find('pubDate').text()
         const getimage = await fetch(link)
         const responimage = await getimage.text()
@@ -1098,6 +1100,7 @@ fastify.get('/lotnews', async (request, reply) => {
         if(request.query.fulldesc == 'false'){
             description2 = description2.substring(0, 100) + '...'
         }
+        description2 = description2.replace(/\r?\n|\r/g, '')
         const json = {
             title: title,
             link: link.replace(/\n|\t/g, ''),
@@ -1131,6 +1134,7 @@ fastify.get('/lotnews', async (request, reply) => {
         }else{
             description = description.substring(0, 100) + '...'
         }
+        description = description.replace(/\r?\n|\r/g, '')
         const pubDate = news.eq(i).find('pubDate').text()
         const getimage = await fetch(link)
         const responimage = await getimage.text()
