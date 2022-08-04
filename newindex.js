@@ -1029,7 +1029,14 @@ fastify.get('/lotnews', async (request, reply) => {
     for (let i = 0; i < arrayofnews[0]; i++) {
         const title = news.eq(i).find('title').text()
         const link = news.eq(i).find('link')[0].next.data
-        const description = news.eq(i).find('description').text()
+        let description = news.eq(i).find('description').text()
+        if(request.query.fulldesc == 'true'){
+            const content = news.eq(i).find('content\\:encoded').text()
+            description = content.replace(/]]>/g, '')
+            //console.log(content_clean)
+        }else{
+            description = description.substring(0, 100) + '...'
+        }
         const pubDate = news.eq(i).find('pubDate').text()
         const getimage = await fetch(link)
         const responimage = await getimage.text()
@@ -1060,7 +1067,7 @@ fastify.get('/lotnews', async (request, reply) => {
             title: title,
             //remove \n and \t in string
             link: link.replace(/\n|\t/g, ''),
-            description: description.substring(0, 100) + '...',
+            description: description,
             image: image,
             pubDate: pubDate,
         }
@@ -1088,10 +1095,13 @@ fastify.get('/lotnews', async (request, reply) => {
         const image = news[i].image
         //create new description variable with remove html tag
         let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
+        if(request.query.fulldesc == 'false'){
+            description2 = description2.substring(0, 100) + '...'
+        }
         const json = {
             title: title,
             link: link.replace(/\n|\t/g, ''),
-            description: description2.substring(0, 100) + '...',
+            description: description2,
             image: image,
             pubDate: event.toUTCString(),
         }
@@ -1113,7 +1123,14 @@ fastify.get('/lotnews', async (request, reply) => {
     for (let i = 0; i < arrayofnews[2]; i++) {
         const title = news.eq(i).find('title').text()
         const link = news.eq(i).find('link')[0].next.data
-        const description = news.eq(i).find('description').text()
+        let description = news.eq(i).find('description').text()
+        if(request.query.fulldesc == 'true'){
+            const content = news.eq(i).find('content\\:encoded').text()
+            description = content.replace(/]]>/g, '')
+            //console.log(content_clean)
+        }else{
+            description = description.substring(0, 100) + '...'
+        }
         const pubDate = news.eq(i).find('pubDate').text()
         const getimage = await fetch(link)
         const responimage = await getimage.text()
@@ -1123,7 +1140,7 @@ fastify.get('/lotnews', async (request, reply) => {
             title: title,
             //remove \n and \t in string
             link: link.replace(/\n|\t/g, ''),
-            description: description.substring(0, 100) + '...',
+            description: description,
             image: image,
             pubDate: pubDate,
         }
