@@ -988,6 +988,7 @@ fastify.get('/lotnews', async (request, reply) => {
     let check = count % 3
     //get date 7 days ago
     let date = new Date()
+    let fulldesc = request.query.fulldesc || 'false'
     date.setDate(date.getDate() - 7)
     if (check != 0) {
         if (check == 1) {
@@ -1030,7 +1031,7 @@ fastify.get('/lotnews', async (request, reply) => {
         const title = news.eq(i).find('title').text()
         const link = news.eq(i).find('link')[0].next.data
         let description = news.eq(i).find('description').text()
-        if(request.query.fulldesc == 'true'){
+        if(fulldesc == 'true'){
             const content = news.eq(i).find('content\\:encoded').text()
             description = content.replace(/]]>/g, '')
             //console.log(content_clean)
@@ -1097,7 +1098,7 @@ fastify.get('/lotnews', async (request, reply) => {
         const image = news[i].image
         //create new description variable with remove html tag
         let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
-        if(request.query.fulldesc == 'false'){
+        if(fulldesc == 'false'){
             description2 = description2.substring(0, 100) + '...'
         }
         description2 = description2.replace(/\r?\n|\r/g, '')
@@ -1127,7 +1128,7 @@ fastify.get('/lotnews', async (request, reply) => {
         const title = news.eq(i).find('title').text()
         const link = news.eq(i).find('link')[0].next.data
         let description = news.eq(i).find('description').text()
-        if(request.query.fulldesc == 'true'){
+        if(fulldesc == 'true'){
             const content = news.eq(i).find('content\\:encoded').text()
             description = content.replace(/]]>/g, '')
             //console.log(content_clean)
