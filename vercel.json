@@ -1,1 +1,14 @@
-
+{
+    "builds": [
+        {
+            "src": "newindex.js",
+            "use": "@vercel/node"
+        }
+    ],
+    "routes": [
+        {
+          "src": "/(.*)",
+          "dest": "newindex.js"
+        }
+    ]
+  }
