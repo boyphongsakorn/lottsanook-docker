@@ -1165,7 +1165,7 @@ fastify.get('/lotnews', async (request, reply) => {
     }
 
     response = await fetch('https://www.bangkokbiznews.com/tags/%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%94');
-    $ = cheerio.load(await news.text());
+    $ = cheerio.load(await response.text());
     const a = $('a.card-wrapper');
     for (let i = 0; i < arrayofnews[3]; i++) {
         //if h3 class card-v-content-title text-excerpt-2
