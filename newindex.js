@@ -13,6 +13,11 @@ function padLeadingZeros(num, size) {
 }
 
 fastify.get('/', async (request, reply) => {
+    //get :authority: from header
+    const host = request.headers.host
+    const url = `https://${host}`
+    console.log(url)
+    
     let test = ['test']
 
     var raw
