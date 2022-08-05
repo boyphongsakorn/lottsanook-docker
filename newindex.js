@@ -549,12 +549,17 @@ fastify.get('/index3', async (request, reply) => {
 
 fastify.get('/reto', async (request, reply) => {
     let url;
-    const checkurl = await fetch('http://localhost:' + port)
-    if (checkurl.status === 200) {
-        url = 'http://localhost:' + port
-    } else {
+    try {
+        const checkurl = await fetch('http://localhost:' + port)
+        if (checkurl.status === 200) {
+            url = 'http://localhost:' + port
+        } else {
+            url = 'https://' + request.headers.host
+        }
+    } catch (error) {
         url = 'https://' + request.headers.host
     }
+    
 
     let test
     await fetch(url + '/?date=' + padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543))
