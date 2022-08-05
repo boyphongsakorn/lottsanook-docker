@@ -551,6 +551,7 @@ fastify.get('/reto', async (request, reply) => {
     let url;
     try {
         const checkurl = await fetch('http://localhost:' + port)
+        console.log(checkurl.status)
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
