@@ -14,10 +14,14 @@ function padLeadingZeros(num, size) {
 
 fastify.get('/', async (request, reply) => {
     let url;
-    const checkurl = await fetch('http://localhost:' + port)
-    if (checkurl.status === 200) {
-        url = 'http://localhost:' + port
-    } else {
+    try {
+        const checkurl = await fetch('http://localhost:' + port)
+        if (checkurl.status === 200) {
+            url = 'http://localhost:' + port
+        } else {
+            url = 'https://' + request.headers.host
+        }
+    } catch (error) {
         url = 'https://' + request.headers.host
     }
 
@@ -190,10 +194,14 @@ fastify.get('/', async (request, reply) => {
 
 fastify.get('/index2', async (request, reply) => {
     let url;
-    const checkurl = await fetch('http://localhost:' + port)
-    if (checkurl.status === 200) {
-        url = 'http://localhost:' + port
-    } else {
+    try {
+        const checkurl = await fetch('http://localhost:' + port)
+        if (checkurl.status === 200) {
+            url = 'http://localhost:' + port
+        } else {
+            url = 'https://' + request.headers.host
+        }
+    } catch (error) {
         url = 'https://' + request.headers.host
     }
 
@@ -551,7 +559,6 @@ fastify.get('/reto', async (request, reply) => {
     let url;
     try {
         const checkurl = await fetch('http://localhost:' + port)
-        console.log(checkurl.status)
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
@@ -799,10 +806,14 @@ fastify.get('/gdpy', async (request, reply) => {
 
 fastify.get('/checklottery', async (request, reply) => {
     let url;
-    const checkurl = await fetch('http://localhost:' + port)
-    if (checkurl.status === 200) {
-        url = 'http://localhost:' + port
-    } else {
+    try {
+        const checkurl = await fetch('http://localhost:' + port)
+        if (checkurl.status === 200) {
+            url = 'http://localhost:' + port
+        } else {
+            url = 'https://' + request.headers.host
+        }
+    } catch (error) {
         url = 'https://' + request.headers.host
     }
 
@@ -851,10 +862,14 @@ fastify.get('/checklottery', async (request, reply) => {
 
 fastify.get('/lastlot', async (request, reply) => {
     let url;
-    const checkurl = await fetch('http://localhost:' + port)
-    if (checkurl.status === 200) {
-        url = 'http://localhost:' + port
-    } else {
+    try {
+        const checkurl = await fetch('http://localhost:' + port)
+        if (checkurl.status === 200) {
+            url = 'http://localhost:' + port
+        } else {
+            url = 'https://' + request.headers.host
+        }
+    } catch (error) {
         url = 'https://' + request.headers.host
     }
 
@@ -931,10 +946,14 @@ fastify.get('/getchit', async (request, reply) => {
 
 fastify.get('/finddol', async (request, reply) => {
     let url;
-    const checkurl = await fetch('http://localhost:' + port)
-    if (checkurl.status === 200) {
-        url = 'http://localhost:' + port
-    } else {
+    try {
+        const checkurl = await fetch('http://localhost:' + port)
+        if (checkurl.status === 200) {
+            url = 'http://localhost:' + port
+        } else {
+            url = 'https://' + request.headers.host
+        }
+    } catch (error) {
         url = 'https://' + request.headers.host
     }
 
