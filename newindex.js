@@ -983,9 +983,9 @@ fastify.get('/finddol', async (request, reply) => {
 })
 
 fastify.get('/lotnews', async (request, reply) => {
-    let arrayofnews = [0, 0, 0]
+    let arrayofnews = [0, 0, 0, 0]
     let count = request.query.count || 0
-    let check = count % 3
+    let check = count % 4
     //get date 7 days ago
     let date = new Date()
     let fulldesc = request.query.fulldesc || 'false'
@@ -993,31 +993,36 @@ fastify.get('/lotnews', async (request, reply) => {
     if (check != 0) {
         if (check == 1) {
             //ceil number
-            arrayofnews[0] = Math.floor(count / 3)
-            arrayofnews[1] = Math.ceil(count / 3)
+            arrayofnews[0] = Math.floor(count / 4)
+            arrayofnews[1] = Math.ceil(count / 4)
             //floor number
-            arrayofnews[2] = Math.floor(count / 3)
+            arrayofnews[2] = Math.floor(count / 4)
+            arrayofnews[3] = Math.floor(count / 4)
         } else {
             //ceil number
-            arrayofnews[0] = Math.floor(count / 3)
-            arrayofnews[1] = Math.ceil(count / 3)
+            arrayofnews[0] = Math.floor(count / 4)
+            arrayofnews[1] = Math.ceil(count / 4)
             //floor number
-            arrayofnews[2] = Math.floor(count / 3) + 1
+            arrayofnews[2] = Math.floor(count / 4)
+            arrayofnews[3] = Math.floor(count / 4) + 1
         }
     } else {
-        arrayofnews[0] = count / 3
-        arrayofnews[1] = count / 3
-        arrayofnews[2] = count / 3
+        arrayofnews[0] = count / 4
+        arrayofnews[1] = count / 4
+        arrayofnews[2] = count / 4
+        arrayofnews[3] = count / 4
     }
-    if(request.query.lastweek && request.query.lastweek == 'true'){
-        if(count > 10){
+    if (request.query.lastweek && request.query.lastweek == 'true') {
+        if (count > 10) {
             arrayofnews[0] = 10
             arrayofnews[1] = 10
             arrayofnews[2] = 10
-        }else{
+            arrayofnews[3] = 10
+        } else {
             arrayofnews[0] = count
             arrayofnews[1] = count
             arrayofnews[2] = count
+            arrayofnews[3] = count
         }
     }
     let array = [];
@@ -1031,11 +1036,11 @@ fastify.get('/lotnews', async (request, reply) => {
         const title = news.eq(i).find('title').text()
         const link = news.eq(i).find('link')[0].next.data
         let description = news.eq(i).find('description').text()
-        if(fulldesc == 'true'){
+        if (fulldesc == 'true') {
             const content = news.eq(i).find('content\\:encoded').text()
             description = content.replace(/]]>/g, '')
             //console.log(content_clean)
-        }else{
+        } else {
             description = description.substring(0, 100) + '...'
         }
         //remove /r/n from description
@@ -1079,7 +1084,7 @@ fastify.get('/lotnews', async (request, reply) => {
             if (new Date(pubDate) > date) {
                 array.push(json)
             }
-        }else{
+        } else {
             array.push(json)
         }
     }
@@ -1098,7 +1103,7 @@ fastify.get('/lotnews', async (request, reply) => {
         const image = news[i].image
         //create new description variable with remove html tag
         let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
-        if(fulldesc == 'false'){
+        if (fulldesc == 'false') {
             description2 = description2.substring(0, 100) + '...'
         }
         description2 = description2.replace(/\r?\n|\r/g, '')
@@ -1114,7 +1119,7 @@ fastify.get('/lotnews', async (request, reply) => {
             if (event > date) {
                 array.push(json)
             }
-        }else{
+        } else {
             array.push(json)
         }
     }
@@ -1128,11 +1133,11 @@ fastify.get('/lotnews', async (request, reply) => {
         const title = news.eq(i).find('title').text()
         const link = news.eq(i).find('link')[0].next.data
         let description = news.eq(i).find('description').text()
-        if(fulldesc == 'true'){
+        if (fulldesc == 'true') {
             const content = news.eq(i).find('content\\:encoded').text()
             description = content.replace(/]]>/g, '')
             //console.log(content_clean)
-        }else{
+        } else {
             description = description.substring(0, 100) + '...'
         }
         description = description.replace(/\r?\n|\r/g, '')
@@ -1154,8 +1159,91 @@ fastify.get('/lotnews', async (request, reply) => {
             if (new Date(pubDate) > date) {
                 array.push(json)
             }
-        }else{
+        } else {
             array.push(json)
+        }
+    }
+
+    response = await fetch('https://www.bangkokbiznews.com/tags/%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%94');
+    $ = cheerio.load(await news.text());
+    const a = $('a.card-wrapper');
+    for (let i = 0; i < arrayofnews[3]; i++) {
+        //if h3 class card-v-content-title text-excerpt-2
+        if ($(a[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(a[i]).find('h3').text().includes('ตรวจหวย')) {
+            const title = $(a[i]).find('h3').text()
+            const link = 'https://www.bangkokbiznews.com' + $(a[i]).attr('href')
+            let description
+            const image = $(a[i]).find('img').attr('src')
+            const date = $(a[i]).find('span.date').text().split('|');
+            let time = date[1].trim().split(':')[0].padStart(2, '0') + ':' + date[1].trim().split(':')[1].padStart(2, '0');
+            let number = '';
+            switch (date[0].split(' ')[1]) {
+                case 'ม.ค.':
+                    number = '01';
+                    break;
+                case 'ก.พ.':
+                    number = '02';
+                    break;
+                case 'มี.ค.':
+                    number = '03';
+                    break;
+                case 'เม.ย.':
+                    number = '04';
+                    break;
+                case 'พ.ค.':
+                    number = '05';
+                    break;
+                case 'มิ.ย.':
+                    number = '06';
+                    break;
+                case 'ก.ค.':
+                    number = '07';
+                    break;
+                case 'ส.ค.':
+                    number = '08';
+                    break;
+                case 'ก.ย.':
+                    number = '09';
+                    break;
+                case 'ต.ค.':
+                    number = '10';
+                    break;
+                case 'พ.ย.':
+                    number = '11';
+                    break;
+                case 'ธ.ค.':
+                    number = '12';
+                    break;
+            }
+            let vertdate = new Date(parseInt(date[0].split(' ')[2]) - 543 + '-' + number + '-' + date[0].split(' ')[0] + 'T' + time + ':00Z');
+            const pubDate = vertdate.toUTCString()
+            const content = await fetch(link);
+            const $$ = cheerio.load(await content.text());
+            const div = $$('div.content-detail');
+            for (let j = 0; j < div.length; j++) {
+                if ($(div[j]).attr('class') === 'content-detail') {
+                    if (fulldesc == 'true') {
+                        description = $(div[j]).text()
+                    } else {
+                        description = $(div[j]).text().substring(0, 100) + '...'
+                    }
+                }
+            }
+            const json = {
+                title: title,
+                link: link,
+                description: description,
+                image: image,
+                pubDate: pubDate,
+            }
+            //if new Date(pubDate) < date push to array
+            if (request.query.lastweek) {
+                if (new Date(pubDate) > date) {
+                    array.push(json)
+                }
+            } else {
+                array.push(json)
+            }
         }
     }
 
@@ -1165,7 +1253,7 @@ fastify.get('/lotnews', async (request, reply) => {
             //slice array to request.query.count
             //array = array.slice(0, request.query.count)
             let wantremove = array.length - count
-            array.splice(parseInt(count/2), wantremove)
+            array.splice(parseInt(count / 2), wantremove)
         }
     }
 
@@ -1181,10 +1269,10 @@ fastify.get('/lotnews', async (request, reply) => {
 
 const start = async () => {
     try {
-      await fastify.listen({ port: port, host: '0.0.0.0' })
+        await fastify.listen({ port: port, host: '0.0.0.0' })
     } catch (err) {
-      fastify.log.error(err)
-      process.exit(1)
+        fastify.log.error(err)
+        process.exit(1)
     }
-  }
+}
 start()
