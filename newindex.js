@@ -13,11 +13,14 @@ function padLeadingZeros(num, size) {
 }
 
 fastify.get('/', async (request, reply) => {
-    //get :authority: from header
-    const host = request.headers.host
-    const url = `https://${host}`
-    console.log(url)
-    
+    let url;
+    const checkurl = await fetch('http://localhost:' + port)
+    if (checkurl.status === 200) {
+        url = 'http://localhost:' + port
+    } else {
+        url = 'https://' + request.headers.host
+    }
+
     let test = ['test']
 
     var raw
@@ -40,14 +43,14 @@ fastify.get('/', async (request, reply) => {
 
     if (date.getTime() === today.getTime() || date > today) {
         if (request.query.from !== undefined) {
-            await fetch('http://localhost:' + port + '/index3?date=' + request.query.date + '&from')
+            await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
                 .then((body) => {
                     //res.send(body)
                     test = body
                 })
         } else {
-            await fetch('http://localhost:' + port + '/index3?date=' + request.query.date)
+            await fetch(url + '/index3?date=' + request.query.date)
                 .then(res => res.json())
                 .then((body) => {
                     //res.send(body)
@@ -141,14 +144,14 @@ fastify.get('/', async (request, reply) => {
                     console.log(thatdate)
                     if (date.getTime() === thatdate.getTime() || date < thatdate) {
                         if (request.query.from !== undefined) {
-                            await fetch('http://localhost:' + port + '/index2?date=' + request.query.date + '&from')
+                            await fetch(url + '/index2?date=' + request.query.date + '&from')
                                 .then(res => res.json())
                                 .then((body) => {
                                     //res.send(body)
                                     test = body
                                 })
                         } else {
-                            await fetch('http://localhost:' + port + '/index2?date=' + request.query.date)
+                            await fetch(url + '/index2?date=' + request.query.date)
                                 .then(res => res.json())
                                 .then((body) => {
                                     //res.send(body)
@@ -164,14 +167,14 @@ fastify.get('/', async (request, reply) => {
             })
             .catch(async (error) => {
                 if (request.query.from !== undefined) {
-                    await fetch('http://localhost:' + port + '/index2?date=' + request.query.date + '&from')
+                    await fetch(url + '/index2?date=' + request.query.date + '&from')
                         .then(res => res.json())
                         .then((body) => {
                             //res.send(body)
                             test = body
                         })
                 } else {
-                    await fetch('http://localhost:' + port + '/index2?date=' + request.query.date)
+                    await fetch(url + '/index2?date=' + request.query.date)
                         .then(res => res.json())
                         .then((body) => {
                             //res.send(body)
@@ -186,6 +189,14 @@ fastify.get('/', async (request, reply) => {
 })
 
 fastify.get('/index2', async (request, reply) => {
+    let url;
+    const checkurl = await fetch('http://localhost:' + port)
+    if (checkurl.status === 200) {
+        url = 'http://localhost:' + port
+    } else {
+        url = 'https://' + request.headers.host
+    }
+
     var test = []
 
     if (!request.query.date) {
@@ -193,14 +204,14 @@ fastify.get('/index2', async (request, reply) => {
     }
     if (request.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
         if (request.query.from !== undefined) {
-            await fetch('http://localhost:' + port + '/index3?date=' + request.query.date + '&from')
+            await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
                 .then((body) => {
                     //res.send(body)
                     test = body
                 })
         } else {
-            await fetch('http://localhost:' + port + '/index3?date=' + request.query.date)
+            await fetch(url + '/index3?date=' + request.query.date)
                 .then(res => res.json())
                 .then((body) => {
                     //res.send(body)
@@ -537,8 +548,16 @@ fastify.get('/index3', async (request, reply) => {
 })
 
 fastify.get('/reto', async (request, reply) => {
+    let url;
+    const checkurl = await fetch('http://localhost:' + port)
+    if (checkurl.status === 200) {
+        url = 'http://localhost:' + port
+    } else {
+        url = 'https://' + request.headers.host
+    }
+
     let test
-    await fetch('http://localhost:' + port + '/?date=' + padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543))
+    await fetch(url + '/?date=' + padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543))
         .then(res => res.json())
         .then((body) => {
             if (body[0][1] === "XXXXXX" || body[0][1] === "xxxxxx") {
@@ -773,8 +792,16 @@ fastify.get('/gdpy', async (request, reply) => {
 })
 
 fastify.get('/checklottery', async (request, reply) => {
+    let url;
+    const checkurl = await fetch('http://localhost:' + port)
+    if (checkurl.status === 200) {
+        url = 'http://localhost:' + port
+    } else {
+        url = 'https://' + request.headers.host
+    }
+
     let result = ""
-    await fetch('http://localhost:' + port + '/?date=' + request.query.by)
+    await fetch(url + '/?date=' + request.query.by)
         .then(res => res.json())
         .then((body) => {
             body.forEach(function (val, x) {
@@ -817,22 +844,30 @@ fastify.get('/checklottery', async (request, reply) => {
 })
 
 fastify.get('/lastlot', async (request, reply) => {
+    let url;
+    const checkurl = await fetch('http://localhost:' + port)
+    if (checkurl.status === 200) {
+        url = 'http://localhost:' + port
+    } else {
+        url = 'https://' + request.headers.host
+    }
+
     let lastdate
     let viewer
-    await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543))
+    await fetch(url + '/gdpy?year=' + (new Date().getFullYear() + 543))
         .then(res => res.json())
         .then((body) => {
             lastdate = body[body.length - 1]
         })
     // if lastdate is null or undefined then fetch last year
     if (lastdate == undefined || lastdate == null) {
-        await fetch('http://localhost:' + port + '/gdpy?year=' + (new Date().getFullYear() + 543 - 1))
+        await fetch(url + '/gdpy?year=' + (new Date().getFullYear() + 543 - 1))
             .then(res => res.json())
             .then((body) => {
                 lastdate = body[body.length - 1]
             })
     }
-    await fetch('http://localhost:' + port + '/?date=' + lastdate)
+    await fetch(url + '/?date=' + lastdate)
         .then(res => res.json())
         .then((body) => {
             if (request.query.info !== undefined) {
@@ -889,6 +924,14 @@ fastify.get('/getchit', async (request, reply) => {
 })
 
 fastify.get('/finddol', async (request, reply) => {
+    let url;
+    const checkurl = await fetch('http://localhost:' + port)
+    if (checkurl.status === 200) {
+        url = 'http://localhost:' + port
+    } else {
+        url = 'https://' + request.headers.host
+    }
+
     let channels
     let allwin = []
     await fetch('https://raw.githubusercontent.com/boyphongsakorn/testrepo/main/tmp/' + request.query.search, { redirect: 'error' })
@@ -945,7 +988,7 @@ fastify.get('/finddol', async (request, reply) => {
 
                 reqtwo.end();*/
 
-                await fetch('http://localhost:' + port + '/god')
+                await fetch(url + '/god')
                     .then(res => res.json())
                     .then((body) => {
                         channels = body.splice(408)
@@ -953,14 +996,14 @@ fastify.get('/finddol', async (request, reply) => {
                     })
                 for (const val of channels) {
                     console.log(val)
-                    await fetch('http://localhost:' + port + '/?date=' + val + '&from')
+                    await fetch(url + '/?date=' + val + '&from')
                         .then(res => res.json())
                         .then((body) => {
                             for (let index = 0; index < body.length; index++) {
                                 const element = body[index];
                                 if (element.includes(request.query.search.toString())) {
                                     allwin.push(body[0][0])
-                                    console.log('http://localhost:' + port + '/?date=' + val + '&from')
+                                    console.log(url + '/?date=' + val + '&from')
                                 }
                             }
 
