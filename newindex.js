@@ -15,7 +15,7 @@ function padLeadingZeros(num, size) {
 fastify.get('/', async (request, reply) => {
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port + '/lot')
+        const checkurl = await fetch('http://localhost:' + port + '/index3')
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
