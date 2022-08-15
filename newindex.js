@@ -1303,9 +1303,11 @@ fastify.get('/lotnews', async (request, reply) => {
             for (let j = 0; j < div.length; j++) {
                 if ($(div[j]).attr('class') === 'content-detail') {
                     if (fulldesc == 'true') {
-                        description = $(div[j]).text()
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
                     } else {
-                        description = $(div[j]).text().substring(0, 100) + '...'
+                        //remove new line from description
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
+                        description = descriptionsubstring(0, 100) + '...'
                     }
                 }
             }
