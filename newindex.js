@@ -1129,6 +1129,7 @@ fastify.get('/lotnews', async (request, reply) => {
         const pubDate = news.eq(i).find('pubDate').text()
         const getimage = await fetch(link)
         const responimage = await getimage.text()
+        console.log(responimage)
         //console.log(image)
         //write to html file
         //fs.writeFileSync('news.html', responimage)
