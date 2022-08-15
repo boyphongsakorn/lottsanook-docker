@@ -1063,7 +1063,7 @@ fastify.get('/lotnews', async (request, reply) => {
     let date = new Date()
     let fulldesc = request.query.fulldesc || 'false'
     date.setDate(date.getDate() - 7)
-    if (check != 0) {
+    /*if (check != 0) {
         if (check == 1) {
             //ceil number
             arrayofnews[0] = Math.floor(count / 4)
@@ -1092,7 +1092,7 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[2] = count / 4
         arrayofnews[3] = (count / 4) + 1
     }
-    if (request.query.lastweek && request.query.lastweek == 'true') {
+    if (request.query.lastweek && request.query.lastweek == 'true') {*/
         if (count > 10) {
             arrayofnews[0] = 10
             arrayofnews[1] = 10
@@ -1104,7 +1104,8 @@ fastify.get('/lotnews', async (request, reply) => {
             arrayofnews[2] = count
             arrayofnews[3] = count
         }
-    }
+    /*}*/
+    
     let array = [];
     let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
     let xml = await response.text()
@@ -1343,6 +1344,13 @@ fastify.get('/lotnews', async (request, reply) => {
     array.sort((a, b) => {
         return new Date(b.pubDate) - new Date(a.pubDate)
     })
+
+    //get only count of array
+    if (count) {
+        array = array.slice(0, count)
+    }else{
+        array = array.slice(0, 10)
+    }
 
     //res.send(array)
 
