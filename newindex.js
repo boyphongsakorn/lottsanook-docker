@@ -1071,10 +1071,17 @@ fastify.get('/lotnews', async (request, reply) => {
             //floor number
             arrayofnews[2] = Math.floor(count / 4)
             arrayofnews[3] = Math.floor(count / 4)
-        } else {
+        } else if (check == 2) {
             //ceil number
             arrayofnews[0] = Math.floor(count / 4)
             arrayofnews[1] = Math.ceil(count / 4)
+            //floor number
+            arrayofnews[2] = Math.floor(count / 4)
+            arrayofnews[3] = Math.floor(count / 4) + 1
+        } else if (check == 3) {
+            //ceil number
+            arrayofnews[0] = Math.floor(count / 4)
+            arrayofnews[1] = Math.ceil(count / 4) + 1
             //floor number
             arrayofnews[2] = Math.floor(count / 4)
             arrayofnews[3] = Math.floor(count / 4) + 1
@@ -1083,7 +1090,7 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[0] = count / 4
         arrayofnews[1] = count / 4
         arrayofnews[2] = count / 4
-        arrayofnews[3] = count / 4
+        arrayofnews[3] = (count / 4) + 1
     }
     if (request.query.lastweek && request.query.lastweek == 'true') {
         if (count > 10) {
