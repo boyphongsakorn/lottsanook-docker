@@ -1308,7 +1308,7 @@ fastify.get('/lotnews', async (request, reply) => {
                     } else {
                         //remove new line from description
                         description = $(div[j]).text().replace(/\r?\n|\r/g, '')
-                        description = descriptionsubstring(0, 100) + '...'
+                        description = description.substring(0, 100) + '...'
                     }
                 }
             }
