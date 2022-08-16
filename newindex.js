@@ -8,13 +8,22 @@ const port = process.env.PORT || 5000;
 
 let dir = 'tmp/';
 
-fs.access(__dirname+'/'+dir, fs.constants.W_OK, (err) => {
-    if(err){
+fs.access(__dirname + '/' + dir, fs.constants.W_OK, (err) => {
+    if (err) {
         dir = '/tmp/';
         console.log("can't write");
+        //copy file in /tmp to /tmp/
+        fs.readdir('tmp/', (err, files) => {
+            files.forEach(file => {
+                fs.copyFile('tmp/' + file, '/tmp/' + file, (err) => {
+                    if (err) throw err;
+                    console.log('success!');
+                });
+            });
+        });
         //process.exit(1);
     }
-  
+
     console.log("can write");
     //process.exit(0);
 });
@@ -580,7 +589,7 @@ fastify.get('/reto', async (request, reply) => {
     } catch (error) {
         url = 'https://' + request.headers.host
     }
-    
+
 
     let test
     await fetch(url + '/?date=' + padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543))
@@ -611,7 +620,7 @@ fastify.get('/god', async (request, reply) => {
     let countloveme = 0
     var fileContents = null;
     try {
-        fileContents = fs.readFileSync(dir+'cache.txt');
+        fileContents = fs.readFileSync(dir + 'cache.txt');
     } catch (err) { }
     try {
         if (fileContents) {
@@ -694,7 +703,7 @@ fastify.get('/god', async (request, reply) => {
         }
         year += 10
     }
-    fs.writeFile(dir+'cache.txt', JSON.stringify(yearlist), async function (err) {
+    fs.writeFile(dir + 'cache.txt', JSON.stringify(yearlist), async function (err) {
         if (err) throw err;
     });
 
@@ -1103,19 +1112,19 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[3] = (count / 4) + 1
     }
     if (request.query.lastweek && request.query.lastweek == 'true') {*/
-        if (count > 10) {
-            arrayofnews[0] = 10
-            arrayofnews[1] = 10
-            arrayofnews[2] = 10
-            arrayofnews[3] = 10
-        } else {
-            arrayofnews[0] = count
-            arrayofnews[1] = count
-            arrayofnews[2] = count
-            arrayofnews[3] = count
-        }
+    if (count > 10) {
+        arrayofnews[0] = 10
+        arrayofnews[1] = 10
+        arrayofnews[2] = 10
+        arrayofnews[3] = 10
+    } else {
+        arrayofnews[0] = count
+        arrayofnews[1] = count
+        arrayofnews[2] = count
+        arrayofnews[3] = count
+    }
     /*}*/
-    
+
     let array = [];
     let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
     let xml = await response.text()
@@ -1358,7 +1367,7 @@ fastify.get('/lotnews', async (request, reply) => {
     //get only count of array
     if (count) {
         array = array.slice(0, count)
-    }else{
+    } else {
         array = array.slice(0, 10)
     }
 
