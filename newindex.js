@@ -8,10 +8,10 @@ const port = process.env.PORT || 5000;
 
 let dir = 'tmp/';
 
-fs.access(__dirname+'/'+dir, fs.constants.F_OK, (err) => {
+fs.access(__dirname+'/'+dir, fs.constants.R_OK | fs.constants.W_OK, (err) => {
     if(err){
         dir = '/tmp/';
-        console.error("can't write");
+        console.log("can't write");
         //process.exit(1);
     }
   
