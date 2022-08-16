@@ -616,10 +616,7 @@ fastify.get('/god', async (request, reply) => {
     try {
         if (fileContents) {
             yearlist = JSON.parse(fileContents);
-            if (
-                yearlist[yearlist.length - 1].substring(4, 8) ==
-                new Date().getFullYear() + 543
-            ) {
+            if (yearlist[yearlist.length - 1].substring(4, 8) == new Date().getFullYear() + 543) {
                 year = new Date().getFullYear() + 543;
             } else {
                 //year = yearlist[yearlist.length - 1].substring(4, 8)
