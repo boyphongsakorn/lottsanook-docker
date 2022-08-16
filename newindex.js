@@ -10,9 +10,9 @@ let dir = 'tmp/';
 
 fs.access(__dirname+'/'+dir, fs.constants.F_OK, (err) => {
     if(err){
-      console.error("can't write");
-      dir = '/tmp/';
-      //process.exit(1);
+        dir = '/tmp/';
+        console.error("can't write");
+        //process.exit(1);
     }
   
     console.log("can write");
