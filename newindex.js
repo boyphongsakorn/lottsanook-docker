@@ -6,6 +6,19 @@ var fs = require('fs')
 
 const port = process.env.PORT || 5000;
 
+let dir = 'tmp/';
+
+fs.access(__dirname+'/'+dir, fs.constants.F_OK, (err) => {
+    if(err){
+      console.error("can't write");
+      dir = '/tmp/';
+      //process.exit(1);
+    }
+  
+    console.log("can write");
+    //process.exit(0);
+});
+
 function padLeadingZeros(num, size) {
     var s = num + "";
     while (s.length < size) s = "0" + s;
@@ -15,7 +28,7 @@ function padLeadingZeros(num, size) {
 fastify.get('/', async (request, reply) => {
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port)
+        const checkurl = await fetch('http://localhost:' + port + '/index3')
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
@@ -195,7 +208,7 @@ fastify.get('/', async (request, reply) => {
 fastify.get('/index2', async (request, reply) => {
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port)
+        const checkurl = await fetch('http://localhost:' + port + '/index3')
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
@@ -245,14 +258,14 @@ fastify.get('/index2', async (request, reply) => {
         }
         try {
             if (request.query.fresh !== undefined) {
-                fs.unlinkSync('tmp/' + request.query.date + '.txt');
+                fs.unlinkSync(dir + request.query.date + '.txt');
             }
         } catch (err) {
 
         }
         var fileContents = null;
         try {
-            fileContents = fs.readFileSync('tmp/' + request.query.date + '.txt');
+            fileContents = fs.readFileSync(dir + request.query.date + '.txt');
             data = JSON.parse(fileContents)
         } catch (err) {
             fileContents = false
@@ -349,7 +362,7 @@ fastify.get('/index2', async (request, reply) => {
                     }
 
                     if ($('div').toArray()[2].firstChild.data != null && $('div').toArray()[2].firstChild.data != ' เวลา 14:30-16:00น.') {
-                        fs.writeFile('tmp/' + request.query.date + '.txt', JSON.stringify(data), function (err) {
+                        fs.writeFile(dir + request.query.date + '.txt', JSON.stringify(data), function (err) {
                             if (err) throw err;
                             //console.log('Saved!');
                             if (request.query.from !== undefined) {
@@ -384,7 +397,7 @@ fastify.get('/index3', async (request, reply) => {
     }
     try {
         if (request.query.fresh !== undefined) {
-            fs.unlinkSync('tmp/' + request.query.date + '.txt');
+            fs.unlinkSync(dir + request.query.date + '.txt');
         }
     } catch (err) {
 
@@ -392,7 +405,7 @@ fastify.get('/index3', async (request, reply) => {
     let monthtext
     var fileContents = null;
     try {
-        fileContents = fs.readFileSync('tmp/' + request.query.date + '.txt');
+        fileContents = fs.readFileSync(dir + request.query.date + '.txt');
     } catch (err) {
 
     }
@@ -474,7 +487,7 @@ fastify.get('/index3', async (request, reply) => {
 
                 try {
                     if ($('div').toArray()[2].firstChild.data.match('~[0-9]+~')) {
-                        fs.writeFile('tmp/' + request.query.date + '.txt', JSON.stringify(data), function (err) {
+                        fs.writeFile(dir + request.query.date + '.txt', JSON.stringify(data), function (err) {
                             if (err) throw err;
                             //console.log('Saved!');
                             if (request.query.from !== undefined) {
@@ -558,7 +571,7 @@ fastify.get('/index3', async (request, reply) => {
 fastify.get('/reto', async (request, reply) => {
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port)
+        const checkurl = await fetch('http://localhost:' + port + '/index3')
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
@@ -598,15 +611,12 @@ fastify.get('/god', async (request, reply) => {
     let countloveme = 0
     var fileContents = null;
     try {
-        fileContents = fs.readFileSync('tmp/cache.txt');
+        fileContents = fs.readFileSync(dir+'cache.txt');
     } catch (err) { }
     try {
         if (fileContents) {
             yearlist = JSON.parse(fileContents);
-            if (
-                yearlist[yearlist.length - 1].substring(4, 8) ==
-                new Date().getFullYear() + 543
-            ) {
+            if (yearlist[yearlist.length - 1].substring(4, 8) == new Date().getFullYear() + 543) {
                 year = new Date().getFullYear() + 543;
             } else {
                 //year = yearlist[yearlist.length - 1].substring(4, 8)
@@ -670,13 +680,13 @@ fastify.get('/god', async (request, reply) => {
                         preyearlist.push(val)
                         try {
                             if (day[3] == new Date().getFullYear() + 543) {
-                                fs.unlinkSync('tmp/' + request.query.date + '.txt');
+                                fs.unlinkSync(dir + request.query.date + '.txt');
                                 console.log('yes this year')
                             }
                         } catch (err) {
 
                         }
-                        fs.writeFile('tmp/' + day[3] + '.txt', JSON.stringify(preyearlist), function (err) {
+                        fs.writeFile(dir + day[3] + '.txt', JSON.stringify(preyearlist), function (err) {
                             if (err) throw err;
                         });
                     }
@@ -684,7 +694,7 @@ fastify.get('/god', async (request, reply) => {
         }
         year += 10
     }
-    fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), async function (err) {
+    fs.writeFile(dir+'cache.txt', JSON.stringify(yearlist), async function (err) {
         if (err) throw err;
     });
 
@@ -752,10 +762,10 @@ fastify.get('/gdpy', async (request, reply) => {
     var fileContents = null;
     try {
         if (request.query.year == new Date().getFullYear() + 543) {
-            fs.unlinkSync('tmp/' + request.query.year + '.txt');
+            fs.unlinkSync(dir + request.query.year + '.txt');
             console.log('yes this year')
         }
-        fileContents = fs.readFileSync('tmp/' + request.query.year + '.txt');
+        fileContents = fs.readFileSync(dir + request.query.year + '.txt');
         console.log(JSON.parse(fileContents))
     } catch (err) {
         fileContents = null;
@@ -793,7 +803,7 @@ fastify.get('/gdpy', async (request, reply) => {
                 for (const val of peryear) {
                     yearlist.push(val)
                 }
-                fs.writeFile('tmp/' + request.query.year + '.txt', JSON.stringify(yearlist), function (err) {
+                fs.writeFile(dir + request.query.year + '.txt', JSON.stringify(yearlist), function (err) {
                     if (err) throw err;
                     //res.send(yearlist)
                     //test = yearlist
@@ -807,7 +817,7 @@ fastify.get('/gdpy', async (request, reply) => {
 fastify.get('/checklottery', async (request, reply) => {
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port)
+        const checkurl = await fetch('http://localhost:' + port + '/index3')
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
@@ -863,7 +873,7 @@ fastify.get('/checklottery', async (request, reply) => {
 fastify.get('/lastlot', async (request, reply) => {
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port)
+        const checkurl = await fetch('http://localhost:' + port + '/index3')
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
@@ -947,7 +957,7 @@ fastify.get('/getchit', async (request, reply) => {
 fastify.get('/finddol', async (request, reply) => {
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port)
+        const checkurl = await fetch('http://localhost:' + port + '/index3')
         if (checkurl.status === 200) {
             url = 'http://localhost:' + port
         } else {
@@ -1063,7 +1073,7 @@ fastify.get('/lotnews', async (request, reply) => {
     let date = new Date()
     let fulldesc = request.query.fulldesc || 'false'
     date.setDate(date.getDate() - 7)
-    if (check != 0) {
+    /*if (check != 0) {
         if (check == 1) {
             //ceil number
             arrayofnews[0] = Math.floor(count / 4)
@@ -1071,10 +1081,17 @@ fastify.get('/lotnews', async (request, reply) => {
             //floor number
             arrayofnews[2] = Math.floor(count / 4)
             arrayofnews[3] = Math.floor(count / 4)
-        } else {
+        } else if (check == 2) {
             //ceil number
             arrayofnews[0] = Math.floor(count / 4)
             arrayofnews[1] = Math.ceil(count / 4)
+            //floor number
+            arrayofnews[2] = Math.floor(count / 4)
+            arrayofnews[3] = Math.floor(count / 4) + 1
+        } else if (check == 3) {
+            //ceil number
+            arrayofnews[0] = Math.floor(count / 4)
+            arrayofnews[1] = Math.ceil(count / 4) + 1
             //floor number
             arrayofnews[2] = Math.floor(count / 4)
             arrayofnews[3] = Math.floor(count / 4) + 1
@@ -1083,9 +1100,9 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[0] = count / 4
         arrayofnews[1] = count / 4
         arrayofnews[2] = count / 4
-        arrayofnews[3] = count / 4
+        arrayofnews[3] = (count / 4) + 1
     }
-    if (request.query.lastweek && request.query.lastweek == 'true') {
+    if (request.query.lastweek && request.query.lastweek == 'true') {*/
         if (count > 10) {
             arrayofnews[0] = 10
             arrayofnews[1] = 10
@@ -1097,7 +1114,8 @@ fastify.get('/lotnews', async (request, reply) => {
             arrayofnews[2] = count
             arrayofnews[3] = count
         }
-    }
+    /*}*/
+    
     let array = [];
     let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
     let xml = await response.text()
@@ -1296,9 +1314,11 @@ fastify.get('/lotnews', async (request, reply) => {
             for (let j = 0; j < div.length; j++) {
                 if ($(div[j]).attr('class') === 'content-detail') {
                     if (fulldesc == 'true') {
-                        description = $(div[j]).text()
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
                     } else {
-                        description = $(div[j]).text().substring(0, 100) + '...'
+                        //remove new line from description
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
+                        description = description.substring(0, 100) + '...'
                     }
                 }
             }
@@ -1334,6 +1354,13 @@ fastify.get('/lotnews', async (request, reply) => {
     array.sort((a, b) => {
         return new Date(b.pubDate) - new Date(a.pubDate)
     })
+
+    //get only count of array
+    if (count) {
+        array = array.slice(0, count)
+    }else{
+        array = array.slice(0, 10)
+    }
 
     //res.send(array)
 
