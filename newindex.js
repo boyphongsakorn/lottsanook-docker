@@ -6,6 +6,19 @@ var fs = require('fs')
 
 const port = process.env.PORT || 5000;
 
+let dir = 'tmp/';
+
+fs.access(__dirname+'/'+dir, fs.constants.F_OK, (err) => {
+    if(err){
+      console.error("can't write");
+      dir = '/tmp/';
+      //process.exit(1);
+    }
+  
+    console.log("can write");
+    //process.exit(0);
+});
+
 function padLeadingZeros(num, size) {
     var s = num + "";
     while (s.length < size) s = "0" + s;
@@ -245,14 +258,14 @@ fastify.get('/index2', async (request, reply) => {
         }
         try {
             if (request.query.fresh !== undefined) {
-                fs.unlinkSync('tmp/' + request.query.date + '.txt');
+                fs.unlinkSync(dir + request.query.date + '.txt');
             }
         } catch (err) {
 
         }
         var fileContents = null;
         try {
-            fileContents = fs.readFileSync('tmp/' + request.query.date + '.txt');
+            fileContents = fs.readFileSync(dir + request.query.date + '.txt');
             data = JSON.parse(fileContents)
         } catch (err) {
             fileContents = false
@@ -349,7 +362,7 @@ fastify.get('/index2', async (request, reply) => {
                     }
 
                     if ($('div').toArray()[2].firstChild.data != null && $('div').toArray()[2].firstChild.data != ' เวลา 14:30-16:00น.') {
-                        fs.writeFile('tmp/' + request.query.date + '.txt', JSON.stringify(data), function (err) {
+                        fs.writeFile(dir + request.query.date + '.txt', JSON.stringify(data), function (err) {
                             if (err) throw err;
                             //console.log('Saved!');
                             if (request.query.from !== undefined) {
@@ -384,7 +397,7 @@ fastify.get('/index3', async (request, reply) => {
     }
     try {
         if (request.query.fresh !== undefined) {
-            fs.unlinkSync('tmp/' + request.query.date + '.txt');
+            fs.unlinkSync(dir + request.query.date + '.txt');
         }
     } catch (err) {
 
@@ -392,7 +405,7 @@ fastify.get('/index3', async (request, reply) => {
     let monthtext
     var fileContents = null;
     try {
-        fileContents = fs.readFileSync('tmp/' + request.query.date + '.txt');
+        fileContents = fs.readFileSync(dir + request.query.date + '.txt');
     } catch (err) {
 
     }
@@ -474,7 +487,7 @@ fastify.get('/index3', async (request, reply) => {
 
                 try {
                     if ($('div').toArray()[2].firstChild.data.match('~[0-9]+~')) {
-                        fs.writeFile('tmp/' + request.query.date + '.txt', JSON.stringify(data), function (err) {
+                        fs.writeFile(dir + request.query.date + '.txt', JSON.stringify(data), function (err) {
                             if (err) throw err;
                             //console.log('Saved!');
                             if (request.query.from !== undefined) {
@@ -598,7 +611,7 @@ fastify.get('/god', async (request, reply) => {
     let countloveme = 0
     var fileContents = null;
     try {
-        fileContents = fs.readFileSync('tmp/cache.txt');
+        fileContents = fs.readFileSync(dir+'cache.txt');
     } catch (err) { }
     try {
         if (fileContents) {
@@ -670,13 +683,13 @@ fastify.get('/god', async (request, reply) => {
                         preyearlist.push(val)
                         try {
                             if (day[3] == new Date().getFullYear() + 543) {
-                                fs.unlinkSync('tmp/' + request.query.date + '.txt');
+                                fs.unlinkSync(dir + request.query.date + '.txt');
                                 console.log('yes this year')
                             }
                         } catch (err) {
 
                         }
-                        fs.writeFile('tmp/' + day[3] + '.txt', JSON.stringify(preyearlist), function (err) {
+                        fs.writeFile(dir + day[3] + '.txt', JSON.stringify(preyearlist), function (err) {
                             if (err) throw err;
                         });
                     }
@@ -684,7 +697,7 @@ fastify.get('/god', async (request, reply) => {
         }
         year += 10
     }
-    fs.writeFile('tmp/cache.txt', JSON.stringify(yearlist), async function (err) {
+    fs.writeFile(dir+'cache.txt', JSON.stringify(yearlist), async function (err) {
         if (err) throw err;
     });
 
@@ -752,10 +765,10 @@ fastify.get('/gdpy', async (request, reply) => {
     var fileContents = null;
     try {
         if (request.query.year == new Date().getFullYear() + 543) {
-            fs.unlinkSync('tmp/' + request.query.year + '.txt');
+            fs.unlinkSync(dir + request.query.year + '.txt');
             console.log('yes this year')
         }
-        fileContents = fs.readFileSync('tmp/' + request.query.year + '.txt');
+        fileContents = fs.readFileSync(dir + request.query.year + '.txt');
         console.log(JSON.parse(fileContents))
     } catch (err) {
         fileContents = null;
@@ -793,7 +806,7 @@ fastify.get('/gdpy', async (request, reply) => {
                 for (const val of peryear) {
                     yearlist.push(val)
                 }
-                fs.writeFile('tmp/' + request.query.year + '.txt', JSON.stringify(yearlist), function (err) {
+                fs.writeFile(dir + request.query.year + '.txt', JSON.stringify(yearlist), function (err) {
                     if (err) throw err;
                     //res.send(yearlist)
                     //test = yearlist
@@ -1129,7 +1142,6 @@ fastify.get('/lotnews', async (request, reply) => {
         const pubDate = news.eq(i).find('pubDate').text()
         const getimage = await fetch(link)
         const responimage = await getimage.text()
-        console.log(responimage)
         //console.log(image)
         //write to html file
         //fs.writeFileSync('news.html', responimage)
