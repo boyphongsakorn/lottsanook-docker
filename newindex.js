@@ -67,7 +67,7 @@ fastify.get('/', async (request, reply) => {
     var date = new Date(parseInt(request.query.date.substr(4, 4)) - 543, parseInt(request.query.date.substr(2, 2)) - 1, parseInt(request.query.date.substr(0, 2)) + 1);
     var today = new Date();
 
-    if (date.getTime() === today.getTime() || date > today) {
+    /*if (date.getTime() === today.getTime() || date > today) {
         if (request.query.from !== undefined) {
             await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
@@ -83,17 +83,34 @@ fastify.get('/', async (request, reply) => {
                     test = body
                 })
         }
-    } else {
-        var requestOptions = {
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: raw,
-            redirect: 'follow'
-        };
+    } else {*/
+    var requestOptions = {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: raw,
+        redirect: 'follow'
+    };
 
-        await fetch("https://www.glo.or.th/api/lottery/getLotteryAward", requestOptions)
-            .then(response => response.json())
-            .then(async (result) => {
+    await fetch("https://www.glo.or.th/api/lottery/getLotteryAward", requestOptions)
+        .then(response => response.json())
+        .then(async (result) => {
+            if (date.getTime() === today.getTime() || date > today) {
+                if (request.query.from !== undefined) {
+                    await fetch(url + '/index3?date=' + request.query.date + '&from')
+                        .then(res => res.json())
+                        .then((body) => {
+                            //res.send(body)
+                            test = body
+                        })
+                } else {
+                    await fetch(url + '/index3?date=' + request.query.date)
+                        .then(res => res.json())
+                        .then((body) => {
+                            //res.send(body)
+                            test = body
+                        })
+                }
+            } else {
                 if (result["response"] != null) {
                     let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                     data[0][1] = result["response"]["data"]["first"]["number"][0]["value"]
@@ -190,25 +207,26 @@ fastify.get('/', async (request, reply) => {
                         test = data
                     }
                 }
-            })
-            .catch(async (error) => {
-                if (request.query.from !== undefined) {
-                    await fetch(url + '/index2?date=' + request.query.date + '&from')
-                        .then(res => res.json())
-                        .then((body) => {
-                            //res.send(body)
-                            test = body
-                        })
-                } else {
-                    await fetch(url + '/index2?date=' + request.query.date)
-                        .then(res => res.json())
-                        .then((body) => {
-                            //res.send(body)
-                            test = body
-                        })
-                }
-            });
-    }
+            }
+        })
+        .catch(async (error) => {
+            if (request.query.from !== undefined) {
+                await fetch(url + '/index2?date=' + request.query.date + '&from')
+                    .then(res => res.json())
+                    .then((body) => {
+                        //res.send(body)
+                        test = body
+                    })
+            } else {
+                await fetch(url + '/index2?date=' + request.query.date)
+                    .then(res => res.json())
+                    .then((body) => {
+                        //res.send(body)
+                        test = body
+                    })
+            }
+        });
+    //}
 
     //return { hello: 'world' }
     return test
