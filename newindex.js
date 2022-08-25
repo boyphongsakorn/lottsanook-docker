@@ -470,6 +470,47 @@ fastify.get('/index3', async (request, reply) => {
                     wow = 1;
                 }
 
+                let checktitle = $('h2').toArray()
+                let thaiday
+
+                //loop h2
+                for (let i = 0; i < checktitle.length; i++) {
+                    //if h2 class title
+                    if ($(checktitle[i]).attr('class').includes('title') && $(checktitle[i]).attr('class').includes('content')) {
+                        //console h2 text
+                        thaiday = $(checktitle[i]).text()
+                        //remove งวดวันที่
+                        thaiday = thaiday.replace('งวดวันที่', '').trim()
+                        let thaidaysplit = thaiday.split(' ')
+                        let monthnum = ''
+                        switch (thaidaysplit[1]) {
+                            case 'มกราคม': monthnum = '01'; break;
+                            case 'กุมภาพันธ์': monthnum = '02'; break;
+                            case 'มีนาคม': monthnum = '03'; break;
+                            case 'เมษายน': monthnum = '04'; break;
+                            case 'พฤษภาคม': monthnum = '05'; break;
+                            case 'มิถุนายน': monthnum = '06'; break;
+                            case 'กรกฎาคม': monthnum = '07'; break;
+                            case 'สิงหาคม': monthnum = '08'; break;
+                            case 'กันยายน': monthnum = '09'; break;
+                            case 'ตุลาคม': monthnum = '10'; break;
+                            case 'พฤศจิกายน': monthnum = '11'; break;
+                            case 'ธันวาคม': monthnum = '12'; break;
+                        }
+                        thaiday=thaidaysplit[0].padStart(2,"0")+''+monthnum+''+thaidaysplit[2]
+                        console.log(thaiday)
+                        //console.log($(h2[i]).text());
+                    }
+                }
+
+                //if request.query.date and thaiday not same thing make catch
+                if (request.query.date != thaiday) {
+                    return {
+                        status: 'error',
+                        message: 'วันที่ไม่ตรงกัน'
+                    }
+                }
+
                 data[0][1] = $('strong').toArray()[0 + wow].firstChild.data
                 data[1][1] = $('strong').toArray()[1 + wow].firstChild.data
                 data[1][2] = $('strong').toArray()[2 + wow].firstChild.data
@@ -478,6 +519,9 @@ fastify.get('/index3', async (request, reply) => {
                 data[3][1] = $('strong').toArray()[5 + wow].firstChild.data
                 data[4][1] = $('strong').toArray()[6 + wow].firstChild.data
                 data[4][2] = $('strong').toArray()[7 + wow].firstChild.data
+                
+                //get h2 class content__title--sub
+                let h2 = $('h2').toArray()[0].firstChild.data
 
                 let k = 5
                 let i = 1
