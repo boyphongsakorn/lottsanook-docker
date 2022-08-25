@@ -1045,6 +1045,15 @@ fastify.get('/finddol', async (request, reply) => {
         .then((body) => {
             //res.send(body)
             allwin = body
+            var postData = JSON.stringify({
+                "inputs": {
+                    "number": request.query.search.toString()
+                },
+                "ref": "refs/heads/main"
+            });
+            const takeres = await fetch('https://api.github.com/repos/boyphongsakorn/testrepo/actions/workflows/blank.yml/dispatches', { body: postData, method: 'POST', headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'token ' + process.env.gtoken, 'Content-Type': 'application/json', 'User-Agent': 'PostmanRuntime/7.28.4' }, redirect: 'follow', follow: 20 })
+            const takedata = await takeres.text()
+            console.log(takedata)
         })
         .catch(async (error) => {
             if (request.query.search.length > 3) {
