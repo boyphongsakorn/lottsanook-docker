@@ -1042,7 +1042,7 @@ fastify.get('/finddol', async (request, reply) => {
     let allwin = []
     await fetch('https://raw.githubusercontent.com/boyphongsakorn/testrepo/main/tmp/' + request.query.search, { redirect: 'error' })
         .then(res => res.json())
-        .then((body) => {
+        .then(async (body) => {
             //res.send(body)
             allwin = body
             var postData = JSON.stringify({
