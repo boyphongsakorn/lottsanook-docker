@@ -1,8 +1,14 @@
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const fastify = require('fastify')({ logger: true })
-const cheerio = require('cheerio')
-var fs = require('fs')
+//const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+//const fastify = require('fastify')({ logger: true })
+//const cheerio = require('cheerio')
+//var fs = require('fs')
 //var cors = require('cors')
+
+import fetch from 'node-fetch';
+import * as cheerio from 'cheerio';
+import fs from 'fs';
+import Fastify from 'fastify';
+const fastify = Fastify({ logger: true });
 
 const port = process.env.PORT || 5000;
 
