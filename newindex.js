@@ -7,14 +7,17 @@
 import fetch from 'node-fetch';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
+import path from 'path';
+import {fileURLToPath} from 'url';
 import Fastify from 'fastify';
 const fastify = Fastify({ logger: true });
 
 const port = process.env.PORT || 5000;
 
 let dir = 'tmp/';
+const __filename = fileURLToPath(import.meta.url);
 
-fs.access(__dirname + '/' + dir, fs.constants.W_OK, (err) => {
+fs.access(path.dirname(__filename) + '/' + dir, fs.constants.W_OK, (err) => {
     if (err) {
         dir = '/tmp/';
         console.log("can't write");
