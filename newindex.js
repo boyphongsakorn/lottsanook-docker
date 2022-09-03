@@ -188,7 +188,7 @@ fastify.get('/', async (request, reply) => {
                     test = data
                 } else {
                     var date = new Date(parseInt(request.query.date.substr(4, 4)) - 543, parseInt(request.query.date.substr(2, 2)) - 1, parseInt(request.query.date.substr(0, 2)) + 1);
-                    var thatdate = new Date(2010, 02 - 1, 16 + 1);
+                    var thatdate = new Date(2010, 2 - 1, 16 + 1);
                     console.log(date)
                     console.log(thatdate)
                     if (date.getTime() === thatdate.getTime() || date < thatdate) {
