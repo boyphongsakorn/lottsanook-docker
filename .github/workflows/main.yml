@@ -17,7 +17,8 @@ jobs:
           node-version: latest
 
       - run: npm install #npm ci # or yarn install
-      - uses: sibiraj-s/action-eslint@v2
+      - name: Action ESLint
+        uses: sibiraj-s/action-eslint@v2.1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }} # Optional
           eslint-args: '--ignore-path=.gitignore --fix'
