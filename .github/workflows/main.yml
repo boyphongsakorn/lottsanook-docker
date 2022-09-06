@@ -19,7 +19,7 @@ jobs:
 
       - run: npm install #npm ci # or yarn install
       - run: npm init @eslint/config
-      - run: npx eslint --fix --ext .js .
+      - run: npx eslint --no-eslintrc --fix --ext .js .
       #- name: Action ESLint
       #  uses: sibiraj-s/action-eslint@v2.1.2
       #  with:
