@@ -21,7 +21,7 @@ jobs:
       - run: npm install eslint --global
       #- run: npm install eslint-plugin-only-warn --global
       #- run: npm install eslint-plugin-only-warn@latest --save-dev
-      - run: eslint --no-eslintrc --rule 'quote-props:warn' --parser-options=ecmaVersion:7 --quiet --fix --ext .js .
+      - run: eslint --no-eslintrc --rule 'quote-props:warn' --parser-options=ecmaVersion:7 --parser-options=sourceType:module --quiet --fix --ext .js newindex.js
       #- name: Run ESLint
       #  uses: stefanoeb/eslint-action@1.0.2
       #- name: Action ESLint
@@ -32,8 +32,8 @@ jobs:
       #    extensions: 'js,jsx,ts,tsx'
       #    annotations: true
 
-      - name: Run ESLint
-        run: eslint . --fix --ext .js,.jsx,.ts,.tsx
+      #- name: Run ESLint
+      #  run: eslint newindex. --fix --ext .js,.jsx,.ts,.tsx
 
       - name: Prepare
         id: prep
