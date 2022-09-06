@@ -18,8 +18,10 @@ jobs:
           node-version: latest
 
       - run: npm install #npm ci # or yarn install
-      - run: npm init @eslint/config
-      - run: npx eslint --no-eslintrc --fix --ext .js .
+      #- run: npm init @eslint/config
+      #- run: npx eslint --no-eslintrc --fix --ext .js .
+      #- name: Run ESLint
+      #  uses: stefanoeb/eslint-action@1.0.2
       #- name: Action ESLint
       #  uses: sibiraj-s/action-eslint@v2.1.2
       #  with:
@@ -27,6 +29,9 @@ jobs:
       #    eslint-args: '--ignore-path=.gitignore --fix'
       #    extensions: 'js,jsx,ts,tsx'
       #    annotations: true
+
+      - name: Run ESLint
+        run: eslint . --ext .js,.jsx,.ts,.tsx
 
       - name: Prepare
         id: prep
