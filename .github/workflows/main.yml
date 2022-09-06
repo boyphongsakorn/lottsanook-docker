@@ -18,7 +18,7 @@ jobs:
           node-version: latest
 
       - run: npm install #npm ci # or yarn install
-      - run: npm install eslint --global
+      - run: npm install eslint --save-dev #--global
       - run: npm install eslint-plugin-only-warn --save-dev
       - run: eslint --no-eslintrc --plugin only-warn --quiet --fix --ext .js .
       #- name: Run ESLint
