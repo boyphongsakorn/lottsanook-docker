@@ -21,7 +21,7 @@ jobs:
       - run: npm install eslint --global
       #- run: npm install eslint-plugin-only-warn --global
       #- run: npm install eslint-plugin-only-warn@latest --save-dev
-      - run: eslint --no-eslintrc --quiet --fix --ext .js .
+      - run: eslint --no-eslintrc --rule 'quote-props:warn' --quiet --fix --ext .js .
       #- name: Run ESLint
       #  uses: stefanoeb/eslint-action@1.0.2
       #- name: Action ESLint
