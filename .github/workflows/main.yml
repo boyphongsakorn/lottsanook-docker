@@ -19,7 +19,7 @@ jobs:
 
       - run: npm install #npm ci # or yarn install
       - run: npm install eslint --global
-      - run: eslint --no-eslintrc --fix --ext .js .
+      - run: eslint --no-eslintrc --fix --quiet --ext .js .
       #- name: Run ESLint
       #  uses: stefanoeb/eslint-action@1.0.2
       #- name: Action ESLint
