@@ -22,7 +22,7 @@ jobs:
         #  github-token: ${{ secrets.GITHUB_TOKEN }} Optional
           eslint-args: '--ignore-path=.gitignore --fix'
           extensions: 'js,jsx,ts,tsx'
-          annotations: true
+        #  annotations: true
 
       - name: Prepare
         id: prep
