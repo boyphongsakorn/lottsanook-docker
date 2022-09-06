@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: latest
 
-      - run: npm ci # or yarn install
+      - run: npm install #npm ci # or yarn install
       - uses: sibiraj-s/action-eslint@v2
         with:
         #  github-token: ${{ secrets.GITHUB_TOKEN }} Optional
