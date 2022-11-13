@@ -1,14 +1,23 @@
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
-const fastify = require('fastify')({ logger: true })
-const cheerio = require('cheerio')
-var fs = require('fs')
+//const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+//const fastify = require('fastify')({ logger: true })
+//const cheerio = require('cheerio')
+//var fs = require('fs')
 //var cors = require('cors')
+
+import fetch from 'node-fetch';
+import * as cheerio from 'cheerio';
+import fs from 'fs';
+import path from 'path';
+import {fileURLToPath} from 'url';
+import Fastify from 'fastify';
+const fastify = Fastify({ logger: true });
 
 const port = process.env.PORT || 5000;
 
 let dir = 'tmp/';
+const __filename = fileURLToPath(import.meta.url);
 
-fs.access(__dirname + '/' + dir, fs.constants.W_OK, (err) => {
+fs.access(path.dirname(__filename) + '/' + dir, fs.constants.W_OK, (err) => {
     if (err) {
         dir = '/tmp/';
         console.log("can't write");
@@ -182,7 +191,7 @@ fastify.get('/', async (request, reply) => {
                     test = data
                 } else {
                     var date = new Date(parseInt(request.query.date.substr(4, 4)) - 543, parseInt(request.query.date.substr(2, 2)) - 1, parseInt(request.query.date.substr(0, 2)) + 1);
-                    var thatdate = new Date(2010, 02 - 1, 16 + 1);
+                    var thatdate = new Date(2010, 2 - 1, 16 + 1);
                     console.log(date)
                     console.log(thatdate)
                     if (date.getTime() === thatdate.getTime() || date < thatdate) {
