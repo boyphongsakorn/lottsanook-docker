@@ -31,9 +31,9 @@ fs.access(path.dirname(__filename) + '/' + dir, fs.constants.W_OK, (err) => {
             });
         });
         //process.exit(1);
+    }else{
+        console.log("can write");
     }
-
-    console.log("can write");
     //process.exit(0);
 });
 
@@ -1199,6 +1199,13 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[1] = count
         arrayofnews[2] = count
         arrayofnews[3] = count
+        //if hostname = lotapi3.pwisetthon.com
+        if (request.hostname == 'lotapi3.pwisetthon.com') {
+            arrayofnews[0] = Math.ceil(count / 4)
+            arrayofnews[1] = Math.ceil(count / 4)
+            arrayofnews[2] = Math.ceil(count / 4)
+            arrayofnews[3] = Math.ceil(count / 4)
+        }
     }
     /*}*/
 
