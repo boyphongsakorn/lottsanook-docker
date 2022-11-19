@@ -45,6 +45,13 @@ function padLeadingZeros(num, size) {
 
 fastify.get('/', async (request, reply) => {
     if(request.hostname == 'lotapi3.pwisetthon.com'){
+        const testmainapi = await fetch('https://lotapi.pwisetthon.com/');
+        const mainapistatus = await testmainapi.status;
+        if(mainapistatus == 200){
+            //redirect to main api
+            reply.redirect('https://lotapi.pwisetthon.com/');
+            return reply;
+        }
     }
     let url;
     try {
