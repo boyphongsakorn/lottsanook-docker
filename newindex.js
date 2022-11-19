@@ -44,6 +44,8 @@ function padLeadingZeros(num, size) {
 }
 
 fastify.get('/', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+    }
     let url;
     try {
         const checkurl = await fetch('http://localhost:' + port + '/index3')
