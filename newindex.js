@@ -48,9 +48,16 @@ fastify.get('/', async (request, reply) => {
         const testmainapi = await fetch('https://lotapi.pwisetthon.com/');
         const mainapistatus = await testmainapi.status;
         if(mainapistatus == 200){
-            //redirect to main api
-            reply.redirect('https://lotapi.pwisetthon.com/');
-            return reply;
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            console.log(rawurl);
+            const newurl = rawurl.replace('lotapi3.pwisetthon.com', 'lotapi.pwisetthon.com');
+            console.log(newurl);
+            const mainapi = await fetch(newurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+            /*reply.redirect('https://lotapi.pwisetthon.com/');
+            return reply;*/
         }
     }
     let url;
