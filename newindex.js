@@ -37,6 +37,12 @@ fs.access(path.dirname(__filename) + '/' + dir, fs.constants.W_OK, (err) => {
     //process.exit(0);
 });
 
+let mainapistatus = false;
+const testmainapi = await fetch('https://lotapi.pwisetthon.com/');
+if (testmainapi.status == 200) {
+    mainapistatus = true;
+}
+
 function padLeadingZeros(num, size) {
     var s = num + "";
     while (s.length < size) s = "0" + s;
@@ -45,16 +51,13 @@ function padLeadingZeros(num, size) {
 
 fastify.get('/', async (request, reply) => {
     if(request.hostname == 'lotapi3.pwisetthon.com'){
-        const testmainapi = await fetch('https://lotapi.pwisetthon.com/');
-        const mainapistatus = await testmainapi.status;
-        if(mainapistatus == 200){
+        console.log(request.hostname);
+        if(mainapistatus == true){
             //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
             const rawurl = request.raw.url;
             const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
             const mainapibody = await mainapi.json();
             return mainapibody;
-            /*reply.redirect('https://lotapi.pwisetthon.com/');
-            return reply;*/
         }
     }
     let url;
@@ -255,6 +258,16 @@ fastify.get('/', async (request, reply) => {
 })
 
 fastify.get('/index2', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     let url;
     try {
         const checkurl = await fetch('http://localhost:' + port + '/index3')
@@ -439,6 +452,16 @@ fastify.get('/index2', async (request, reply) => {
 })
 
 fastify.get('/index3', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     let test = [];
 
     if (!request.query.date) {
@@ -662,6 +685,16 @@ fastify.get('/index3', async (request, reply) => {
 })
 
 fastify.get('/reto', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     let url;
     try {
         const checkurl = await fetch('http://localhost:' + port + '/index3')
@@ -692,6 +725,16 @@ fastify.get('/reto', async (request, reply) => {
 })
 
 fastify.get('/god', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     //let test = []
 
     let year = 2533;
@@ -848,6 +891,16 @@ fastify.get('/god', async (request, reply) => {
 })
 
 fastify.get('/gdpy', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     //let test
 
     let peryear = []
@@ -908,6 +961,16 @@ fastify.get('/gdpy', async (request, reply) => {
 })
 
 fastify.get('/checklottery', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     let url;
     try {
         const checkurl = await fetch('http://localhost:' + port + '/index3')
@@ -964,6 +1027,16 @@ fastify.get('/checklottery', async (request, reply) => {
 })
 
 fastify.get('/lastlot', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     let url;
     try {
         const checkurl = await fetch('http://localhost:' + port + '/index3')
@@ -1019,6 +1092,16 @@ fastify.get('/lastlot', async (request, reply) => {
 })
 
 fastify.get('/getchit', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     let a = []
     await fetch('https://www.huayvips.com/luckynumber/')
         .then(res => res.text())
@@ -1048,6 +1131,16 @@ fastify.get('/getchit', async (request, reply) => {
 })
 
 fastify.get('/finddol', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     let url;
     try {
         const checkurl = await fetch('http://localhost:' + port + '/index3')
@@ -1165,6 +1258,16 @@ fastify.get('/finddol', async (request, reply) => {
 })
 
 fastify.get('/lotnews', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
     let arrayofnews = [0, 0, 0, 0]
     let count = request.query.count || 0
     let check = count % 4
