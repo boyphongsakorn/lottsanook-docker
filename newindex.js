@@ -50,10 +50,7 @@ fastify.get('/', async (request, reply) => {
         if(mainapistatus == 200){
             //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
             const rawurl = request.raw.url;
-            console.log(rawurl);
-            const newurl = rawurl.replace('lotapi3.pwisetthon.com', 'lotapi.pwisetthon.com');
-            console.log(newurl);
-            const mainapi = await fetch(newurl);
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
             const mainapibody = await mainapi.json();
             return mainapibody;
             /*reply.redirect('https://lotapi.pwisetthon.com/');
