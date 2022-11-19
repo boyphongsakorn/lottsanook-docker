@@ -694,7 +694,7 @@ fastify.get('/reto', async (request, reply) => {
             //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
             const rawurl = request.raw.url;
             const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
-            const mainapibody = await mainapi.json();
+            const mainapibody = await mainapi.text();
             return mainapibody;
         }
     }
@@ -970,7 +970,7 @@ fastify.get('/checklottery', async (request, reply) => {
             //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
             const rawurl = request.raw.url;
             const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
-            const mainapibody = await mainapi.json();
+            const mainapibody = await mainapi.text();
             return mainapibody;
         }
     }
