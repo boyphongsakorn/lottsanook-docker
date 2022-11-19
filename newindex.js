@@ -37,8 +37,9 @@ fs.access(path.dirname(__filename) + '/' + dir, fs.constants.W_OK, (err) => {
     //process.exit(0);
 });
 
+let mainapistatus = false;
+
 (async () => {
-    let mainapistatus = false;
     const testmainapi = await fetch('https://lotapi.pwisetthon.com/');
     if (testmainapi.status == 200) {
         mainapistatus = true;
