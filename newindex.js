@@ -95,7 +95,7 @@ fastify.get('/', async (request, reply) => {
     var date = new Date(parseInt(request.query.date.substr(4, 4)) - 543, parseInt(request.query.date.substr(2, 2)) - 1, parseInt(request.query.date.substr(0, 2)) + 1);
     var today = new Date();
 
-    if (date.getTime() === today.getTime() || date > today) {
+    if (date.toDateString() === today.toDateString() || date.getTime() > today.getTime()) {
         /*if (request.query.from !== undefined) {
             await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
