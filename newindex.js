@@ -95,8 +95,8 @@ fastify.get('/', async (request, reply) => {
     var date = new Date(parseInt(request.query.date.substr(4, 4)) - 543, parseInt(request.query.date.substr(2, 2)) - 1, parseInt(request.query.date.substr(0, 2)) + 1);
     var today = new Date();
 
-    /*if (date.getTime() === today.getTime() || date > today) {
-        if (request.query.from !== undefined) {
+    if (date.getTime() === today.getTime() || date > today) {
+        /*if (request.query.from !== undefined) {
             await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
                 .then((body) => {
@@ -110,8 +110,28 @@ fastify.get('/', async (request, reply) => {
                     //res.send(body)
                     test = body
                 })
+        }*/
+        const backup1 = await fetch(url + request.raw.url.replace('/', '/index2'));
+        const backup2 = await fetch(url + request.raw.url.replace('/', '/index3'));
+        const bu1json = await backup1.json()
+        const bu2json = await backup2.json()
+        //who is latest update
+        //change json to json string
+        const bu1jsonstring = JSON.stringify(bu1json)
+        const bu2jsonstring = JSON.stringify(bu2json)
+        //change to lower case
+        const bu1jsonstringlower = bu1jsonstring.toLowerCase()
+        const bu2jsonstringlower = bu2jsonstring.toLowerCase()
+        //count having xxxxxx
+        const bu1jsonstringlowercount = (bu1jsonstringlower.match(/xxxxxx/g) || []).length
+        const bu2jsonstringlowercount = (bu2jsonstringlower.match(/xxxxxx/g) || []).length
+        //compare count
+        if (bu1jsonstringlowercount > bu2jsonstringlowercount) {
+            return bu2json
+        } else {
+            return bu1json
         }
-    } else {*/
+    } /* else {*/
     var requestOptions = {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
@@ -122,7 +142,7 @@ fastify.get('/', async (request, reply) => {
     await fetch("https://www.glo.or.th/api/lottery/getLotteryAward", requestOptions)
         .then(response => response.json())
         .then(async (result) => {
-            if (date.getTime() === today.getTime() || date > today) {
+            /*if (date.getTime() === today.getTime() || date > today) {
                 if (request.query.from !== undefined) {
                     await fetch(url + '/index3?date=' + request.query.date + '&from')
                         .then(res => res.json())
@@ -138,7 +158,7 @@ fastify.get('/', async (request, reply) => {
                             test = body
                         })
                 }
-            } else {
+            } else {*/
                 if (result["response"] != null) {
                     let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                     data[0][1] = result["response"]["data"]["first"]["number"][0]["value"]
@@ -235,7 +255,7 @@ fastify.get('/', async (request, reply) => {
                         test = data
                     }
                 }
-            }
+            //}
         })
         .catch(async (error) => {
             if (request.query.from !== undefined) {
@@ -288,7 +308,7 @@ fastify.get('/index2', async (request, reply) => {
     if (!request.query.date) {
         request.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
     }
-    if (request.query.date.substring(4, 8) == new Date().getFullYear() + 543) {
+    if ((request.query.date.substring(4, 8) == new Date().getFullYear() + 543) && (request.query.foucs == undefined || request.query.foucs == false)) {
         if (request.query.from !== undefined) {
             await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
