@@ -39,12 +39,20 @@ fs.access(path.dirname(__filename) + '/' + dir, fs.constants.W_OK, (err) => {
 
 let mainapistatus = false;
 
-(async () => {
+/*(async () => {
     const testmainapi = await fetch('https://lotapi.pwisetthon.com/');
     if (testmainapi.status == 200) {
         mainapistatus = true;
     }
-})();
+})();*/
+
+fetch('https://lotapi.pwisetthon.com/')
+    .then(res => res.status)
+    .then(status => {
+        if (status == 200) {
+            mainapistatus = true;
+        }
+    });
 
 function padLeadingZeros(num, size) {
     var s = num + "";
