@@ -316,7 +316,7 @@ fastify.get('/index2', async (request, reply) => {
     if (!request.query.date) {
         request.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
     }
-    if ((request.query.date.substring(4, 8) == new Date().getFullYear() + 543) && (request.query.foucs == undefined || request.query.foucs == false)) {
+    if ((request.query.date.substring(4, 8) == new Date().getFullYear() + 543) && (request.query.focus == undefined || request.query.focus == false || request.query.focus == 'false')) {
         if (request.query.from !== undefined) {
             await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
@@ -333,6 +333,9 @@ fastify.get('/index2', async (request, reply) => {
                 })
         }
     } else {
+        if(request.query.focus == true || request.query.focus == 'true'){
+            console.log('direct to index2');
+        }
         let data = ""
         let monthtext
         switch (request.query.date.substring(2, 4)) {
