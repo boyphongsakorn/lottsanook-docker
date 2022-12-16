@@ -119,8 +119,8 @@ fastify.get('/', async (request, reply) => {
                     test = body
                 })
         }*/
-        const backup1 = await fetch(url + request.raw.url.replace('/', '/index2'));
-        const backup2 = await fetch(url + request.raw.url.replace('/', '/index3'));
+        const backup1 = await fetch(url + request.raw.url.replace('/', '/index2?focus=true'));
+        const backup2 = await fetch(url + request.raw.url.replace('/', '/index3?focus=true'));
         const bu1json = await backup1.json()
         const bu2json = await backup2.json()
         //who is latest update
