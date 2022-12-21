@@ -19,8 +19,8 @@
   "homepage": "https://github.com/boyphongsakorn/lottsanook-docker#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "fastify": "^4.5.3",
-    "node-fetch": "^3.2.10"
+    "fastify": "^4.10.2",
+    "node-fetch": "^3.3.0"
   },
   "type": "module"
 }

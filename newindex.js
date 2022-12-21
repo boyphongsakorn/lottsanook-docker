@@ -60,6 +60,64 @@ function padLeadingZeros(num, size) {
     return s;
 }
 
+function numbertomonth(num) {
+    switch (num) {
+        case '01':
+            return 'มกราคม';
+        case '02':
+            return 'กุมภาพันธ์';
+        case '03':
+            return 'มีนาคม';
+        case '04':
+            return 'เมษายน';
+        case '05':
+            return 'พฤษภาคม';
+        case '06':
+            return 'มิถุนายน';
+        case '07':
+            return 'กรกฎาคม';
+        case '08':
+            return 'สิงหาคม';
+        case '09':
+            return 'กันยายน';
+        case '10':
+            return 'ตุลาคม';
+        case '11':
+            return 'พฤศจิกายน';
+        case '12':
+            return 'ธันวาคม';
+    }
+}
+
+function monthtonumber(month) {
+    switch (month) {
+        case 'มกราคม':
+            return '01';
+        case 'กุมภาพันธ์':
+            return '02';
+        case 'มีนาคม':
+            return '03';
+        case 'เมษายน':
+            return '04';
+        case 'พฤษภาคม':
+            return '05';
+        case 'มิถุนายน':
+            return '06';
+        case 'กรกฎาคม':
+            return '07';
+        case 'สิงหาคม':
+            return '08';
+        case 'กันยายน':
+            return '09';
+        case 'ตุลาคม':
+            return '10';
+        case 'พฤศจิกายน':
+            return '11';
+        case 'ธันวาคม':
+            return '12';
+    }
+}
+
 fastify.get('/', async (request, reply) => {
     if(request.hostname == 'lotapi3.pwisetthon.com'){
         console.log(request.hostname);
@@ -193,44 +251,7 @@ fastify.get('/', async (request, reply) => {
                         data[8][index + 1] = val["value"]
                     }
                     if (request.query.from !== undefined) {
-                        switch (request.query.date.substr(2, 2)) {
-                            case '01':
-                                monthtext = "มกราคม";
-                                break;
-                            case '02':
-                                monthtext = "กุมภาพันธ์";
-                                break;
-                            case '03':
-                                monthtext = "มีนาคม";
-                                break;
-                            case '04':
-                                monthtext = "เมษายน";
-                                break;
-                            case '05':
-                                monthtext = "พฤษภาคม";
-                                break;
-                            case '06':
-                                monthtext = "มิถุนายน";
-                                break;
-                            case '07':
-                                monthtext = "กรกฎาคม";
-                                break;
-                            case '08':
-                                monthtext = "สิงหาคม";
-                                break;
-                            case '09':
-                                monthtext = "กันยายน";
-                                break;
-                            case '10':
-                                monthtext = "ตุลาคม";
-                                break;
-                            case '11':
-                                monthtext = "พฤศจิกายน";
-                                break;
-                            case '12':
-                                monthtext = "ธันวาคม";
-                                break;
-                        }
+                        monthtext = numbertomonth(request.query.date.substr(2, 2))
 
                         data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
                     }
@@ -338,20 +359,7 @@ fastify.get('/index2', async (request, reply) => {
         }
         let data = ""
         let monthtext
-        switch (request.query.date.substring(2, 4)) {
-            case '01': monthtext = "มกราคม"; break;
-            case '02': monthtext = "กุมภาพันธ์"; break;
-            case '03': monthtext = "มีนาคม"; break;
-            case '04': monthtext = "เมษายน"; break;
-            case '05': monthtext = "พฤษภาคม"; break;
-            case '06': monthtext = "มิถุนายน"; break;
-            case '07': monthtext = "กรกฎาคม"; break;
-            case '08': monthtext = "สิงหาคม"; break;
-            case '09': monthtext = "กันยายน"; break;
-            case '10': monthtext = "ตุลาคม"; break;
-            case '11': monthtext = "พฤศจิกายน"; break;
-            case '12': monthtext = "ธันวาคม"; break;
-        }
+        monthtext = numbertomonth(request.query.date.substring(2, 4))
         try {
             if (request.query.fresh !== undefined) {
                 fs.unlinkSync(dir + request.query.date + '.txt');
@@ -518,27 +526,14 @@ fastify.get('/index3', async (request, reply) => {
     if (fileContents) {
         let data = JSON.parse(fileContents)
         if (request.query.from !== undefined) {
-            switch (request.query.date.substr(2, 2)) {
-                case '01': monthtext = "มกราคม"; break;
-                case '02': monthtext = "กุมภาพันธ์"; break;
-                case '03': monthtext = "มีนาคม"; break;
-                case '04': monthtext = "เมษายน"; break;
-                case '05': monthtext = "พฤษภาคม"; break;
-                case '06': monthtext = "มิถุนายน"; break;
-                case '07': monthtext = "กรกฎาคม"; break;
-                case '08': monthtext = "สิงหาคม"; break;
-                case '09': monthtext = "กันยายน"; break;
-                case '10': monthtext = "ตุลาคม"; break;
-                case '11': monthtext = "พฤศจิกายน"; break;
-                case '12': monthtext = "ธันวาคม"; break;
-            }
+            monthtext = numbertomonth(request.query.date.substr(2, 2))
 
             data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
         }
         //res.send(data);
         test = data
     } else {
-        await fetch('https://news.sanook.com/lotto/check/' + request.query.date + '/', { redirect: 'follow' })
+        await fetch('https://news.sanook.com/lotto/check/' + request.query.date + '/', { redirect: 'error' })
             .then(res => res.text())
             .then((body) => {
                 let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
@@ -562,20 +557,7 @@ fastify.get('/index3', async (request, reply) => {
                         thaiday = thaiday.replace('งวดวันที่', '').trim()
                         let thaidaysplit = thaiday.split(' ')
                         let monthnum = ''
-                        switch (thaidaysplit[1]) {
-                            case 'มกราคม': monthnum = '01'; break;
-                            case 'กุมภาพันธ์': monthnum = '02'; break;
-                            case 'มีนาคม': monthnum = '03'; break;
-                            case 'เมษายน': monthnum = '04'; break;
-                            case 'พฤษภาคม': monthnum = '05'; break;
-                            case 'มิถุนายน': monthnum = '06'; break;
-                            case 'กรกฎาคม': monthnum = '07'; break;
-                            case 'สิงหาคม': monthnum = '08'; break;
-                            case 'กันยายน': monthnum = '09'; break;
-                            case 'ตุลาคม': monthnum = '10'; break;
-                            case 'พฤศจิกายน': monthnum = '11'; break;
-                            case 'ธันวาคม': monthnum = '12'; break;
-                        }
+                        monthnum = monthtonumber(thaidaysplit[1])
                         thaiday=thaidaysplit[0].padStart(2,"0")+''+monthnum+''+thaidaysplit[2]
                         console.log(thaiday)
                         //console.log($(h2[i]).text());
@@ -641,20 +623,7 @@ fastify.get('/index3', async (request, reply) => {
                             if (err) throw err;
                             //console.log('Saved!');
                             if (request.query.from !== undefined) {
-                                switch (request.query.date.substr(2, 2)) {
-                                    case '01': monthtext = "มกราคม"; break;
-                                    case '02': monthtext = "กุมภาพันธ์"; break;
-                                    case '03': monthtext = "มีนาคม"; break;
-                                    case '04': monthtext = "เมษายน"; break;
-                                    case '05': monthtext = "พฤษภาคม"; break;
-                                    case '06': monthtext = "มิถุนายน"; break;
-                                    case '07': monthtext = "กรกฎาคม"; break;
-                                    case '08': monthtext = "สิงหาคม"; break;
-                                    case '09': monthtext = "กันยายน"; break;
-                                    case '10': monthtext = "ตุลาคม"; break;
-                                    case '11': monthtext = "พฤศจิกายน"; break;
-                                    case '12': monthtext = "ธันวาคม"; break;
-                                }
+                                monthtext = numbertomonth(request.query.date.substr(2, 2))
 
                                 data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
                             }
@@ -663,20 +632,7 @@ fastify.get('/index3', async (request, reply) => {
                         });
                     } else {
                         if (request.query.from !== undefined) {
-                            switch (request.query.date.substr(2, 2)) {
-                                case '01': monthtext = "มกราคม"; break;
-                                case '02': monthtext = "กุมภาพันธ์"; break;
-                                case '03': monthtext = "มีนาคม"; break;
-                                case '04': monthtext = "เมษายน"; break;
-                                case '05': monthtext = "พฤษภาคม"; break;
-                                case '06': monthtext = "มิถุนายน"; break;
-                                case '07': monthtext = "กรกฎาคม"; break;
-                                case '08': monthtext = "สิงหาคม"; break;
-                                case '09': monthtext = "กันยายน"; break;
-                                case '10': monthtext = "ตุลาคม"; break;
-                                case '11': monthtext = "พฤศจิกายน"; break;
-                                case '12': monthtext = "ธันวาคม"; break;
-                            }
+                            monthtext = numbertomonth(request.query.date.substr(2, 2))
 
                             data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
                         }
@@ -685,20 +641,7 @@ fastify.get('/index3', async (request, reply) => {
                     }
                 } catch (error) {
                     if (request.query.from !== undefined) {
-                        switch (request.query.date.substr(2, 2)) {
-                            case '01': monthtext = "มกราคม"; break;
-                            case '02': monthtext = "กุมภาพันธ์"; break;
-                            case '03': monthtext = "มีนาคม"; break;
-                            case '04': monthtext = "เมษายน"; break;
-                            case '05': monthtext = "พฤษภาคม"; break;
-                            case '06': monthtext = "มิถุนายน"; break;
-                            case '07': monthtext = "กรกฎาคม"; break;
-                            case '08': monthtext = "สิงหาคม"; break;
-                            case '09': monthtext = "กันยายน"; break;
-                            case '10': monthtext = "ตุลาคม"; break;
-                            case '11': monthtext = "พฤศจิกายน"; break;
-                            case '12': monthtext = "ธันวาคม"; break;
-                        }
+                        monthtext = numbertomonth(request.query.date.substr(2, 2))
 
                         data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
                     }
@@ -706,6 +649,14 @@ fastify.get('/index3', async (request, reply) => {
                     test = data
                 }
 
+                //get content from meta property og:title
+                const title = $('meta[property="og:title"]').attr('content');
+                //split title by space
+                const titlearr = title.split(' ')
+                const datefromweb = titlearr[1]+monthtonumber(titlearr[2])+titlearr[3]
+                if(request.query.date!=datefromweb){
+                    test = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+                }
             })
             .catch((err) => {
                 let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
