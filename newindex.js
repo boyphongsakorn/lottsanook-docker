@@ -177,10 +177,31 @@ fastify.get('/', async (request, reply) => {
                     test = body
                 })
         }*/
-        const backup1 = await fetch(url + request.raw.url.replace('/', '/index2?focus=true'));
-        const backup2 = await fetch(url + request.raw.url.replace('/', '/index3?focus=true'));
+        let backup1url = new URL(url + request.raw.url.replace('/','/index2'));
+        let backup2url = new URL(url + request.raw.url.replace('/','/index3'));
+        //add param focus=true to backup url
+        backup1url.searchParams.append('focus', 'true');
+        backup2url.searchParams.append('focus', 'true');
+        const backup1 = await fetch(backup1url.href);
+        const backup2 = await fetch(backup2url.href);
+        console.log(backup1url.href);
+        console.log(backup2url.href);
         const bu1json = await backup1.json()
         const bu2json = await backup2.json()
+        //if some json [0][1] is 0 and other is not 0 return 0
+        if (bu1json[0][1] == 0 && bu2json[0][1] != 0) {
+            if(bu2json[0][1] == 'xxxxxx'){
+                return bu2json
+            }else{
+                return bu1json
+            }
+        } else if (bu1json[0][1] != 0 && bu2json[0][1] == 0) {
+            if(bu1json[0][1] == 'xxxxxx'){
+                return bu1json
+            }else{
+                return bu2json
+            }
+        }
         //who is latest update
         //change json to json string
         const bu1jsonstring = JSON.stringify(bu1json)
