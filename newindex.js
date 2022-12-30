@@ -491,22 +491,28 @@ fastify.get('/index2', async (request, reply) => {
                         }
                     }
 
+                    if (request.query.from !== undefined) {
+                        data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
+                    }
+
+                    test = data
+
                     if ($('div').toArray()[2].firstChild.data != null && $('div').toArray()[2].firstChild.data != ' เวลา 14:30-16:00น.') {
                         fs.writeFile(dir + request.query.date + '.txt', JSON.stringify(data), function (err) {
                             if (err) throw err;
                             //console.log('Saved!');
-                            if (request.query.from !== undefined) {
-                                data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
-                            }
+                            //if (request.query.from !== undefined) {
+                            //    data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
+                            //}
                             //res.send(data)
-                            test = data
+                            //test = data
                         });
                     } else {
-                        if (request.query.from !== undefined) {
-                            data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
-                        }
+                        //if (request.query.from !== undefined) {
+                        //    data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
+                        //}
                         //res.send(data)
-                        test = data
+                        //test = data
                     }
 
                     //get content from meta name="Keywords"
