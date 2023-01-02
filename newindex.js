@@ -60,6 +60,64 @@ function padLeadingZeros(num, size) {
     return s;
 }
 
+function numbertomonth(num) {
+    switch (num) {
+        case '01':
+            return 'มกราคม';
+        case '02':
+            return 'กุมภาพันธ์';
+        case '03':
+            return 'มีนาคม';
+        case '04':
+            return 'เมษายน';
+        case '05':
+            return 'พฤษภาคม';
+        case '06':
+            return 'มิถุนายน';
+        case '07':
+            return 'กรกฎาคม';
+        case '08':
+            return 'สิงหาคม';
+        case '09':
+            return 'กันยายน';
+        case '10':
+            return 'ตุลาคม';
+        case '11':
+            return 'พฤศจิกายน';
+        case '12':
+            return 'ธันวาคม';
+    }
+}
+
+function monthtonumber(month) {
+    switch (month) {
+        case 'มกราคม':
+            return '01';
+        case 'กุมภาพันธ์':
+            return '02';
+        case 'มีนาคม':
+            return '03';
+        case 'เมษายน':
+            return '04';
+        case 'พฤษภาคม':
+            return '05';
+        case 'มิถุนายน':
+            return '06';
+        case 'กรกฎาคม':
+            return '07';
+        case 'สิงหาคม':
+            return '08';
+        case 'กันยายน':
+            return '09';
+        case 'ตุลาคม':
+            return '10';
+        case 'พฤศจิกายน':
+            return '11';
+        case 'ธันวาคม':
+            return '12';
+    }
+}
+
 fastify.get('/', async (request, reply) => {
     if(request.hostname == 'lotapi3.pwisetthon.com'){
         console.log(request.hostname);
@@ -119,10 +177,31 @@ fastify.get('/', async (request, reply) => {
                     test = body
                 })
         }*/
-        const backup1 = await fetch(url + request.raw.url.replace('/', '/index2'));
-        const backup2 = await fetch(url + request.raw.url.replace('/', '/index3'));
+        let backup1url = new URL(url + request.raw.url.replace('/','/index2'));
+        let backup2url = new URL(url + request.raw.url.replace('/','/index3'));
+        //add param focus=true to backup url
+        backup1url.searchParams.append('focus', 'true');
+        backup2url.searchParams.append('focus', 'true');
+        const backup1 = await fetch(backup1url.href);
+        const backup2 = await fetch(backup2url.href);
+        console.log(backup1url.href);
+        console.log(backup2url.href);
         const bu1json = await backup1.json()
         const bu2json = await backup2.json()
+        //if some json [0][1] is 0 and other is not 0 return 0
+        if (bu1json[0][1] == 0 && bu2json[0][1] != 0) {
+            if(bu2json[0][1] == 'xxxxxx'){
+                return bu2json
+            }else{
+                return bu1json
+            }
+        } else if (bu1json[0][1] != 0 && bu2json[0][1] == 0) {
+            if(bu1json[0][1] == 'xxxxxx'){
+                return bu1json
+            }else{
+                return bu2json
+            }
+        }
         //who is latest update
         //change json to json string
         const bu1jsonstring = JSON.stringify(bu1json)
@@ -193,44 +272,7 @@ fastify.get('/', async (request, reply) => {
                         data[8][index + 1] = val["value"]
                     }
                     if (request.query.from !== undefined) {
-                        switch (request.query.date.substr(2, 2)) {
-                            case '01':
-                                monthtext = "มกราคม";
-                                break;
-                            case '02':
-                                monthtext = "กุมภาพันธ์";
-                                break;
-                            case '03':
-                                monthtext = "มีนาคม";
-                                break;
-                            case '04':
-                                monthtext = "เมษายน";
-                                break;
-                            case '05':
-                                monthtext = "พฤษภาคม";
-                                break;
-                            case '06':
-                                monthtext = "มิถุนายน";
-                                break;
-                            case '07':
-                                monthtext = "กรกฎาคม";
-                                break;
-                            case '08':
-                                monthtext = "สิงหาคม";
-                                break;
-                            case '09':
-                                monthtext = "กันยายน";
-                                break;
-                            case '10':
-                                monthtext = "ตุลาคม";
-                                break;
-                            case '11':
-                                monthtext = "พฤศจิกายน";
-                                break;
-                            case '12':
-                                monthtext = "ธันวาคม";
-                                break;
-                        }
+                        monthtext = numbertomonth(request.query.date.substr(2, 2))
 
                         data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
                     }
@@ -316,7 +358,7 @@ fastify.get('/index2', async (request, reply) => {
     if (!request.query.date) {
         request.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
     }
-    if ((request.query.date.substring(4, 8) == new Date().getFullYear() + 543) && (request.query.foucs == undefined || request.query.foucs == false)) {
+    if ((request.query.date.substring(4, 8) == new Date().getFullYear() + 543) && (request.query.focus == undefined || request.query.focus == false || request.query.focus == 'false')) {
         if (request.query.from !== undefined) {
             await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
@@ -333,22 +375,12 @@ fastify.get('/index2', async (request, reply) => {
                 })
         }
     } else {
+        if(request.query.focus == true || request.query.focus == 'true'){
+            console.log('direct to index2');
+        }
         let data = ""
         let monthtext
-        switch (request.query.date.substring(2, 4)) {
-            case '01': monthtext = "มกราคม"; break;
-            case '02': monthtext = "กุมภาพันธ์"; break;
-            case '03': monthtext = "มีนาคม"; break;
-            case '04': monthtext = "เมษายน"; break;
-            case '05': monthtext = "พฤษภาคม"; break;
-            case '06': monthtext = "มิถุนายน"; break;
-            case '07': monthtext = "กรกฎาคม"; break;
-            case '08': monthtext = "สิงหาคม"; break;
-            case '09': monthtext = "กันยายน"; break;
-            case '10': monthtext = "ตุลาคม"; break;
-            case '11': monthtext = "พฤศจิกายน"; break;
-            case '12': monthtext = "ธันวาคม"; break;
-        }
+        monthtext = numbertomonth(request.query.date.substring(2, 4))
         try {
             if (request.query.fresh !== undefined) {
                 fs.unlinkSync(dir + request.query.date + '.txt');
@@ -372,6 +404,7 @@ fastify.get('/index2', async (request, reply) => {
             //res.send(data);
             test = data
         } else {
+            console.log('fetching data');
             await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-' + request.query.date.substring(0, 2) + '-' + encodeURI(monthtext) + '-' + request.query.date.substring(4, 8) + '.aspx', { redirect: 'error' })
                 .then(res => res.text())
                 .then((body) => {
@@ -389,11 +422,15 @@ fastify.get('/index2', async (request, reply) => {
                         }
                     });
 
+                    console.log('1')
+
                     if ($('div').toArray()[2] == null) {
                         //res.send(data)
                         test = data
                         return
                     }
+
+                    console.log('2')
 
                     let threefirst = []
                     let threeend = []
@@ -402,10 +439,10 @@ fastify.get('/index2', async (request, reply) => {
                     numberpush.shift()
                     if (numberpush[0].split(" ").length > 2) {
                         threeend = numberpush[0].split(" ")
-                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
-                        data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
-                        data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
-                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
+                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '').trim();
+                        data[2][2] = threeend[1].replace(/\xc2\xa0/, '').trim();
+                        data[2][3] = threeend[2].replace(/\xc2\xa0/, '').trim();
+                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '').trim();
                     } else {
                         threefirst = numberpush[0].split(" ")
                         data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
@@ -424,7 +461,7 @@ fastify.get('/index2', async (request, reply) => {
                         numberpush.shift()
                     }
                     data[4][1] = padLeadingZeros((data[0][1] - 1), 6);
-                    data[4][2] = padLeadingZeros((data[0][1] + 1), 6);
+                    data[4][2] = padLeadingZeros((parseInt(data[0][1]) + 1), 6);
 
                     let wave = 5;
                     let minwave = 0;
@@ -454,24 +491,53 @@ fastify.get('/index2', async (request, reply) => {
                         }
                     }
 
+                    if (request.query.from !== undefined) {
+                        data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
+                    }
+
+                    test = data
+
                     if ($('div').toArray()[2].firstChild.data != null && $('div').toArray()[2].firstChild.data != ' เวลา 14:30-16:00น.') {
                         fs.writeFile(dir + request.query.date + '.txt', JSON.stringify(data), function (err) {
                             if (err) throw err;
                             //console.log('Saved!');
-                            if (request.query.from !== undefined) {
-                                data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
-                            }
+                            //if (request.query.from !== undefined) {
+                            //    data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
+                            //}
                             //res.send(data)
-                            test = data
+                            //test = data
                         });
                     } else {
-                        if (request.query.from !== undefined) {
-                            data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
-                        }
+                        //if (request.query.from !== undefined) {
+                        //    data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
+                        //}
                         //res.send(data)
-                        test = data
+                        //test = data
+                    }
+
+                    //get content from meta name="Keywords"
+                    const keywords = $('meta[name="Keywords"]').attr('content');
+                    //split keywords by comma
+                    const keywordsArray = keywords.split(',');
+                    //split keywordsArray[0] by space
+                    const keywordsArray0 = keywordsArray[0].split(' ');
+                    //remove / from keywordsArray0[1]
+                    const keywordsArray0_1 = keywordsArray0[1].replace(/\//g, '');
+                    console.log(keywordsArray0_1)
+                    console.log(request.query.date)
+                    if (keywordsArray0_1 != request.query.date) {
+                        test = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+                        //remove file
+                        fs.unlink(dir + request.query.date + '.txt', function (err) {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log('File deleted!');
+                            }
+                        })
                     }
                 }).catch(error => {
+                    console.log(error)
                     let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                     //res.send(data)
                     test = data
@@ -515,20 +581,7 @@ fastify.get('/index3', async (request, reply) => {
     if (fileContents) {
         let data = JSON.parse(fileContents)
         if (request.query.from !== undefined) {
-            switch (request.query.date.substr(2, 2)) {
-                case '01': monthtext = "มกราคม"; break;
-                case '02': monthtext = "กุมภาพันธ์"; break;
-                case '03': monthtext = "มีนาคม"; break;
-                case '04': monthtext = "เมษายน"; break;
-                case '05': monthtext = "พฤษภาคม"; break;
-                case '06': monthtext = "มิถุนายน"; break;
-                case '07': monthtext = "กรกฎาคม"; break;
-                case '08': monthtext = "สิงหาคม"; break;
-                case '09': monthtext = "กันยายน"; break;
-                case '10': monthtext = "ตุลาคม"; break;
-                case '11': monthtext = "พฤศจิกายน"; break;
-                case '12': monthtext = "ธันวาคม"; break;
-            }
+            monthtext = numbertomonth(request.query.date.substr(2, 2))
 
             data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
         }
@@ -559,20 +612,7 @@ fastify.get('/index3', async (request, reply) => {
                         thaiday = thaiday.replace('งวดวันที่', '').trim()
                         let thaidaysplit = thaiday.split(' ')
                         let monthnum = ''
-                        switch (thaidaysplit[1]) {
-                            case 'มกราคม': monthnum = '01'; break;
-                            case 'กุมภาพันธ์': monthnum = '02'; break;
-                            case 'มีนาคม': monthnum = '03'; break;
-                            case 'เมษายน': monthnum = '04'; break;
-                            case 'พฤษภาคม': monthnum = '05'; break;
-                            case 'มิถุนายน': monthnum = '06'; break;
-                            case 'กรกฎาคม': monthnum = '07'; break;
-                            case 'สิงหาคม': monthnum = '08'; break;
-                            case 'กันยายน': monthnum = '09'; break;
-                            case 'ตุลาคม': monthnum = '10'; break;
-                            case 'พฤศจิกายน': monthnum = '11'; break;
-                            case 'ธันวาคม': monthnum = '12'; break;
-                        }
+                        monthnum = monthtonumber(thaidaysplit[1])
                         thaiday=thaidaysplit[0].padStart(2,"0")+''+monthnum+''+thaidaysplit[2]
                         console.log(thaiday)
                         //console.log($(h2[i]).text());
@@ -638,20 +678,7 @@ fastify.get('/index3', async (request, reply) => {
                             if (err) throw err;
                             //console.log('Saved!');
                             if (request.query.from !== undefined) {
-                                switch (request.query.date.substr(2, 2)) {
-                                    case '01': monthtext = "มกราคม"; break;
-                                    case '02': monthtext = "กุมภาพันธ์"; break;
-                                    case '03': monthtext = "มีนาคม"; break;
-                                    case '04': monthtext = "เมษายน"; break;
-                                    case '05': monthtext = "พฤษภาคม"; break;
-                                    case '06': monthtext = "มิถุนายน"; break;
-                                    case '07': monthtext = "กรกฎาคม"; break;
-                                    case '08': monthtext = "สิงหาคม"; break;
-                                    case '09': monthtext = "กันยายน"; break;
-                                    case '10': monthtext = "ตุลาคม"; break;
-                                    case '11': monthtext = "พฤศจิกายน"; break;
-                                    case '12': monthtext = "ธันวาคม"; break;
-                                }
+                                monthtext = numbertomonth(request.query.date.substr(2, 2))
 
                                 data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
                             }
@@ -660,20 +687,7 @@ fastify.get('/index3', async (request, reply) => {
                         });
                     } else {
                         if (request.query.from !== undefined) {
-                            switch (request.query.date.substr(2, 2)) {
-                                case '01': monthtext = "มกราคม"; break;
-                                case '02': monthtext = "กุมภาพันธ์"; break;
-                                case '03': monthtext = "มีนาคม"; break;
-                                case '04': monthtext = "เมษายน"; break;
-                                case '05': monthtext = "พฤษภาคม"; break;
-                                case '06': monthtext = "มิถุนายน"; break;
-                                case '07': monthtext = "กรกฎาคม"; break;
-                                case '08': monthtext = "สิงหาคม"; break;
-                                case '09': monthtext = "กันยายน"; break;
-                                case '10': monthtext = "ตุลาคม"; break;
-                                case '11': monthtext = "พฤศจิกายน"; break;
-                                case '12': monthtext = "ธันวาคม"; break;
-                            }
+                            monthtext = numbertomonth(request.query.date.substr(2, 2))
 
                             data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
                         }
@@ -682,20 +696,7 @@ fastify.get('/index3', async (request, reply) => {
                     }
                 } catch (error) {
                     if (request.query.from !== undefined) {
-                        switch (request.query.date.substr(2, 2)) {
-                            case '01': monthtext = "มกราคม"; break;
-                            case '02': monthtext = "กุมภาพันธ์"; break;
-                            case '03': monthtext = "มีนาคม"; break;
-                            case '04': monthtext = "เมษายน"; break;
-                            case '05': monthtext = "พฤษภาคม"; break;
-                            case '06': monthtext = "มิถุนายน"; break;
-                            case '07': monthtext = "กรกฎาคม"; break;
-                            case '08': monthtext = "สิงหาคม"; break;
-                            case '09': monthtext = "กันยายน"; break;
-                            case '10': monthtext = "ตุลาคม"; break;
-                            case '11': monthtext = "พฤศจิกายน"; break;
-                            case '12': monthtext = "ธันวาคม"; break;
-                        }
+                        monthtext = numbertomonth(request.query.date.substr(2, 2))
 
                         data[0][0] = request.query.date.substring(0, 2) + monthtext + request.query.date.substring(4, 8)
                     }
@@ -703,6 +704,21 @@ fastify.get('/index3', async (request, reply) => {
                     test = data
                 }
 
+                //get content from meta property og:title
+                const title = $('meta[property="og:title"]').attr('content');
+                //split title by space
+                const titlearr = title.split(' ')
+                const datefromweb = titlearr[1]+monthtonumber(titlearr[2])+titlearr[3]
+                if(request.query.date!=datefromweb){
+                    test = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+                    fs.unlink(dir + request.query.date + '.txt', (err) => {
+                        if (err) {
+                            console.log(err)
+                        }else{
+                            console.log('delete file')
+                        }
+                    })
+                }
             })
             .catch((err) => {
                 let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
