@@ -439,10 +439,10 @@ fastify.get('/index2', async (request, reply) => {
                     numberpush.shift()
                     if (numberpush[0].split(" ").length > 2) {
                         threeend = numberpush[0].split(" ")
-                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
-                        data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
-                        data[2][3] = threeend[2].replace(/\xc2\xa0/, '');
-                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '');
+                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '').trim();
+                        data[2][2] = threeend[1].replace(/\xc2\xa0/, '').trim();
+                        data[2][3] = threeend[2].replace(/\xc2\xa0/, '').trim();
+                        data[2][4] = threeend[3].replace(/\xc2\xa0/, '').trim();
                     } else {
                         threefirst = numberpush[0].split(" ")
                         data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
@@ -461,7 +461,7 @@ fastify.get('/index2', async (request, reply) => {
                         numberpush.shift()
                     }
                     data[4][1] = padLeadingZeros((data[0][1] - 1), 6);
-                    data[4][2] = padLeadingZeros((data[0][1] + 1), 6);
+                    data[4][2] = padLeadingZeros((parseInt(data[0][1]) + 1), 6);
 
                     let wave = 5;
                     let minwave = 0;
