@@ -190,13 +190,13 @@ fastify.get('/', async (request, reply) => {
         const bu2json = await backup2.json()
         //if some json [0][1] is 0 and other is not 0 return 0
         if (bu1json[0][1] == 0 && bu2json[0][1] != 0) {
-            if(bu2json[0][1] == 'xxxxxx'){
+            if(bu2json[0][1] == 'xxxxxx' || !isNaN(bu2json[0][1])){
                 return bu2json
             }else{
                 return bu1json
             }
         } else if (bu1json[0][1] != 0 && bu2json[0][1] == 0) {
-            if(bu1json[0][1] == 'xxxxxx'){
+            if(bu1json[0][1] == 'xxxxxx' || !isNaN(bu1json[0][1])){
                 return bu1json
             }else{
                 return bu2json
