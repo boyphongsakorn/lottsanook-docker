@@ -14,6 +14,8 @@ const fastify = Fastify({ logger: true });
 
 const port = process.env.PORT || 5000;
 
+process.env.TZ = "Asia/Bangkok";
+
 let dir = 'tmp/';
 const __filename = fileURLToPath(import.meta.url);
 
