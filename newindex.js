@@ -1311,13 +1311,20 @@ fastify.get('/finddol', async (request, reply) => {
 fastify.get('/lotnews', async (request, reply) => {
     if(request.hostname == 'lotapi3.pwisetthon.com'){
         console.log(request.hostname);
-        if(mainapistatus == true){
+        if(mainapistatus == true && request.query.count <= 5){
             //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
             const rawurl = request.raw.url;
             //const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
             const mainapi = await fetch('https://lottsanook-cfworker.boy1556.workers.dev' + rawurl);
             const mainapibody = await mainapi.json();
             return mainapibody;
+        } else if (mainapistatus == true && request.query.count > 5){
+            const mainapi = await fetch('https://raw.githubusercontent.com/boyphongsakorn/testrepo/main/latestnews.json');
+            const mainapibody = await mainapi.json();
+            //get only by count
+            const mainapibodycount = mainapibody.splice(0, request.query.count);
+            return mainapibodycount;
+            //return mainapibody;
         }
     }
     let arrayofnews = [0, 0, 0, 0]
