@@ -15,9 +15,10 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: latest
+          node-version: 'latest'
+          #cache: 'pnpm'
 
-      - run: npm install #npm ci # or yarn install
+      #- run: npm install #npm ci # or yarn install
       - run: npm install eslint --global
       #- run: npm install eslint-plugin-only-warn --global
       #- run: npm install eslint-plugin-only-warn@latest --save-dev
@@ -78,7 +79,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
