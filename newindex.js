@@ -1323,7 +1323,7 @@ fastify.get('/lotnews', async (request, reply) => {
         } else if (mainapistatus == true && request.query.count > 5){
             const mainapi = await fetch('https://raw.githubusercontent.com/boyphongsakorn/testrepo/main/latestnews.json');
             const mainapibody = await mainapi.json();
-            //change timezone in pubDate to GMT+7
+            //change timezone in pubDate to GMT+7 and keep style to day, date month year hour:minute:second +0700
             for (let index = 0; index < mainapibody.length; index++) {
                 const element = mainapibody[index];
                 element.pubDate = new Date(element.pubDate).toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
