@@ -1326,7 +1326,8 @@ fastify.get('/lotnews', async (request, reply) => {
             //change timezone in pubDate to GMT+7 and keep style to day, date month year hour:minute:second +0700
             for (let index = 0; index < mainapibody.length; index++) {
                 const element = mainapibody[index];
-                element.pubDate = new Date(element.pubDate).toUTCString("en-US", {timeZone: "Asia/Bangkok"});
+                element.pubDate = new Date(element.pubDate).toLocaleString("en-US", {timeZone: "Asia/Bangkok"});
+                element.pubDate = new Date(element.pubDate).toUTCString();
             }
             //get only by count
             const mainapibodycount = mainapibody.splice(0, request.query.count);
