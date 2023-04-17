@@ -526,11 +526,16 @@ fastify.get('/index2', async (request, reply) => {
                     const keywordsArray = keywords.split(',');
                     //split keywordsArray[0] by space
                     const keywordsArray0 = keywordsArray[0].split(' ');
-                    //remove / from keywordsArray0[1]
-                    const keywordsArray0_1 = keywordsArray0[1].replace(/\//g, '');
-                    console.log(padLeadingZeros(keywordsArray0_1, 8))
+                    //split keywordsArray0[1] by /
+                    const keywordsArray0_1 = keywordsArray0[1].split('/');
+                    // keywordsArray0_1[0] and keywordsArray0_1[1] will be 2 length
+                    const keywordsArray0_1_day = padLeadingZeros(keywordsArray0_1[0], 2);
+                    const keywordsArray0_1_month = padLeadingZeros(keywordsArray0_1[1], 2);
+                    const finalkeywords = keywordsArray0_1_day + keywordsArray0_1_month + keywordsArray0_1[2];
+                    // const keywordsArray0_1 = keywordsArray0[1].replace(/\//g, '');
+                    console.log(padLeadingZeros(finalkeywords, 8))
                     console.log(request.query.date)
-                    if (padLeadingZeros(keywordsArray0_1, 8) != request.query.date) {
+                    if (padLeadingZeros(finalkeywords, 8) != request.query.date) {
                         test = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                         //remove file
                         fs.unlink(dir + request.query.date + '.txt', function (err) {
