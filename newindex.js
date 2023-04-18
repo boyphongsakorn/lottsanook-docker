@@ -1654,6 +1654,48 @@ fastify.get('/lotnews', async (request, reply) => {
     return array
 })
 
+fastify.get('/last10year', async (request, reply) => {
+    // get date from query
+    const date = request.query.date
+    // get year from date last 4 digit
+    const year = date.substring(4, 8)
+    // minus 10 year
+    const last10year = parseInt(year) - 10
+    // create array from last 10 year to year
+    const array = Array.from({ length: 10 }, (v, k) => k + last10year)
+    console.log(array)
+    //all number
+    let allnumber = []
+    //loop array
+    for (let i = 0; i < array.length; i++) {
+        const year = array[i]
+        const dayandmonth = date.substring(0, 4)
+        console.log(dayandmonth + year)
+        const api = await fetch('https://lotapi.pwisetthon.com/?date=' + dayandmonth + year)
+        const json = await api.json()
+        //push all number in array to allnumber
+        for (let j = 0; j < json.length; j++) {
+            for (let k = 0; k < json[j].length; k++) {
+                //check json[j][k] is number
+                if (!isNaN(json[j][k]) && json[j][k] != 0) {
+                    allnumber.push(json[j][k])
+                }
+            }
+        }
+    }
+    console.log(allnumber)
+    //create json of number and count
+    let json = {}
+    for (let i = 0; i < allnumber.length; i++) {
+        if (json[allnumber[i]]) {
+            json[allnumber[i]] += 1
+        } else {
+            json[allnumber[i]] = 1
+        }
+    }
+    return json
+})
+
 const start = async () => {
     try {
         await fastify.listen({ port: port, host: '0.0.0.0' })
