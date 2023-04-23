@@ -10,6 +10,7 @@ import fs from 'fs';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import Fastify from 'fastify';
+import https from 'https';
 const fastify = Fastify({ logger: true });
 
 const port = process.env.PORT || 5000;
@@ -359,6 +360,7 @@ fastify.get('/index2', async (request, reply) => {
 
     if (!request.query.date) {
         request.query.date = padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543)
+        console.log('no date');
     }
     if ((request.query.date.substring(4, 8) == new Date().getFullYear() + 543) && (request.query.focus == undefined || request.query.focus == false || request.query.focus == 'false')) {
         if (request.query.from !== undefined) {
@@ -407,6 +409,7 @@ fastify.get('/index2', async (request, reply) => {
             test = data
         } else {
             console.log('fetching data');
+            console.log('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-' + request.query.date.substring(0, 2) + '-' + encodeURI(monthtext) + '-' + request.query.date.substring(4, 8) + '.aspx');
             await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-' + request.query.date.substring(0, 2) + '-' + encodeURI(monthtext) + '-' + request.query.date.substring(4, 8) + '.aspx', { redirect: 'error' })
                 .then(res => res.text())
                 .then((body) => {
@@ -523,11 +526,16 @@ fastify.get('/index2', async (request, reply) => {
                     const keywordsArray = keywords.split(',');
                     //split keywordsArray[0] by space
                     const keywordsArray0 = keywordsArray[0].split(' ');
-                    //remove / from keywordsArray0[1]
-                    const keywordsArray0_1 = keywordsArray0[1].replace(/\//g, '');
-                    console.log(keywordsArray0_1)
+                    //split keywordsArray0[1] by /
+                    const keywordsArray0_1 = keywordsArray0[1].split('/');
+                    // keywordsArray0_1[0] and keywordsArray0_1[1] will be 2 length
+                    const keywordsArray0_1_day = padLeadingZeros(keywordsArray0_1[0], 2);
+                    const keywordsArray0_1_month = padLeadingZeros(keywordsArray0_1[1], 2);
+                    const finalkeywords = keywordsArray0_1_day + keywordsArray0_1_month + keywordsArray0_1[2];
+                    // const keywordsArray0_1 = keywordsArray0[1].replace(/\//g, '');
+                    console.log(padLeadingZeros(finalkeywords, 8))
                     console.log(request.query.date)
-                    if (keywordsArray0_1 != request.query.date) {
+                    if (padLeadingZeros(finalkeywords, 8) != request.query.date) {
                         test = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
                         //remove file
                         fs.unlink(dir + request.query.date + '.txt', function (err) {
@@ -590,6 +598,9 @@ fastify.get('/index3', async (request, reply) => {
         //res.send(data);
         test = data
     } else {
+        let agent = new https.Agent({
+            rejectUnauthorized: false
+        });
         await fetch('https://news.sanook.com/lotto/check/' + request.query.date + '/', { redirect: 'error' })
             .then(res => res.text())
             .then((body) => {
@@ -1641,6 +1652,48 @@ fastify.get('/lotnews', async (request, reply) => {
     //res.send(array)
 
     return array
+})
+
+fastify.get('/last10year', async (request, reply) => {
+    // get date from query
+    const date = request.query.date
+    // get year from date last 4 digit
+    const year = date.substring(4, 8)
+    // minus 10 year
+    const last10year = parseInt(year) - 10
+    // create array from last 10 year to year
+    const array = Array.from({ length: 10 }, (v, k) => k + last10year)
+    console.log(array)
+    //all number
+    let allnumber = []
+    //loop array
+    for (let i = 0; i < array.length; i++) {
+        const year = array[i]
+        const dayandmonth = date.substring(0, 4)
+        console.log(dayandmonth + year)
+        const api = await fetch('https://lotapi.pwisetthon.com/?date=' + dayandmonth + year)
+        const json = await api.json()
+        //push all number in array to allnumber
+        for (let j = 0; j < json.length; j++) {
+            for (let k = 0; k < json[j].length; k++) {
+                //check json[j][k] is number
+                if (!isNaN(json[j][k]) && json[j][k] != 0) {
+                    allnumber.push(json[j][k])
+                }
+            }
+        }
+    }
+    console.log(allnumber)
+    //create json of number and count
+    let json = {}
+    for (let i = 0; i < allnumber.length; i++) {
+        if (json[allnumber[i]]) {
+            json[allnumber[i]] += 1
+        } else {
+            json[allnumber[i]] = 1
+        }
+    }
+    return json
 })
 
 const start = async () => {
