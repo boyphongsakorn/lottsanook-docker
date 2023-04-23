@@ -164,7 +164,29 @@ fastify.get('/', async (request, reply) => {
     var date = new Date(parseInt(request.query.date.substr(4, 4)) - 543, parseInt(request.query.date.substr(2, 2)) - 1, parseInt(request.query.date.substr(0, 2)) + 1);
     var today = new Date();
 
-    if (date.toDateString() === today.toDateString() || date.getTime() > today.getTime()) {
+    const ac = new AbortController();
+
+    var requestOptions = {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: raw,
+        redirect: 'follow',
+        signal: ac.signal
+    };
+
+    let toolong = false;
+
+    setTimeout(() => {
+        toolong = true;
+        ac.abort()
+    }, 3000);
+    
+    await fetch("https://www.glo.or.th/api/lottery/getLotteryAward", requestOptions)
+        .then(response => response.json())
+        .then(async (result) => {})
+        .catch(error => console.log('error', error));
+
+    if (date.toDateString() === today.toDateString() || date.getTime() > today.getTime() || toolong == true) {
         /*if (request.query.from !== undefined) {
             await fetch(url + '/index3?date=' + request.query.date + '&from')
                 .then(res => res.json())
@@ -228,10 +250,11 @@ fastify.get('/', async (request, reply) => {
         body: raw,
         redirect: 'follow'
     };
-
+    
     await fetch("https://www.glo.or.th/api/lottery/getLotteryAward", requestOptions)
         .then(response => response.json())
         .then(async (result) => {
+            console.log(result)
             /*if (date.getTime() === today.getTime() || date > today) {
                 if (request.query.from !== undefined) {
                     await fetch(url + '/index3?date=' + request.query.date + '&from')
