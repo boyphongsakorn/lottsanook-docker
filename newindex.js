@@ -671,6 +671,9 @@ fastify.get('/index3', async (request, reply) => {
                 data[3][1] = $('strong').toArray()[5 + wow].firstChild.data
                 data[4][1] = $('strong').toArray()[6 + wow].firstChild.data
                 data[4][2] = $('strong').toArray()[7 + wow].firstChild.data
+
+                data[1][1] = data[1][1].trim()
+                data[2][1] = data[2][1].trim()
                 
                 //get h2 class content__title--sub
                 let h2 = $('h2').toArray()[0].firstChild.data
