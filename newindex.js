@@ -473,7 +473,7 @@ fastify.get('/index2', async (request, reply) => {
                         data[2][4] = threeend[3].replace(/\xc2\xa0/, '').trim();
                     } else {
                         threefirst = numberpush[0].split(" ")
-                        data[1][1] = threefirst[0].replace(/\xc2\xa0/, '');
+                        data[1][1] = threefirst[0].replace(/\xc2\xa0/, '').trim();
                         data[1][2] = threefirst[1].replace(/\xc2\xa0/, '');
                     }
                     numberpush.shift()
@@ -482,7 +482,7 @@ fastify.get('/index2', async (request, reply) => {
                         numberpush.shift()
                     } else {
                         threeend = numberpush[0].split(" ")
-                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '');
+                        data[2][1] = threeend[0].replace(/\xc2\xa0/, '').trim();
                         data[2][2] = threeend[1].replace(/\xc2\xa0/, '');
                         numberpush.shift()
                         data[3][1] = numberpush[0]
