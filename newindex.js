@@ -353,6 +353,16 @@ fastify.get('/', async (request, reply) => {
     //}
 
     //return { hello: 'world' }
+
+    //if in test have null value change to xxxxxx
+    for (let i = 0; i < test.length; i++) {
+        for (let j = 0; j < test[i].length; j++) {
+            if (test[i][j] === null) {
+                test[i][j] = 'xxxxxx'
+            }
+        }
+    }
+
     return test
 })
 
@@ -578,6 +588,15 @@ fastify.get('/index2', async (request, reply) => {
         }
     }
 
+    //if in test have null value change to xxxxxx
+    for (let i = 0; i < test.length; i++) {
+        for (let j = 0; j < test[i].length; j++) {
+            if (test[i][j] == null) {
+                test[i][j] = 'xxxxxx'
+            }
+        }
+    }
+
     return test;
 })
 
@@ -769,6 +788,15 @@ fastify.get('/index3', async (request, reply) => {
                 test = data
                 console.log(err)
             });
+    }
+
+    //if in test have null value change to xxxxxx
+    for (let i = 0; i < test.length; i++) {
+        for (let j = 0; j < test[i].length; j++) {
+            if (test[i][j] === null) {
+                test[i][j] = 'xxxxxx'
+            }
+        }
     }
 
     return test;
