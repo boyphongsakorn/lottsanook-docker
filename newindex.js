@@ -206,7 +206,7 @@ fastify.get('/', async (request, reply) => {
         let backup2url = new URL(url + request.raw.url.replace('/','/index3'));
         //add param focus=true to backup url
         backup1url.searchParams.append('focus', 'true');
-        backup2url.searchParams.append('focus', 'true');
+        backup2url.searchParams.append('fresh', 'true');
         const backup1 = await fetch(backup1url.href);
         const backup2 = await fetch(backup2url.href);
         console.log(backup1url.href);
