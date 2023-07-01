@@ -1422,7 +1422,7 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[3] = (count / 4) + 1
     }
     if (request.query.lastweek && request.query.lastweek == 'true') {*/
-    if (count > 10) {
+    if (count > 10 && !request.query.fromapp && request.query.fromapp != 'true') {
         arrayofnews[0] = 10
         arrayofnews[1] = 10
         arrayofnews[2] = 10
