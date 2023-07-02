@@ -1488,7 +1488,7 @@ fastify.get('/lotnews', async (request, reply) => {
         });*/
         //console.log($('picture > img').toArray()[0].attribs['data-src'])
         // const image = $('picture > img').toArray()[0].attribs['data-src']
-        let image = $('div > a > img').toArray()[0].attribs['src']
+        let image = $('img.attachment-full').toArray()[0].attribs['data-src']
         if (image == undefined) {
             image = $('picture > img').toArray()[0].attribs['data-src']
         }
@@ -1575,7 +1575,11 @@ fastify.get('/lotnews', async (request, reply) => {
         const getimage = await fetch(link)
         const responimage = await getimage.text()
         const $ = cheerio.load(responimage)
-        const image = $('picture > img').toArray()[0].attribs['data-src']
+        // const image = $('picture > img').toArray()[0].attribs['data-src']
+        let image = $('img.attachment-full').toArray()[0].attribs['data-src']
+        if (image == undefined) {
+            image = $('picture > img').toArray()[0].attribs['data-src']
+        }
         const json = {
             title: title,
             //remove \n and \t in string
