@@ -1531,7 +1531,7 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new"});
     const page = await browser.newPage();
 
     await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);

@@ -21,7 +21,7 @@
     "cheerio": "^1.0.0-rc.12",
     "fastify": "^4.19.2",
     "node-fetch": "^3.3.0",
-    "puppeteer": "^20.8.0"
+    "puppeteer": "19.11.1"
   },
   "type": "module"
 }
