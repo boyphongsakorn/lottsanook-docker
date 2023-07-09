@@ -11,6 +11,7 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 import Fastify from 'fastify';
 import https from 'https';
+import puppeteer from 'puppeteer';
 const fastify = Fastify({ logger: true });
 
 const port = process.env.PORT || 5000;
@@ -1449,6 +1450,19 @@ fastify.get('/lotnews', async (request, reply) => {
     }
     /*}*/
 
+    if(request.query.fromapp && request.query.fromapp == 'true') {
+        //check if file exist in /tmp/lotnews.json
+        if (fs.existsSync('/tmp/lotnews.json')) {
+            //file exist
+            let file = fs.readFileSync('/tmp/lotnews.json')
+            let json = JSON.parse(file)
+            //check if file is older than 1 hour
+            //split json to count
+            let jsoncount = json.splice(0, count)
+            reply.send(jsoncount)
+        }
+    }
+
     let array = [];
     let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
     let xml = await response.text()
@@ -1517,42 +1531,59 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
+    const browser = await puppeteer.launch({headless: false});
+    const page = await browser.newPage();
+
+    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+
+    //wait for 5 second
+    await page.waitForTimeout(10000);
+
+    const content = await page.content();
+    await browser.close();
+    //get json from content
+    //write to file
+    //use cheerio to get json in body > pre
+    const $ks = cheerio.load(content)
+    const json = $ks('body > pre').text()
+    const jsonparse = JSON.parse(json)
+    // console.log(json)
     // response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
     // xml = await response.json()
     // response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
     // console.log(response.body);
-    // news = xml._posts
-    // for (let i = 0; i < news.length; i++) {
-    //     const title = news[i].post_title
-    //     const link = 'https://www.khaosod.co.th/lottery/news_' + news[i].ID
-    //     const description = news[i].post_content
-    //     const pubDate = news[i].created_at
-    //     //format pubDate from iso string to date string
-    //     const event = new Date(pubDate)
-    //     // image
-    //     const image = news[i].image
-    //     //create new description variable with remove html tag
-    //     let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
-    //     if (fulldesc == 'false') {
-    //         description2 = description2.substring(0, 100) + '...'
-    //     }
-    //     description2 = description2.replace(/\r?\n|\r/g, '')
-    //     const json = {
-    //         title: title,
-    //         link: link.replace(/\n|\t/g, ''),
-    //         description: description2,
-    //         image: image,
-    //         pubDate: event.toUTCString(),
-    //     }
-    //     //if new Date(pubDate) < date push to array
-    //     if (request.query.lastweek) {
-    //         if (event > date) {
-    //             array.push(json)
-    //         }
-    //     } else {
-    //         array.push(json)
-    //     }
-    // }
+    news = jsonparse._posts
+    for (let i = 0; i < news.length; i++) {
+        const title = news[i].post_title
+        const link = 'https://www.khaosod.co.th/lottery/news_' + news[i].ID
+        const description = news[i].post_content
+        const pubDate = news[i].created_at
+        //format pubDate from iso string to date string
+        const event = new Date(pubDate)
+        // image
+        const image = news[i].image
+        //create new description variable with remove html tag
+        let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
+        if (fulldesc == 'false') {
+            description2 = description2.substring(0, 100) + '...'
+        }
+        description2 = description2.replace(/\r?\n|\r/g, '')
+        const json = {
+            title: title,
+            link: link.replace(/\n|\t/g, ''),
+            description: description2,
+            image: image,
+            pubDate: event.toUTCString(),
+        }
+        //if new Date(pubDate) < date push to array
+        if (request.query.lastweek) {
+            if (event > date) {
+                array.push(json)
+            }
+        } else {
+            array.push(json)
+        }
+    }
 
     response = await fetch('https://www.brighttv.co.th/tag/%E0%B8%AB%E0%B8%A7%E0%B8%A2%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87/feed')
     xml = await response.text()
@@ -1851,6 +1882,11 @@ fastify.get('/lotnews', async (request, reply) => {
                 array.push(json)
             }
         }
+    }
+
+    if (count > array.length) {
+        //write to file /tmp/lotnews.json
+        fs.writeFileSync('/tmp/lotnews.json', JSON.stringify(array))
     }
 
     if (request.query.lastweek) {
