@@ -1431,9 +1431,9 @@ fastify.get('/lotnews', async (request, reply) => {
     } else {
         if(request.query.fromapp && request.query.fromapp == 'true') {
             arrayofnews[0] = Math.ceil(count / 4) > 10 ? 10 : Math.ceil(count / 4)
-            arrayofnews[1] = Math.ceil(count / 4)
             arrayofnews[2] = Math.ceil(count / 4) > 10 ? 10 : Math.ceil(count / 4)
             arrayofnews[3] = Math.ceil(count / 4)
+            arrayofnews[1] = Math.ceil((count - arrayofnews[0] - arrayofnews[2] - arrayofnews[3]) / 2)
         } else {
             arrayofnews[0] = count
             arrayofnews[1] = count
