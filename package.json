@@ -20,7 +20,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "fastify": "^4.20.0",
-    "node-fetch": "^3.3.0",
+    "node-fetch": "^3.3.2",
     "puppeteer": "19.11.1"
   },
   "type": "module"
