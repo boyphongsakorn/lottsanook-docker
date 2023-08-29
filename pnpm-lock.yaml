@@ -9,8 +9,8 @@ dependencies:
     specifier: ^1.0.0-rc.12
     version: 1.0.0-rc.12
   fastify:
-    specifier: ^4.21.0
-    version: 4.21.0
+    specifier: ^4.22.0
+    version: 4.22.0
   node-fetch:
     specifier: ^3.3.2
     version: 3.3.2
@@ -87,6 +87,7 @@ packages:
 
   /@types/node@20.4.1:
     resolution: {integrity: sha512-JIzsAvJeA/5iY6Y/OxZbv1lUcc8dNSE77lb2gnBH+/PJ3lFR1Ccvgwl5JWnHAkNHcRsT0TbpVOsiMKZ1F/yyJg==}
+    requiresBuild: true
     dev: false
     optional: true
 
@@ -474,8 +475,8 @@ packages:
     resolution: {integrity: sha512-cIusKBIt/R/oI6z/1nyfe2FvGKVTohVRfvkOhvx0nCEW+xf5NoCXjAHcWp93uOUBchzYcsvPlrapAdX1uW+YGg==}
     dev: false
 
-  /fastify@4.21.0:
-    resolution: {integrity: sha512-tsu4bcwE4HetxqW8prA5fbC9bKHMYDp7jGEDWyzK1l90a3uOaLoIcQbdGcWeODNLVJviQnzh1wvIjTZE3MJFEg==}
+  /fastify@4.22.0:
+    resolution: {integrity: sha512-HLoBmetdQ6zaJohKW6jzUww8NnwHzkbIbUEyAzM+Nnf7cZVSXRuUV+6b2/xLmu6GGkruIFJ/bIQoKWYRx4wnAQ==}
     dependencies:
       '@fastify/ajv-compiler': 3.5.0
       '@fastify/error': 3.2.0
