@@ -1544,14 +1544,19 @@ fastify.get('/lotnews', async (request, reply) => {
     //get json from content
     //write to file
     //use cheerio to get json in body > pre
-    const $ks = cheerio.load(content)
-    const json = $ks('body > pre').text()
-    const jsonparse = JSON.parse(json)
-    // console.log(json)
-    // response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
-    // xml = await response.json()
-    // response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
-    // console.log(response.body);
+    let jsonparse
+    try {
+        const $ks = cheerio.load(content)
+        const json = $ks('body > pre').text()
+        jsonparse = JSON.parse(json)
+    } catch (error) {
+        // console.log(json)
+        response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
+        jsonparse = await response.json()
+        // xml = await response.json()
+        // response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+        // console.log(response.body);
+    }
     news = jsonparse._posts
     for (let i = 0; i < news.length; i++) {
         const title = news[i].post_title
