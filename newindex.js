@@ -1504,7 +1504,8 @@ fastify.get('/lotnews', async (request, reply) => {
         // const image = $('picture > img').toArray()[0].attribs['data-src']
         let image = $('img.attachment-full').toArray()[0].attribs['data-src']
         if (image == undefined) {
-            image = $('picture > img').toArray()[0].attribs['data-src']
+            // image = $('picture > img').toArray()[0].attribs['data-src']
+            image = $('picture > img').toArray()[0].attribs['src']
         }
         //loop imageurl
         /*for (let index = 0; index < imageurl.length; index++) {
