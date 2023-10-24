@@ -11,6 +11,7 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 import Fastify from 'fastify';
 import https from 'https';
+import puppeteer from 'puppeteer';
 const fastify = Fastify({ logger: true });
 
 const port = process.env.PORT || 5000;
@@ -206,7 +207,7 @@ fastify.get('/', async (request, reply) => {
         let backup2url = new URL(url + request.raw.url.replace('/','/index3'));
         //add param focus=true to backup url
         backup1url.searchParams.append('focus', 'true');
-        backup2url.searchParams.append('focus', 'true');
+        backup2url.searchParams.append('fresh', 'true');
         const backup1 = await fetch(backup1url.href);
         const backup2 = await fetch(backup2url.href);
         console.log(backup1url.href);
@@ -353,6 +354,11 @@ fastify.get('/', async (request, reply) => {
     //}
 
     //return { hello: 'world' }
+
+    if(test[0][1] == null || test[0][1] == 'null'){
+        test[0][1] = 'xxxxxx'
+    }
+
     return test
 })
 
@@ -578,6 +584,10 @@ fastify.get('/index2', async (request, reply) => {
         }
     }
 
+    if(test[0][1] == null || test[0][1] == 'null'){
+        test[0][1] = 'xxxxxx'
+    }
+
     return test;
 })
 
@@ -769,6 +779,10 @@ fastify.get('/index3', async (request, reply) => {
                 test = data
                 console.log(err)
             });
+    }
+
+    if(test[0][1] == null || test[0][1] == 'null'){
+        test[0][1] = 'xxxxxx'
     }
 
     return test;
@@ -1409,16 +1423,23 @@ fastify.get('/lotnews', async (request, reply) => {
         arrayofnews[3] = (count / 4) + 1
     }
     if (request.query.lastweek && request.query.lastweek == 'true') {*/
-    if (count > 10) {
+    if (count > 10 && !request.query.fromapp && request.query.fromapp != 'true') {
         arrayofnews[0] = 10
         arrayofnews[1] = 10
         arrayofnews[2] = 10
         arrayofnews[3] = 10
     } else {
-        arrayofnews[0] = count
-        arrayofnews[1] = count
-        arrayofnews[2] = count
-        arrayofnews[3] = count
+        if(request.query.fromapp && request.query.fromapp == 'true') {
+            arrayofnews[0] = Math.ceil(count / 4) > 10 ? 10 : Math.ceil(count / 4)
+            arrayofnews[2] = Math.ceil(count / 4) > 10 ? 10 : Math.ceil(count / 4)
+            arrayofnews[3] = Math.ceil(count / 4)
+            arrayofnews[1] = Math.ceil((count - arrayofnews[0] - arrayofnews[2] - arrayofnews[3]) / 2)
+        } else {
+            arrayofnews[0] = count
+            arrayofnews[1] = count
+            arrayofnews[2] = count
+            arrayofnews[3] = count
+        }
         //if hostname = lotapi3.pwisetthon.com
         if (request.hostname == 'lotapi3.pwisetthon.com') {
             arrayofnews[0] = Math.ceil(count / 2)
@@ -1428,6 +1449,19 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
     /*}*/
+
+    if(request.query.fromapp && request.query.fromapp == 'true') {
+        //check if file exist in /tmp/lotnews.json
+        if (fs.existsSync('/tmp/lotnews.json')) {
+            //file exist
+            let file = fs.readFileSync('/tmp/lotnews.json')
+            let json = JSON.parse(file)
+            //check if file is older than 1 hour
+            //split json to count
+            let jsoncount = json.splice(0, count)
+            reply.send(jsoncount)
+        }
+    }
 
     let array = [];
     let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
@@ -1467,7 +1501,12 @@ fastify.get('/lotnews', async (request, reply) => {
             }
         });*/
         //console.log($('picture > img').toArray()[0].attribs['data-src'])
-        const image = $('picture > img').toArray()[0].attribs['data-src']
+        // const image = $('picture > img').toArray()[0].attribs['data-src']
+        let image = $('img.attachment-full').toArray()[0].attribs['data-src']
+        if (image == undefined) {
+            // image = $('picture > img').toArray()[0].attribs['data-src']
+            image = $('picture > img').toArray()[0].attribs['src']
+        }
         //loop imageurl
         /*for (let index = 0; index < imageurl.length; index++) {
             console.log(imageurl)
@@ -1493,9 +1532,33 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
-    response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
-    xml = await response.json()
-    news = xml._posts
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new",timeout: 0});
+    const page = await browser.newPage();
+
+    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+
+    //wait for 5 second
+    await page.waitForTimeout(20000);
+
+    const content = await page.content();
+    await browser.close();
+    //get json from content
+    //write to file
+    //use cheerio to get json in body > pre
+    let jsonparse
+    try {
+        const $ks = cheerio.load(content)
+        const json = $ks('body > pre').text()
+        jsonparse = JSON.parse(json)
+    } catch (error) {
+        // console.log(json)
+        response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
+        jsonparse = await response.json()
+        // xml = await response.json()
+        // response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+        // console.log(response.body);
+    }
+    news = jsonparse._posts
     for (let i = 0; i < news.length; i++) {
         const title = news[i].post_title
         const link = 'https://www.khaosod.co.th/lottery/news_' + news[i].ID
@@ -1549,7 +1612,11 @@ fastify.get('/lotnews', async (request, reply) => {
         const getimage = await fetch(link)
         const responimage = await getimage.text()
         const $ = cheerio.load(responimage)
-        const image = $('picture > img').toArray()[0].attribs['data-src']
+        // const image = $('picture > img').toArray()[0].attribs['data-src']
+        let image = $('img.attachment-full').toArray()[0].attribs['data-src']
+        if (image == undefined) {
+            image = $('picture > img').toArray()[0].attribs['data-src']
+        }
         const json = {
             title: title,
             //remove \n and \t in string
@@ -1651,6 +1718,181 @@ fastify.get('/lotnews', async (request, reply) => {
                 array.push(json)
             }
         }
+    }
+
+    response = await fetch('https://www.bangkokbiznews.com/tags/%E0%B8%AB%E0%B8%A7%E0%B8%A2');
+    $ = cheerio.load(await response.text());
+    const b = $('a.card-wrapper');
+    for (let i = 0; i < arrayofnews[3]; i++) {
+        //if h3 class card-v-content-title text-excerpt-2
+        if ($(b[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(b[i]).find('h3').text().includes('ตรวจหวย')  && !$(b[i]).find('h3').text().includes('ถ่ายทอดสด')) {
+            const title = $(b[i]).find('h3').text()
+            const link = 'https://www.bangkokbiznews.com' + $(b[i]).attr('href')
+            let description
+            const image = $(b[i]).find('img').attr('src')
+            const date = $(b[i]).find('span.date').text().split('|');
+            let time = date[1].trim().split(':')[0].padStart(2, '0') + ':' + date[1].trim().split(':')[1].padStart(2, '0');
+            let number = '';
+            switch (date[0].split(' ')[1]) {
+                case 'ม.ค.':
+                    number = '01';
+                    break;
+                case 'ก.พ.':
+                    number = '02';
+                    break;
+                case 'มี.ค.':
+                    number = '03';
+                    break;
+                case 'เม.ย.':
+                    number = '04';
+                    break;
+                case 'พ.ค.':
+                    number = '05';
+                    break;
+                case 'มิ.ย.':
+                    number = '06';
+                    break;
+                case 'ก.ค.':
+                    number = '07';
+                    break;
+                case 'ส.ค.':
+                    number = '08';
+                    break;
+                case 'ก.ย.':
+                    number = '09';
+                    break;
+                case 'ต.ค.':
+                    number = '10';
+                    break;
+                case 'พ.ย.':
+                    number = '11';
+                    break;
+                case 'ธ.ค.':
+                    number = '12';
+                    break;
+            }
+            let vertdate = new Date(parseInt(date[0].split(' ')[2]) - 543 + '-' + number + '-' + date[0].split(' ')[0] + 'T' + time + ':00Z');
+            const pubDate = vertdate.toUTCString()
+            const content = await fetch(link);
+            const $$ = cheerio.load(await content.text());
+            const div = $$('div.content-detail');
+            for (let j = 0; j < div.length; j++) {
+                if ($(div[j]).attr('class') === 'content-detail') {
+                    if (fulldesc == 'true') {
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
+                    } else {
+                        //remove new line from description
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
+                        description = description.substring(0, 100) + '...'
+                    }
+                }
+            }
+            const json = {
+                title: title,
+                link: link,
+                description: description,
+                image: image,
+                pubDate: pubDate,
+            }
+            //if new Date(pubDate) < date push to array
+            if (request.query.lastweek) {
+                if (new Date(pubDate) > date) {
+                    array.push(json)
+                }
+            } else {
+                array.push(json)
+            }
+        }
+    }
+
+    response = await fetch('https://www.bangkokbiznews.com/tags/%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%94%E0%B8%87%E0%B8%A7%E0%B8%94%E0%B8%99%E0%B8%B5%E0%B9%89');
+    $ = cheerio.load(await response.text());
+    const c = $('a.card-wrapper');
+    for (let i = 0; i < arrayofnews[3]; i++) {
+        //if h3 class card-v-content-title text-excerpt-2
+        if ($(c[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(c[i]).find('h3').text().includes('ตรวจหวย') && !$(c[i]).find('h3').text().includes('ถ่ายทอดสด')) {
+            const title = $(c[i]).find('h3').text()
+            const link = 'https://www.bangkokbiznews.com' + $(c[i]).attr('href')
+            let description
+            const image = $(c[i]).find('img').attr('src')
+            const date = $(c[i]).find('span.date').text().split('|');
+            let time = date[1].trim().split(':')[0].padStart(2, '0') + ':' + date[1].trim().split(':')[1].padStart(2, '0');
+            let number = '';
+            switch (date[0].split(' ')[1]) {
+                case 'ม.ค.':
+                    number = '01';
+                    break;
+                case 'ก.พ.':
+                    number = '02';
+                    break;
+                case 'มี.ค.':
+                    number = '03';
+                    break;
+                case 'เม.ย.':
+                    number = '04';
+                    break;
+                case 'พ.ค.':
+                    number = '05';
+                    break;
+                case 'มิ.ย.':
+                    number = '06';
+                    break;
+                case 'ก.ค.':
+                    number = '07';
+                    break;
+                case 'ส.ค.':
+                    number = '08';
+                    break;
+                case 'ก.ย.':
+                    number = '09';
+                    break;
+                case 'ต.ค.':
+                    number = '10';
+                    break;
+                case 'พ.ย.':
+                    number = '11';
+                    break;
+                case 'ธ.ค.':
+                    number = '12';
+                    break;
+            }
+            let vertdate = new Date(parseInt(date[0].split(' ')[2]) - 543 + '-' + number + '-' + date[0].split(' ')[0] + 'T' + time + ':00Z');
+            const pubDate = vertdate.toUTCString()
+            const content = await fetch(link);
+            const $$ = cheerio.load(await content.text());
+            const div = $$('div.content-detail');
+            for (let j = 0; j < div.length; j++) {
+                if ($(div[j]).attr('class') === 'content-detail') {
+                    if (fulldesc == 'true') {
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
+                    } else {
+                        //remove new line from description
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
+                        description = description.substring(0, 100) + '...'
+                    }
+                }
+            }
+            const json = {
+                title: title,
+                link: link,
+                description: description,
+                image: image,
+                pubDate: pubDate,
+            }
+            //if new Date(pubDate) < date push to array
+            if (request.query.lastweek) {
+                if (new Date(pubDate) > date) {
+                    array.push(json)
+                }
+            } else {
+                array.push(json)
+            }
+        }
+    }
+
+    if (count > array.length) {
+        //write to file /tmp/lotnews.json
+        fs.writeFileSync('/tmp/lotnews.json', JSON.stringify(array))
     }
 
     if (request.query.lastweek) {
