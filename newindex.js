@@ -1840,7 +1840,7 @@ fastify.get('/lotnews', async (request, reply) => {
     const page = await browser.newPage();
 
     // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
-    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + count - array.length);
+    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
 
     //wait for 5 second
     await page.waitForTimeout(20000);
