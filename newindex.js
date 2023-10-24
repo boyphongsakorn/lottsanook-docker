@@ -1858,7 +1858,7 @@ fastify.get('/lotnews', async (request, reply) => {
     } catch (error) {
         // console.log(json)
         // response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
-        response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + count - array.length)
+        response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length))
         jsonparse = await response.json()
         // xml = await response.json()
         // response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
