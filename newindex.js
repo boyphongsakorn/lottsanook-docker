@@ -1533,65 +1533,6 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
-    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new",timeout: 0});
-    const page = await browser.newPage();
-
-    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
-
-    //wait for 5 second
-    await page.waitForTimeout(20000);
-
-    const content = await page.content();
-    await browser.close();
-    //get json from content
-    //write to file
-    //use cheerio to get json in body > pre
-    let jsonparse
-    try {
-        const $ks = cheerio.load(content)
-        const json = $ks('body > pre').text()
-        jsonparse = JSON.parse(json)
-    } catch (error) {
-        // console.log(json)
-        response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
-        jsonparse = await response.json()
-        // xml = await response.json()
-        // response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
-        // console.log(response.body);
-    }
-    news = jsonparse._posts
-    for (let i = 0; i < news.length; i++) {
-        const title = news[i].post_title
-        const link = 'https://www.khaosod.co.th/lottery/news_' + news[i].ID
-        const description = news[i].post_content
-        const pubDate = news[i].created_at
-        //format pubDate from iso string to date string
-        const event = new Date(pubDate)
-        // image
-        const image = news[i].image
-        //create new description variable with remove html tag
-        let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
-        if (fulldesc == 'false') {
-            description2 = description2.substring(0, 100) + '...'
-        }
-        description2 = description2.replace(/\r?\n|\r/g, '')
-        const json = {
-            title: title,
-            link: link.replace(/\n|\t/g, ''),
-            description: description2,
-            image: image,
-            pubDate: event.toUTCString(),
-        }
-        //if new Date(pubDate) < date push to array
-        if (request.query.lastweek) {
-            if (event > date) {
-                array.push(json)
-            }
-        } else {
-            array.push(json)
-        }
-    }
-
     response = await fetch('https://www.brighttv.co.th/tag/%E0%B8%AB%E0%B8%A7%E0%B8%A2%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87/feed')
     xml = await response.text()
     $ = cheerio.load(xml)
@@ -1892,6 +1833,67 @@ fastify.get('/lotnews', async (request, reply) => {
             } else {
                 array.push(json)
             }
+        }
+    }
+
+    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new",timeout: 0});
+    const page = await browser.newPage();
+
+    // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + count - array.length);
+
+    //wait for 5 second
+    await page.waitForTimeout(20000);
+
+    const content = await page.content();
+    await browser.close();
+    //get json from content
+    //write to file
+    //use cheerio to get json in body > pre
+    let jsonparse
+    try {
+        const $ks = cheerio.load(content)
+        const json = $ks('body > pre').text()
+        jsonparse = JSON.parse(json)
+    } catch (error) {
+        // console.log(json)
+        // response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
+        response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + count - array.length)
+        jsonparse = await response.json()
+        // xml = await response.json()
+        // response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+        // console.log(response.body);
+    }
+    news = jsonparse._posts
+    for (let i = 0; i < news.length; i++) {
+        const title = news[i].post_title
+        const link = 'https://www.khaosod.co.th/lottery/news_' + news[i].ID
+        const description = news[i].post_content
+        const pubDate = news[i].created_at
+        //format pubDate from iso string to date string
+        const event = new Date(pubDate)
+        // image
+        const image = news[i].image
+        //create new description variable with remove html tag
+        let description2 = description.replace(/<(?:.|\n)*?>/gm, '')
+        if (fulldesc == 'false') {
+            description2 = description2.substring(0, 100) + '...'
+        }
+        description2 = description2.replace(/\r?\n|\r/g, '')
+        const json = {
+            title: title,
+            link: link.replace(/\n|\t/g, ''),
+            description: description2,
+            image: image,
+            pubDate: event.toUTCString(),
+        }
+        //if new Date(pubDate) < date push to array
+        if (request.query.lastweek) {
+            if (event > date) {
+                array.push(json)
+            }
+        } else {
+            array.push(json)
         }
     }
 
