@@ -1470,6 +1470,7 @@ fastify.get('/lotnews', async (request, reply) => {
     let news = $('item')
     //loop news 5 time and push to array
     console.log(arrayofnews)
+    arrayofnews[0] = arrayofnews[0] > news.length ? news.length : arrayofnews[0]
     for (let i = 0; i < arrayofnews[0]; i++) {
         const title = news.eq(i).find('title').text()
         const link = news.eq(i).find('link')[0].next.data
@@ -1596,6 +1597,7 @@ fastify.get('/lotnews', async (request, reply) => {
     $ = cheerio.load(xml)
     news = $('item')
     //loop news 5 time and push to array
+    arrayofnews[2] = arrayofnews[2] > news.length ? news.length : arrayofnews[2]
     for (let i = 0; i < arrayofnews[2]; i++) {
         const title = news.eq(i).find('title').text()
         const link = news.eq(i).find('link')[0].next.data
@@ -1638,6 +1640,7 @@ fastify.get('/lotnews', async (request, reply) => {
     response = await fetch('https://www.bangkokbiznews.com/tags/%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%94');
     $ = cheerio.load(await response.text());
     const a = $('a.card-wrapper');
+    arrayofnews[3] = arrayofnews[3] > a.length ? a.length : arrayofnews[3]
     for (let i = 0; i < arrayofnews[3]; i++) {
         //if h3 class card-v-content-title text-excerpt-2
         if ($(a[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(a[i]).find('h3').text().includes('ตรวจหวย')) {
@@ -1723,6 +1726,7 @@ fastify.get('/lotnews', async (request, reply) => {
     response = await fetch('https://www.bangkokbiznews.com/tags/%E0%B8%AB%E0%B8%A7%E0%B8%A2');
     $ = cheerio.load(await response.text());
     const b = $('a.card-wrapper');
+    arrayofnews[3] = arrayofnews[3] > b.length ? b.length : arrayofnews[3]
     for (let i = 0; i < arrayofnews[3]; i++) {
         //if h3 class card-v-content-title text-excerpt-2
         if ($(b[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(b[i]).find('h3').text().includes('ตรวจหวย')  && !$(b[i]).find('h3').text().includes('ถ่ายทอดสด')) {
@@ -1808,6 +1812,7 @@ fastify.get('/lotnews', async (request, reply) => {
     response = await fetch('https://www.bangkokbiznews.com/tags/%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%94%E0%B8%87%E0%B8%A7%E0%B8%94%E0%B8%99%E0%B8%B5%E0%B9%89');
     $ = cheerio.load(await response.text());
     const c = $('a.card-wrapper');
+    arrayofnews[3] = arrayofnews[3] > c.length ? c.length : arrayofnews[3]
     for (let i = 0; i < arrayofnews[3]; i++) {
         //if h3 class card-v-content-title text-excerpt-2
         if ($(c[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(c[i]).find('h3').text().includes('ตรวจหวย') && !$(c[i]).find('h3').text().includes('ถ่ายทอดสด')) {
