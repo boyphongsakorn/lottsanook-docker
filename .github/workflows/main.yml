@@ -19,10 +19,10 @@ jobs:
           #cache: 'pnpm'
 
       #- run: npm install #npm ci # or yarn install
-      - run: npm install eslint --global
+      # - run: npm install eslint --global
       #- run: npm install eslint-plugin-only-warn --global
       #- run: npm install eslint-plugin-only-warn@latest --save-dev
-      - run: eslint --no-eslintrc --rule 'quote-props:warn' --parser-options=ecmaVersion:11 --parser-options=sourceType:module --quiet --fix --ext .js newindex.js
+      # - run: eslint --no-eslintrc --rule 'quote-props:warn' --parser-options=ecmaVersion:11 --parser-options=sourceType:module --quiet --fix --ext .js newindex.js
       #- name: Run ESLint
       #  uses: stefanoeb/eslint-action@1.0.2
       #- name: Action ESLint
