@@ -373,16 +373,34 @@ fastify.get('/index2', async (request, reply) => {
             return mainapibody;
         }
     }
+    // let url;
+    // try {
+    //     const checkurl = await fetch('http://localhost:' + port + '/index3')
+    //     if (checkurl.status === 200) {
+    //         url = 'http://localhost:' + port
+    //     } else {
+    //         url = 'https://' + request.headers.host
+    //     }
+    // } catch (error) {
+    //     url = 'https://' + request.headers.host
+    // }
+
     let url;
+    const isIPAddress = (host) => /^(?:\d{1,3}\.){3}\d{1,3}(:\d+)?$/.test(host); // Check if the host is an IP
+
     try {
-        const checkurl = await fetch('http://localhost:' + port + '/index3')
+        const checkurl = await fetch('http://localhost:' + port + '/index3');
         if (checkurl.status === 200) {
-            url = 'http://localhost:' + port
+            url = 'http://localhost:' + port;
         } else {
-            url = 'https://' + request.headers.host
+            url = isIPAddress(request.headers.host) 
+                ? 'http://' + request.headers.host + ':' + port
+                : 'https://' + request.headers.host;
         }
     } catch (error) {
-        url = 'https://' + request.headers.host
+        url = isIPAddress(request.headers.host) 
+            ? 'http://' + request.headers.host + ':' + port
+            : 'https://' + request.headers.host;
     }
 
     var test = []
