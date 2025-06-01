@@ -89,10 +89,10 @@ jobs:
           tags: ${{ steps.prep.outputs.tags }}
           
       - name: Dive
-        uses: yuichielectric/dive-action@0.0.4
+        uses: MaxymVlasov/dive-action@v1.5.0
         with:
           image: boyphongsakorn/lottsanook:latest
-          config-file: ${{ github.workspace }}/.dive-ci.yml
+          # config-file: ${{ github.workspace }}/.dive-ci.yml
           github-token: ${{ secrets.GITHUB_TOKEN }}
           
       #- uses: wemake-services/docker-image-size-limit@master
