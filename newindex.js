@@ -1846,7 +1846,8 @@ fastify.get('/lotnews', async (request, reply) => {
     await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
 
     //wait for 5 second
-    await page.waitForTimeout(200000);
+    // await page.waitForTimeout(200000);
+    await new Promise(r => setTimeout(r, 200000));
 
     const content = await page.content();
     await browser.close();
