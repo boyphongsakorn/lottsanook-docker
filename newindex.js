@@ -135,9 +135,9 @@ fastify.get('/', async (request, reply) => {
     }
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port + '/index3')
+        const checkurl = await fetch('http://192.168.31.210:' + port + '/index3')
         if (checkurl.status === 200) {
-            url = 'http://localhost:' + port
+            url = 'http://192.168.31.210:' + port
         } else {
             url = 'https://' + request.headers.host
         }
@@ -375,9 +375,9 @@ fastify.get('/index2', async (request, reply) => {
     }
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port + '/index3')
+        const checkurl = await fetch('http://192.168.31.210:' + port + '/index3')
         if (checkurl.status === 200) {
-            url = 'http://localhost:' + port
+            url = 'http://192.168.31.210:' + port
         } else {
             url = 'https://' + request.headers.host
         }
@@ -438,8 +438,8 @@ fastify.get('/index2', async (request, reply) => {
             test = data
         } else {
             console.log('fetching data');
-            console.log('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-' + request.query.date.substring(0, 2) + '-' + encodeURI(monthtext) + '-' + request.query.date.substring(4, 8) + '.aspx');
-            await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%87%E0%B8%A7%E0%B8%94-' + request.query.date.substring(0, 2) + '-' + encodeURI(monthtext) + '-' + request.query.date.substring(4, 8) + '.aspx', { redirect: 'error' })
+            console.log('https://www.myhora.com/lottery/result-' + request.query.date.substring(0, 2) + '-' + request.query.date.substring(2, 4) + '-' + request.query.date.substring(4, 8) + '.aspx');
+            await fetch('https://www.myhora.com/lottery/result-' + request.query.date.substring(0, 2) + '-' + request.query.date.substring(2, 4) + '-' + request.query.date.substring(4, 8) + '.aspx', { redirect: 'error' })
                 .then(res => res.text())
                 .then((body) => {
                     let data = [["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0], ["\u0e40\u0e25\u0e02\u0e2b\u0e19\u0e49\u0e323\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e223\u0e15\u0e31\u0e27", 0, 0], ["\u0e40\u0e25\u0e02\u0e17\u0e49\u0e32\u0e222\u0e15\u0e31\u0e27", 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e02\u0e49\u0e32\u0e07\u0e40\u0e04\u0e35\u0e22\u0e07\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e481", 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e482", 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e483", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e484", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], ["\u0e23\u0e32\u0e07\u0e27\u0e31\u0e25\u0e17\u0e35\u0e485", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
@@ -801,9 +801,9 @@ fastify.get('/reto', async (request, reply) => {
     }
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port + '/index3')
+        const checkurl = await fetch('http://192.168.31.210:' + port + '/index3')
         if (checkurl.status === 200) {
-            url = 'http://localhost:' + port
+            url = 'http://192.168.31.210:' + port
         } else {
             url = 'https://' + request.headers.host
         }
@@ -887,7 +887,8 @@ fastify.get('/god', async (request, reply) => {
             if (ayear > nextyear) {
                 break
             }
-            await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + ayear + '.aspx')
+            // await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + ayear + '.aspx')
+            await fetch('https://www.myhora.com/lottery/result-' + ayear + '.aspx')
                 .then(res => res.text())
                 .then((body) => {
                     var $ = cheerio.load(body);
@@ -895,7 +896,7 @@ fastify.get('/god', async (request, reply) => {
                         if (val.firstChild.data.indexOf('ตรวจสลากกินแบ่งรัฐบาล') > -1) {
                             day = val.firstChild.data.split(" ").splice(2)
                             let monthnum
-                            switch (day[2]) {
+                            switch (day[1]) {
                                 case 'มกราคม': monthnum = "01"; break;
                                 case 'กุมภาพันธ์': monthnum = "02"; break;
                                 case 'มีนาคม': monthnum = "03"; break;
@@ -909,8 +910,8 @@ fastify.get('/god', async (request, reply) => {
                                 case 'พฤศจิกายน': monthnum = "11"; break;
                                 case 'ธันวาคม': monthnum = "12"; break;
                             }
-                            peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
-                            preyearsuperlist.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
+                            peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[2])
+                            preyearsuperlist.unshift(padLeadingZeros(day[0], 2) + monthnum + day[2])
                         }
                     }
                     for (const val of peryear) {
@@ -1025,7 +1026,8 @@ fastify.get('/gdpy', async (request, reply) => {
         //test = JSON.parse(fileContents)
         yearlist = JSON.parse(fileContents)
     } else {
-        await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + request.query.year + '.aspx')
+        // await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + request.query.year + '.aspx')
+        await fetch('https://www.myhora.com/lottery/result-' + request.query.year + '.aspx')
             .then(res => res.text())
             .then((body) => {
                 var $ = cheerio.load(body);
@@ -1033,7 +1035,8 @@ fastify.get('/gdpy', async (request, reply) => {
                     if (val.firstChild.data.indexOf("ตรวจสลากกินแบ่งรัฐบาล") > -1) {
                         let day = val.firstChild.data.split(" ").splice(2)
                         let monthnum
-                        switch (day[2]) {
+                        console.log(day)
+                        switch (day[1]) {
                             case 'มกราคม': monthnum = "01"; break;
                             case 'กุมภาพันธ์': monthnum = "02"; break;
                             case 'มีนาคม': monthnum = "03"; break;
@@ -1047,7 +1050,7 @@ fastify.get('/gdpy', async (request, reply) => {
                             case 'พฤศจิกายน': monthnum = "11"; break;
                             case 'ธันวาคม': monthnum = "12"; break;
                         }
-                        peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
+                        peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[2])
                     }
                 }
                 for (const val of peryear) {
@@ -1077,9 +1080,9 @@ fastify.get('/checklottery', async (request, reply) => {
     }
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port + '/index3')
+        const checkurl = await fetch('http://192.168.31.210:' + port + '/index3')
         if (checkurl.status === 200) {
-            url = 'http://localhost:' + port
+            url = 'http://192.168.31.210:' + port
         } else {
             url = 'https://' + request.headers.host
         }
@@ -1143,9 +1146,9 @@ fastify.get('/lastlot', async (request, reply) => {
     }
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port + '/index3')
+        const checkurl = await fetch('http://192.168.31.210:' + port + '/index3')
         if (checkurl.status === 200) {
-            url = 'http://localhost:' + port
+            url = 'http://192.168.31.210:' + port
         } else {
             url = 'https://' + request.headers.host
         }
@@ -1247,9 +1250,9 @@ fastify.get('/finddol', async (request, reply) => {
     }
     let url;
     try {
-        const checkurl = await fetch('http://localhost:' + port + '/index3')
+        const checkurl = await fetch('http://192.168.31.210:' + port + '/index3')
         if (checkurl.status === 200) {
-            url = 'http://localhost:' + port
+            url = 'http://192.168.31.210:' + port
         } else {
             url = 'https://' + request.headers.host
         }
@@ -1836,14 +1839,14 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
-    const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new",timeout: 0});
+    const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
     const page = await browser.newPage();
 
     // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
     await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
 
     //wait for 5 second
-    await page.waitForTimeout(20000);
+    await page.waitForTimeout(200000);
 
     const content = await page.content();
     await browser.close();

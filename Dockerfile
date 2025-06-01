@@ -1,6 +1,7 @@
 #Use and existing docker image as a base
 FROM node:18-alpine
-RUN apk add --no-cache font-noto-thai && apk add --no-cache libevent libevent-dev chromium --repository=http://dl-cdn.alpinelinux.org/alpine/v3.11/community
+# RUN apk add --no-cache font-noto-thai && apk add --no-cache libevent libevent-dev chromium --repository=http://dl-cdn.alpinelinux.org/alpine/v3.11/community
+RUN apk add --no-cache font-noto-thai libevent libevent-dev chromium
 WORKDIR '/app'
 #COPY package*.json ./
 #RUN npm install

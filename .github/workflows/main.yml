@@ -19,10 +19,10 @@ jobs:
           #cache: 'pnpm'
 
       #- run: npm install #npm ci # or yarn install
-      - run: npm install eslint --global
+      # - run: npm install eslint --global
       #- run: npm install eslint-plugin-only-warn --global
       #- run: npm install eslint-plugin-only-warn@latest --save-dev
-      - run: eslint --no-eslintrc --rule 'quote-props:warn' --parser-options=ecmaVersion:11 --parser-options=sourceType:module --quiet --fix --ext .js newindex.js
+      # - run: eslint --no-eslintrc --rule 'quote-props:warn' --parser-options=ecmaVersion:11 --parser-options=sourceType:module --quiet --fix --ext .js newindex.js
       #- name: Run ESLint
       #  uses: stefanoeb/eslint-action@1.0.2
       #- name: Action ESLint
@@ -79,7 +79,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
@@ -89,9 +89,10 @@ jobs:
           tags: ${{ steps.prep.outputs.tags }}
           
       - name: Dive
-        uses: yuichielectric/dive-action@0.0.4
+        uses: MaxymVlasov/dive-action@v1.5.0
         with:
           image: boyphongsakorn/lottsanook:latest
+          # config-file: ${{ github.workspace }}/.dive-ci.yml
           github-token: ${{ secrets.GITHUB_TOKEN }}
           
       #- uses: wemake-services/docker-image-size-limit@master
