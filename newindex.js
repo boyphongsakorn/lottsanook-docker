@@ -887,7 +887,8 @@ fastify.get('/god', async (request, reply) => {
             if (ayear > nextyear) {
                 break
             }
-            await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + ayear + '.aspx')
+            // await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + ayear + '.aspx')
+            await fetch('https://www.myhora.com/lottery/result-' + ayear + '.aspx')
                 .then(res => res.text())
                 .then((body) => {
                     var $ = cheerio.load(body);
@@ -1025,7 +1026,8 @@ fastify.get('/gdpy', async (request, reply) => {
         //test = JSON.parse(fileContents)
         yearlist = JSON.parse(fileContents)
     } else {
-        await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + request.query.year + '.aspx')
+        // await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + request.query.year + '.aspx')
+        await fetch('https://www.myhora.com/lottery/result-' + ayear + '.aspx')
             .then(res => res.text())
             .then((body) => {
                 var $ = cheerio.load(body);
