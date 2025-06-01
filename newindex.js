@@ -896,7 +896,7 @@ fastify.get('/god', async (request, reply) => {
                         if (val.firstChild.data.indexOf('ตรวจสลากกินแบ่งรัฐบาล') > -1) {
                             day = val.firstChild.data.split(" ").splice(2)
                             let monthnum
-                            switch (day[2]) {
+                            switch (day[1]) {
                                 case 'มกราคม': monthnum = "01"; break;
                                 case 'กุมภาพันธ์': monthnum = "02"; break;
                                 case 'มีนาคม': monthnum = "03"; break;
@@ -910,8 +910,8 @@ fastify.get('/god', async (request, reply) => {
                                 case 'พฤศจิกายน': monthnum = "11"; break;
                                 case 'ธันวาคม': monthnum = "12"; break;
                             }
-                            peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
-                            preyearsuperlist.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
+                            peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[2])
+                            preyearsuperlist.unshift(padLeadingZeros(day[0], 2) + monthnum + day[2])
                         }
                     }
                     for (const val of peryear) {
@@ -1027,7 +1027,7 @@ fastify.get('/gdpy', async (request, reply) => {
         yearlist = JSON.parse(fileContents)
     } else {
         // await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + request.query.year + '.aspx')
-        await fetch('https://www.myhora.com/lottery/result-' + ayear + '.aspx')
+        await fetch('https://www.myhora.com/lottery/result-' + request.query.year + '.aspx')
             .then(res => res.text())
             .then((body) => {
                 var $ = cheerio.load(body);
@@ -1035,7 +1035,8 @@ fastify.get('/gdpy', async (request, reply) => {
                     if (val.firstChild.data.indexOf("ตรวจสลากกินแบ่งรัฐบาล") > -1) {
                         let day = val.firstChild.data.split(" ").splice(2)
                         let monthnum
-                        switch (day[2]) {
+                        console.log(day)
+                        switch (day[1]) {
                             case 'มกราคม': monthnum = "01"; break;
                             case 'กุมภาพันธ์': monthnum = "02"; break;
                             case 'มีนาคม': monthnum = "03"; break;
@@ -1049,7 +1050,7 @@ fastify.get('/gdpy', async (request, reply) => {
                             case 'พฤศจิกายน': monthnum = "11"; break;
                             case 'ธันวาคม': monthnum = "12"; break;
                         }
-                        peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[3])
+                        peryear.unshift(padLeadingZeros(day[0], 2) + monthnum + day[2])
                     }
                 }
                 for (const val of peryear) {
