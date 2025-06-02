@@ -15,4 +15,6 @@ ADD . ./
 # RUN pnpm install -r --offline --prod
 RUN pnpm install --no-frozen-lockfile
 
+RUN pnpm dlx puppeteer browsers install
+
 CMD ["npm","run","dev"]
