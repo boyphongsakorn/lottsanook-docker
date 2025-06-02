@@ -1841,7 +1841,6 @@ fastify.get('/lotnews', async (request, reply) => {
 
     let jsonparse
     try {
-                    console.log(err);
                     const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
                     const page = await browser.newPage();
 
