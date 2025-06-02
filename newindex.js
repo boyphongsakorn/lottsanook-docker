@@ -14,6 +14,9 @@ import https from 'https';
 import puppeteer from 'puppeteer';
 const fastify = Fastify({ logger: true });
 
+//test
+import got from 'cloudflare-scraper';
+
 const port = process.env.PORT || 5000;
 
 process.env.TZ = "Asia/Bangkok";
@@ -1841,7 +1844,12 @@ fastify.get('/lotnews', async (request, reply) => {
 
     let jsonparse
     try {
-                    const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
+        try {
+            const response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
+            console.log(response.body);
+            jsonparse = JSON.parse(response.body);
+        } catch (error) {
+            const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
                     const page = await browser.newPage();
 
                     // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
@@ -1860,6 +1868,7 @@ fastify.get('/lotnews', async (request, reply) => {
                     const $ks = cheerio.load(content)
                     const json = $ks('body > pre').text()
                     jsonparse = JSON.parse(json)
+        }
     } catch (error) {
         // console.log(json)
         // response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
