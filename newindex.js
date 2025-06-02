@@ -1441,10 +1441,10 @@ fastify.get('/lotnews', async (request, reply) => {
             arrayofnews[3] = Math.ceil(count / 4)
             arrayofnews[1] = Math.ceil((count - arrayofnews[0] - arrayofnews[2] - arrayofnews[3]) / 2)
         } else {
-            arrayofnews[0] = count
-            arrayofnews[1] = count
-            arrayofnews[2] = count
-            arrayofnews[3] = count
+            arrayofnews[0] = parseInt(count)
+            arrayofnews[1] = parseInt(count)
+            arrayofnews[2] = parseInt(count)
+            arrayofnews[3] = parseInt(count)
         }
         //if hostname = lotapi3.pwisetthon.com
         if (request.hostname == 'lotapi3.pwisetthon.com') {
