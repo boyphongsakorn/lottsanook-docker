@@ -1839,23 +1839,24 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
-    const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
-    const page = await browser.newPage();
-
-    // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
-    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
-
-    //wait for 5 second
-    // await page.waitForTimeout(200000);
-    await new Promise(r => setTimeout(r, 5000));
-
-    const content = await page.content();
-    await browser.close();
-    //get json from content
-    //write to file
-    //use cheerio to get json in body > pre
     let jsonparse
     try {
+        const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
+        const page = await browser.newPage();
+
+        // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+        await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
+
+        //wait for 5 second
+        // await page.waitForTimeout(200000);
+        await new Promise(r => setTimeout(r, 5000));
+
+        const content = await page.content();
+        await browser.close();
+        //get json from content
+        //write to file
+        //use cheerio to get json in body > pre
+
         const $ks = cheerio.load(content)
         const json = $ks('body > pre').text()
         jsonparse = JSON.parse(json)
