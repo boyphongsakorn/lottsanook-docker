@@ -836,13 +836,17 @@ fastify.get('/reto', async (request, reply) => {
 fastify.get('/god', async (request, reply) => {
     if(request.hostname == 'lotapi3.pwisetthon.com'){
         console.log(request.hostname);
-        if(mainapistatus == true){
+        // if(mainapistatus == true){
             //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
-            const rawurl = request.raw.url;
-            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            // const rawurl = request.raw.url;
+            // const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            // const mainapibody = await mainapi.json();
+            // return mainapibody;
+            // https://raw.githubusercontent.com/boyphongsakorn/testrepo/refs/heads/main/god
+            const mainapi = await fetch('https://raw.githubusercontent.com/boyphongsakorn/testrepo/refs/heads/main/god');
             const mainapibody = await mainapi.json();
             return mainapibody;
-        }
+        // }
     }
     //let test = []
 
