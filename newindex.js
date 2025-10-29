@@ -11,8 +11,13 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 import Fastify from 'fastify';
 import https from 'https';
-import puppeteer from 'puppeteer';
+// import puppeteer from 'puppeteer';
 const fastify = Fastify({ logger: true });
+
+//test
+import got from 'cloudflare-scraper';
+import puppeteer from 'puppeteer-extra'
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
 const port = process.env.PORT || 5000;
 
@@ -888,9 +893,21 @@ fastify.get('/god', async (request, reply) => {
                 break
             }
             // await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + ayear + '.aspx')
-            await fetch('https://www.myhora.com/lottery/result-' + ayear + '.aspx')
-                .then(res => res.text())
-                .then((body) => {
+            // await fetch('https://www.myhora.com/lottery/result-' + ayear + '.aspx')
+            //     .then(res => res.text())
+            //     .then((body) => {
+            const browser = await puppeteer.use(StealthPlugin()).launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
+                    const page = await browser.newPage();
+
+                    // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+                    await page.goto('https://www.myhora.com/lottery/result-' + ayear + '.aspx');
+
+                    //wait for 5 second
+                    // await page.waitForTimeout(200000);
+                    await new Promise(r => setTimeout(r, 5000));
+
+                    const body = await page.content();
+                    await browser.close();
                     var $ = cheerio.load(body);
                     for (const val of $('font').toArray()) {
                         if (val.firstChild.data.indexOf('ตรวจสลากกินแบ่งรัฐบาล') > -1) {
@@ -931,7 +948,7 @@ fastify.get('/god', async (request, reply) => {
                             if (err) throw err;
                         });
                     }
-                })
+                // })
         }
         year += 10
     }
@@ -1438,10 +1455,10 @@ fastify.get('/lotnews', async (request, reply) => {
             arrayofnews[3] = Math.ceil(count / 4)
             arrayofnews[1] = Math.ceil((count - arrayofnews[0] - arrayofnews[2] - arrayofnews[3]) / 2)
         } else {
-            arrayofnews[0] = count
-            arrayofnews[1] = count
-            arrayofnews[2] = count
-            arrayofnews[3] = count
+            arrayofnews[0] = parseInt(count)
+            arrayofnews[1] = parseInt(count)
+            arrayofnews[2] = parseInt(count)
+            arrayofnews[3] = parseInt(count)
         }
         //if hostname = lotapi3.pwisetthon.com
         if (request.hostname == 'lotapi3.pwisetthon.com') {
@@ -1467,7 +1484,8 @@ fastify.get('/lotnews', async (request, reply) => {
     }
 
     let array = [];
-    let response = await fetch('https://www.brighttv.co.th/tag/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
+    // let response = await fetch('https://www.brighttv.co.th/category/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
+    let response = await fetch('https://rss.app/feeds/n8o2TN8xZ6KSQx0r.xml')
     let xml = await response.text()
     let $ = cheerio.load(xml)
     let news = $('item')
@@ -1487,7 +1505,11 @@ fastify.get('/lotnews', async (request, reply) => {
         }
         //remove /r/n from description
         description = description.replace(/\r?\n|\r/g, '')
-        const pubDate = news.eq(i).find('pubDate').text()
+        let pubDate = news.eq(i).find('pubDate').text()
+        if (pubDate == '') {
+            //now - 7 days
+            pubDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toUTCString();
+        }
         const getimage = await fetch(link)
         const responimage = await getimage.text()
         //console.log(image)
@@ -1506,7 +1528,7 @@ fastify.get('/lotnews', async (request, reply) => {
         });*/
         //console.log($('picture > img').toArray()[0].attribs['data-src'])
         // const image = $('picture > img').toArray()[0].attribs['data-src']
-        let image = $('img.attachment-full').toArray()[0].attribs['data-src']
+        let image = $('img.attachment-full').toArray()[0].attribs['src']
         if (image == undefined) {
             // image = $('picture > img').toArray()[0].attribs['data-src']
             image = $('picture > img').toArray()[0].attribs['src']
@@ -1536,7 +1558,8 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
-    response = await fetch('https://www.brighttv.co.th/tag/%E0%B8%AB%E0%B8%A7%E0%B8%A2%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87/feed')
+    // response = await fetch('https://www.brighttv.co.th/category/%E0%B8%AB%E0%B8%A7%E0%B8%A2%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87/feed')
+    response = await fetch('https://rss.app/feeds/JsQQE1zMZ42vDpcx.xml')
     xml = await response.text()
     $ = cheerio.load(xml)
     news = $('item')
@@ -1559,7 +1582,7 @@ fastify.get('/lotnews', async (request, reply) => {
         const responimage = await getimage.text()
         const $ = cheerio.load(responimage)
         // const image = $('picture > img').toArray()[0].attribs['data-src']
-        let image = $('img.attachment-full').toArray()[0].attribs['data-src']
+        let image = $('img.attachment-full').toArray()[0].attribs['src']
         if (image == undefined) {
             image = $('picture > img').toArray()[0].attribs['data-src']
         }
@@ -1839,25 +1862,33 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
-    const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
-    const page = await browser.newPage();
-
-    // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
-    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
-
-    //wait for 5 second
-    await page.waitForTimeout(200000);
-
-    const content = await page.content();
-    await browser.close();
-    //get json from content
-    //write to file
-    //use cheerio to get json in body > pre
-    let jsonparse
+    /*let jsonparse
     try {
-        const $ks = cheerio.load(content)
-        const json = $ks('body > pre').text()
-        jsonparse = JSON.parse(json)
+        // try {
+        //     const response = await got.get('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
+        //     console.log(response.body);
+        //     jsonparse = JSON.parse(response.body);
+        // } catch (error) {
+            const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
+                    const page = await browser.newPage();
+
+                    // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+                    await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + (count - array.length));
+
+                    //wait for 5 second
+                    // await page.waitForTimeout(200000);
+                    await new Promise(r => setTimeout(r, 5000));
+
+                    const content = await page.content();
+                    await browser.close();
+                    //get json from content
+                    //write to file
+                    //use cheerio to get json in body > pre
+
+                    const $ks = cheerio.load(content)
+                    const json = $ks('body > pre').text()
+                    jsonparse = JSON.parse(json)
+        // }
     } catch (error) {
         // console.log(json)
         // response = await fetch('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1])
@@ -1893,6 +1924,49 @@ fastify.get('/lotnews', async (request, reply) => {
         //if new Date(pubDate) < date push to array
         if (request.query.lastweek) {
             if (event > date) {
+                array.push(json)
+            }
+        } else {
+            array.push(json)
+        }
+    }*/
+
+    response = await fetch('https://siamrath.co.th/tags/%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%94');
+    $ = cheerio.load(await response.text());
+    //get from class col-md-3 col-sm-3 col-xs-6 mb30
+    const d = $('div.col-md-3.col-sm-3.col-xs-6.mb30');
+    arrayofnews[4] = arrayofnews[4] > d.length ? d.length : arrayofnews[4]
+    //for by count of d
+    for (let i = 0; i < arrayofnews[3]; i++) {
+        //title from h5
+        const title = $(d[i]).find('h5').text()
+        //link from a.attr('href')
+        const link = 'https://siamrath.co.th' + $(d[i]).find('a').attr('href')
+        //description is the same as title
+        let description = title
+        //image from img.attr('src')
+        const image = $(d[i]).find('img').attr('src')
+        //date from div text convert from dd/mm/yyyy - hh:mm to new Date() and set pubDate to toUTCString
+        const dateText = $(d[i]).find('div').text().trim().split('-')[0].trim()
+        const timeText = $(d[i]).find('div').text().trim().split('-')[1].trim()
+        const dateParts = dateText.split('/')
+        const year = parseInt(dateParts[2]);
+        const month = parseInt(dateParts[1]) - 1; // Months are 0-indexed in JavaScript
+        const day = parseInt(dateParts[0]);
+        const timeParts = timeText.split(':');
+        const hours = parseInt(timeParts[0]);
+        const minutes = parseInt(timeParts[1]);
+        const pubDate = new Date(year, month, day, hours, minutes).toUTCString();
+        const json = {
+            title: title,
+            link: link,
+            description: description,
+            image: image,
+            pubDate: pubDate,
+        }
+        //if new Date(pubDate) < date push to array
+        if (request.query.lastweek) {
+            if (new Date(pubDate) > date) {
                 array.push(json)
             }
         } else {

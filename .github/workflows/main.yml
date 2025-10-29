@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 'latest'
+          node-version: '18'
           #cache: 'pnpm'
 
       #- run: npm install #npm ci # or yarn install
@@ -89,7 +89,7 @@ jobs:
           tags: ${{ steps.prep.outputs.tags }}
           
       - name: Dive
-        uses: MaxymVlasov/dive-action@v1.5.0
+        uses: MaxymVlasov/dive-action@v1.6.0
         with:
           image: boyphongsakorn/lottsanook:latest
           # config-file: ${{ github.workspace }}/.dive-ci.yml
