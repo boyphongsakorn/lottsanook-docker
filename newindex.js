@@ -11,11 +11,13 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 import Fastify from 'fastify';
 import https from 'https';
-import puppeteer from 'puppeteer';
+// import puppeteer from 'puppeteer';
 const fastify = Fastify({ logger: true });
 
 //test
 import got from 'cloudflare-scraper';
+import puppeteer from 'puppeteer-extra'
+import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
 const port = process.env.PORT || 5000;
 
@@ -891,9 +893,21 @@ fastify.get('/god', async (request, reply) => {
                 break
             }
             // await fetch('https://www.myhora.com/%E0%B8%AB%E0%B8%A7%E0%B8%A2/%E0%B8%9B%E0%B8%B5-' + ayear + '.aspx')
-            await fetch('https://www.myhora.com/lottery/result-' + ayear + '.aspx')
-                .then(res => res.text())
-                .then((body) => {
+            // await fetch('https://www.myhora.com/lottery/result-' + ayear + '.aspx')
+            //     .then(res => res.text())
+            //     .then((body) => {
+            const browser = await puppeteer.use(StealthPlugin()).launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox', '--no-first-run', '--disable-extensions'], headless: "new", timeout: 120000, protocolTimeout: 120000});
+                    const page = await browser.newPage();
+
+                    // await page.goto('https://www.khaosod.co.th/get_menu?slug=lottery&offset=0&limit=' + arrayofnews[1]);
+                    await page.goto('https://www.myhora.com/lottery/result-' + ayear + '.aspx');
+
+                    //wait for 5 second
+                    // await page.waitForTimeout(200000);
+                    await new Promise(r => setTimeout(r, 5000));
+
+                    const body = await page.content();
+                    await browser.close();
                     var $ = cheerio.load(body);
                     for (const val of $('font').toArray()) {
                         if (val.firstChild.data.indexOf('ตรวจสลากกินแบ่งรัฐบาล') > -1) {
@@ -934,7 +948,7 @@ fastify.get('/god', async (request, reply) => {
                             if (err) throw err;
                         });
                     }
-                })
+                // })
         }
         year += 10
     }

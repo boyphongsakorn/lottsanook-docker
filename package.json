@@ -22,7 +22,9 @@
     "cloudflare-scraper": "^2.0.0",
     "fastify": "^4.29.1",
     "node-fetch": "^3.3.2",
-    "puppeteer": "24.9.0"
+    "puppeteer": "24.9.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "type": "module"
 }
