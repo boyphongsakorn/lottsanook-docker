@@ -27,5 +27,5 @@
     "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "type": "module",
-  "engines": { "node": "18" }
+  "engines": { "node": "20" }
 }
