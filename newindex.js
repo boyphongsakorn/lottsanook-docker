@@ -2048,6 +2048,71 @@ fastify.get('/last10year', async (request, reply) => {
     return json
 })
 
+fastify.get('/nextlot', async (request, reply) => {
+    if(request.hostname == 'lotapi3.pwisetthon.com'){
+        console.log(request.hostname);
+        if(mainapistatus == true){
+            //get raw url and change from lotapi3.pwisetthon.com to lotapi.pwisetthon.com
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
+        }
+    }
+    let url;
+    try {
+        const checkurl = await fetch('http://192.168.31.210:' + port + '/index3')
+        if (checkurl.status === 200) {
+            url = 'http://192.168.31.210:' + port
+        } else {
+            url = 'https://' + request.headers.host
+        }
+    } catch (error) {
+        url = 'https://' + request.headers.host
+    }
+
+    // Start from tomorrow
+    let checkDate = new Date();
+    checkDate.setDate(checkDate.getDate() + 1);
+    
+    // Check up to 60 days in the future (should be enough to find next lottery)
+    const maxDays = 60;
+    let daysChecked = 0;
+    
+    while (daysChecked < maxDays) {
+        // Format date as DDMMYYYY in Thai Buddhist calendar
+        const day = padLeadingZeros(checkDate.getDate(), 2);
+        const month = padLeadingZeros(checkDate.getMonth() + 1, 2);
+        const year = checkDate.getFullYear() + 543;
+        const dateStr = day + month + year;
+        
+        try {
+            // Check this date using the main API
+            const response = await fetch(url + '/?date=' + dateStr);
+            const data = await response.json();
+            
+            // If [0][1] is "xxxxxx", this is the next lottery date
+            if (data[0] && data[0][1] === 'xxxxxx') {
+                return {
+                    date: dateStr,
+                    data: data
+                };
+            }
+        } catch (error) {
+            console.log('Error checking date ' + dateStr + ':', error);
+        }
+        
+        // Move to next day
+        checkDate.setDate(checkDate.getDate() + 1);
+        daysChecked++;
+    }
+    
+    // If no next lottery found within maxDays
+    return {
+        error: 'No next lottery date found within ' + maxDays + ' days'
+    };
+})
+
 const start = async () => {
     try {
         await fastify.listen({ port: port, host: '0.0.0.0' })
