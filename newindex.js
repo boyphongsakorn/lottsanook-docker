@@ -2076,6 +2076,7 @@ fastify.get('/nextlot', async (request, reply) => {
     checkDate.setDate(checkDate.getDate() + 1);
     
     // Check up to 60 days in the future (should be enough to find next lottery)
+    // Sequential checking is used to find the earliest next lottery date
     const maxDays = 60;
     let daysChecked = 0;
     
@@ -2091,8 +2092,8 @@ fastify.get('/nextlot', async (request, reply) => {
             const response = await fetch(url + '/?date=' + dateStr);
             const data = await response.json();
             
-            // If [0][1] is "xxxxxx", this is the next lottery date
-            if (data[0] && data[0][1] === 'xxxxxx') {
+            // If [0][1] is "xxxxxx", this is the next lottery date (case-insensitive)
+            if (data[0] && (data[0][1] === 'xxxxxx' || data[0][1] === 'XXXXXX')) {
                 return {
                     date: dateStr,
                     data: data
