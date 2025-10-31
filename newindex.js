@@ -2059,17 +2059,7 @@ fastify.get('/nextlot', async (request, reply) => {
             return mainapibody;
         }
     }
-    let url;
-    try {
-        const checkurl = await fetch('http://192.168.31.210:' + port + '/index3')
-        if (checkurl.status === 200) {
-            url = 'http://192.168.31.210:' + port
-        } else {
-            url = 'https://' + request.headers.host
-        }
-    } catch (error) {
-        url = 'https://' + request.headers.host
-    }
+    const url = 'https://lottsanook-cfworker.boy1556.workers.dev';
 
     // Start from tomorrow
     let checkDate = new Date();
@@ -2093,6 +2083,7 @@ fastify.get('/nextlot', async (request, reply) => {
             const data = await response.json();
             
             // If [0][1] is "xxxxxx", this is the next lottery date (case-insensitive)
+            // Break immediately when found - no need to continue looping
             if (data[0] && (data[0][1] === 'xxxxxx' || data[0][1] === 'XXXXXX')) {
                 return {
                     date: dateStr,
