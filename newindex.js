@@ -2093,6 +2093,7 @@ fastify.get('/nextlot', async (request, reply) => {
             const data = await response.json();
             
             // If [0][1] is "xxxxxx", this is the next lottery date (case-insensitive)
+            // Break immediately when found - no need to continue looping
             if (data[0] && (data[0][1] === 'xxxxxx' || data[0][1] === 'XXXXXX')) {
                 return {
                     date: dateStr,
