@@ -2061,9 +2061,7 @@ fastify.get('/nextlot', async (request, reply) => {
     }
     const url = 'https://lottsanook-cfworker.boy1556.workers.dev';
 
-    // Start from tomorrow
     let checkDate = new Date();
-    checkDate.setDate(checkDate.getDate() + 1);
     
     // Check up to 60 days in the future (should be enough to find next lottery)
     // Sequential checking is used to find the earliest next lottery date
