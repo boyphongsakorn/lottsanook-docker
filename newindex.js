@@ -1484,8 +1484,8 @@ fastify.get('/lotnews', async (request, reply) => {
     }
 
     let array = [];
-    // let response = await fetch('https://www.brighttv.co.th/category/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
-    let response = await fetch('https://rss.app/feeds/n8o2TN8xZ6KSQx0r.xml')
+    let response = await fetch('https://www.brighttv.co.th/category/%e0%b9%80%e0%b8%a5%e0%b8%82%e0%b9%80%e0%b8%94%e0%b9%87%e0%b8%94/feed')
+    // let response = await fetch('https://rss.app/feeds/n8o2TN8xZ6KSQx0r.xml')
     let xml = await response.text()
     let $ = cheerio.load(xml)
     let news = $('item')
@@ -1558,8 +1558,8 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }
 
-    // response = await fetch('https://www.brighttv.co.th/category/%E0%B8%AB%E0%B8%A7%E0%B8%A2%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87/feed')
-    response = await fetch('https://rss.app/feeds/JsQQE1zMZ42vDpcx.xml')
+    response = await fetch('https://www.brighttv.co.th/category/%E0%B8%AB%E0%B8%A7%E0%B8%A2%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87/feed')
+    // response = await fetch('https://rss.app/feeds/JsQQE1zMZ42vDpcx.xml')
     xml = await response.text()
     $ = cheerio.load(xml)
     news = $('item')
@@ -1931,48 +1931,138 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     }*/
 
-    response = await fetch('https://siamrath.co.th/tags/%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%94');
+    response = await fetch('https://siamrath.co.th/search?tags=%E0%B9%80%E0%B8%A5%E0%B8%82%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%94');
     $ = cheerio.load(await response.text());
     //get from class col-md-3 col-sm-3 col-xs-6 mb30
     const d = $('div.col-md-3.col-sm-3.col-xs-6.mb30');
     arrayofnews[4] = arrayofnews[4] > d.length ? d.length : arrayofnews[4]
-    //for by count of d
-    for (let i = 0; i < arrayofnews[3]; i++) {
-        //title from h5
-        const title = $(d[i]).find('h5').text()
-        //link from a.attr('href')
-        const link = 'https://siamrath.co.th' + $(d[i]).find('a').attr('href')
-        //description is the same as title
-        let description = title
-        //image from img.attr('src')
-        const image = $(d[i]).find('img').attr('src')
-        //date from div text convert from dd/mm/yyyy - hh:mm to new Date() and set pubDate to toUTCString
-        const dateText = $(d[i]).find('div').text().trim().split('-')[0].trim()
-        const timeText = $(d[i]).find('div').text().trim().split('-')[1].trim()
-        const dateParts = dateText.split('/')
-        const year = parseInt(dateParts[2]);
-        const month = parseInt(dateParts[1]) - 1; // Months are 0-indexed in JavaScript
-        const day = parseInt(dateParts[0]);
-        const timeParts = timeText.split(':');
-        const hours = parseInt(timeParts[0]);
-        const minutes = parseInt(timeParts[1]);
-        const pubDate = new Date(year, month, day, hours, minutes).toUTCString();
-        const json = {
-            title: title,
-            link: link,
-            description: description,
-            image: image,
-            pubDate: pubDate,
-        }
-        //if new Date(pubDate) < date push to array
-        if (request.query.lastweek) {
-            if (new Date(pubDate) > date) {
-                array.push(json)
+    // Attempt to extract embedded Next.js script data: self.__next_f.push(...) and parse any "items" arrays.
+    try {
+        const siamScripts = $('script').toArray().map(s => $(s).html()).filter(t => t && t.includes('self.__next_f.push'))
+        const parsedItems = []
+        const dedupLinks = new Set(array.map(it => it.link))
+        // helper to extract an array starting at a key pattern
+        const extractArraysByKey = (scriptText, key) => {
+            const results = []
+            let searchIndex = 0
+            const keyPattern = '"' + key + '":['
+            while (true) {
+                const start = scriptText.indexOf(keyPattern, searchIndex)
+                if (start === -1) break
+                // find the '[' that starts the array
+                let i = scriptText.indexOf('[', start)
+                if (i === -1) break
+                let depth = 0
+                let arrTxt = ''
+                for (; i < scriptText.length; i++) {
+                    const ch = scriptText[i]
+                    arrTxt += ch
+                    if (ch === '[') depth++
+                    else if (ch === ']') {
+                        depth--
+                        if (depth === 0) {
+                            break
+                        }
+                    }
+                }
+                // Move searchIndex beyond this point to find additional arrays
+                searchIndex = i + 1
+                try {
+                    const jsonArr = JSON.parse(arrTxt)
+                    if (Array.isArray(jsonArr)) results.push(jsonArr)
+                } catch (e) {
+                    // ignore parse errors
+                }
             }
-        } else {
-            array.push(json)
+            return results
         }
+        for (const script of siamScripts) {
+            const arrays = extractArraysByKey(script, 'items')
+            for (const arr of arrays) {
+                for (const it of arr) {
+                    if (!it || typeof it !== 'object') continue
+                    const title = it.title || it.name || ''
+                    let linkPath = it.url || it.link || it.path || (it.slug ? '/' + it.slug : '')
+                    if (linkPath && !linkPath.startsWith('http')) {
+                        linkPath = 'https://siamrath.co.th' + linkPath
+                    }
+                    const description = (it.description || it.excerpt || title || '').toString().replace(/\r?\n|\r/g, '')
+                    let image
+                    if (it.image && typeof it.image === 'string') image = it.image
+                    else if (it.thumbnail && typeof it.thumbnail === 'object') image = it.thumbnail.src || it.thumbnail.url
+                    else if (it.featuredImage && typeof it.featuredImage === 'object') image = it.featuredImage.src || it.featuredImage.url
+                    let pubDateRaw = it.publishedAt || it.publishDate || it.createdAt || it.date || Date.now()
+                    let pubDate
+                    try {
+                        pubDate = new Date(pubDateRaw).toUTCString()
+                    } catch (e) {
+                        pubDate = new Date().toUTCString()
+                    }
+                    if (title && linkPath && !dedupLinks.has(linkPath)) {
+                        parsedItems.push({
+                            title,
+                            link: linkPath,
+                            description: description.substring(0, 100) + '...',
+                            image,
+                            pubDate
+                        })
+                        dedupLinks.add(linkPath)
+                    }
+                }
+            }
+        }
+        // Respect limits using arrayofnews[4] if defined, else fall back to arrayofnews[3]
+        const siamLimit = (typeof arrayofnews[4] === 'number' && arrayofnews[4] > 0) ? arrayofnews[4] : arrayofnews[3]
+        for (const item of parsedItems.slice(0, siamLimit)) {
+            // if lastweek filter applies
+            if (request.query.lastweek) {
+                if (new Date(item.pubDate) > date) {
+                    array.push(item)
+                }
+            } else {
+                array.push(item)
+            }
+        }
+    } catch (e) {
+        // silently ignore extraction errors
     }
+    //for by count of d
+    // for (let i = 0; i < arrayofnews[3]; i++) {
+    //     //title from h5
+    //     const title = $(d[i]).find('h5').text()
+    //     //link from a.attr('href')
+    //     const link = 'https://siamrath.co.th' + $(d[i]).find('a').attr('href')
+    //     //description is the same as title
+    //     let description = title
+    //     //image from img.attr('src')
+    //     const image = $(d[i]).find('img').attr('src')
+    //     //date from div text convert from dd/mm/yyyy - hh:mm to new Date() and set pubDate to toUTCString
+    //     const dateText = $(d[i]).find('div').text().trim().split('-')[0].trim()
+    //     const timeText = $(d[i]).find('div').text().trim().split('-')[1].trim()
+    //     const dateParts = dateText.split('/')
+    //     const year = parseInt(dateParts[2]);
+    //     const month = parseInt(dateParts[1]) - 1; // Months are 0-indexed in JavaScript
+    //     const day = parseInt(dateParts[0]);
+    //     const timeParts = timeText.split(':');
+    //     const hours = parseInt(timeParts[0]);
+    //     const minutes = parseInt(timeParts[1]);
+    //     const pubDate = new Date(year, month, day, hours, minutes).toUTCString();
+    //     const json = {
+    //         title: title,
+    //         link: link,
+    //         description: description,
+    //         image: image,
+    //         pubDate: pubDate,
+    //     }
+    //     //if new Date(pubDate) < date push to array
+    //     if (request.query.lastweek) {
+    //         if (new Date(pubDate) > date) {
+    //             array.push(json)
+    //         }
+    //     } else {
+    //         array.push(json)
+    //     }
+    // }
 
     if (count > array.length) {
         //write to file /tmp/lotnews.json
