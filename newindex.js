@@ -1419,7 +1419,7 @@ fastify.get('/lotnews', async (request, reply) => {
         //}
     }
     let arrayofnews = [0, 0, 0, 0]
-    let count = request.query.count || 0
+    let count = request.query.count || 4
     let check = count % 4
     //get date 7 days ago
     let date = new Date()
