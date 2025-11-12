@@ -15,7 +15,6 @@ import https from 'https';
 const fastify = Fastify({ logger: true });
 
 //test
-import got from 'cloudflare-scraper';
 import puppeteer from 'puppeteer-extra'
 import StealthPlugin from 'puppeteer-extra-plugin-stealth'
 
