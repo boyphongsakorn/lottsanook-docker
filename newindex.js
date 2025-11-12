@@ -1025,6 +1025,11 @@ fastify.get('/gdpy', async (request, reply) => {
             const mainapi = await fetch('https://lotapi.pwisetthon.com' + rawurl);
             const mainapibody = await mainapi.json();
             return mainapibody;
+        } else {
+            const rawurl = request.raw.url;
+            const mainapi = await fetch('https://lottsanook-cfworker.boy1556.workers.dev' + rawurl);
+            const mainapibody = await mainapi.json();
+            return mainapibody;
         }
     }
     //let test
