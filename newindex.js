@@ -821,7 +821,10 @@ fastify.get('/reto', async (request, reply) => {
     await fetch(url + '/?date=' + padLeadingZeros(new Date().getDate(), 2) + '' + padLeadingZeros((new Date().getMonth() + 1), 2) + '' + (new Date().getFullYear() + 543))
         .then(res => res.json())
         .then((body) => {
-            if (body[0][1] === "XXXXXX" || body[0][1] === "xxxxxx") {
+            const value = body[0][1]
+            // Check if value is a 6-digit number
+            const isSixDigitNumber = /^\d{6}$/.test(value)
+            if (value === "XXXXXX" || value === "xxxxxx" || isSixDigitNumber) {
                 //res.send('yes')
                 test = 'yes'
             } else {
