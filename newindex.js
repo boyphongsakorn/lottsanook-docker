@@ -824,7 +824,7 @@ fastify.get('/reto', async (request, reply) => {
             const value = body[0][1]
             // Check if value is a 6-digit number
             const isSixDigitNumber = /^\d{6}$/.test(value)
-            if (isSixDigitNumber) {
+            if (value === "XXXXXX" || value === "xxxxxx" || isSixDigitNumber) {
                 //res.send('yes')
                 test = 'yes'
             } else {
