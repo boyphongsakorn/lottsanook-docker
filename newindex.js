@@ -2084,6 +2084,92 @@ fastify.get('/lotnews', async (request, reply) => {
     //     }
     // }
 
+    response = await fetch('https://www.bangkokbiznews.com/tags/EconomicWealth');
+    $ = cheerio.load(await response.text());
+    const c = $('a.card-wrapper');
+    arrayofnews[3] = arrayofnews[3] > c.length ? c.length : arrayofnews[3]
+    for (let i = 0; i < arrayofnews[3]; i++) {
+        //if h3 class card-v-content-title text-excerpt-2
+        if ($(c[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(c[i]).find('h3').text().includes('ตรวจหวย') && !$(c[i]).find('h3').text().includes('ถ่ายทอดสด')) {
+            const title = $(c[i]).find('h3').text()
+            const link = 'https://www.bangkokbiznews.com' + $(c[i]).attr('href')
+            let description
+            const image = $(c[i]).find('img').attr('src')
+            const date = $(c[i]).find('span.date').text().split('|');
+            let time = date[1].trim().split(':')[0].padStart(2, '0') + ':' + date[1].trim().split(':')[1].padStart(2, '0');
+            let number = '';
+            switch (date[0].split(' ')[1]) {
+                case 'ม.ค.':
+                    number = '01';
+                    break;
+                case 'ก.พ.':
+                    number = '02';
+                    break;
+                case 'มี.ค.':
+                    number = '03';
+                    break;
+                case 'เม.ย.':
+                    number = '04';
+                    break;
+                case 'พ.ค.':
+                    number = '05';
+                    break;
+                case 'มิ.ย.':
+                    number = '06';
+                    break;
+                case 'ก.ค.':
+                    number = '07';
+                    break;
+                case 'ส.ค.':
+                    number = '08';
+                    break;
+                case 'ก.ย.':
+                    number = '09';
+                    break;
+                case 'ต.ค.':
+                    number = '10';
+                    break;
+                case 'พ.ย.':
+                    number = '11';
+                    break;
+                case 'ธ.ค.':
+                    number = '12';
+                    break;
+            }
+            let vertdate = new Date(parseInt(date[0].split(' ')[2]) - 543 + '-' + number + '-' + date[0].split(' ')[0] + 'T' + time + ':00Z');
+            const pubDate = vertdate.toUTCString()
+            const content = await fetch(link);
+            const $$ = cheerio.load(await content.text());
+            const div = $$('div.content-detail');
+            for (let j = 0; j < div.length; j++) {
+                if ($(div[j]).attr('class') === 'content-detail') {
+                    if (fulldesc == 'true') {
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
+                    } else {
+                        //remove new line from description
+                        description = $(div[j]).text().replace(/\r?\n|\r/g, '')
+                        description = description.substring(0, 100) + '...'
+                    }
+                }
+            }
+            const json = {
+                title: title,
+                link: link,
+                description: description,
+                image: image,
+                pubDate: pubDate,
+            }
+            //if new Date(pubDate) < date push to array
+            if (request.query.lastweek) {
+                if (new Date(pubDate) > date) {
+                    array.push(json)
+                }
+            } else {
+                array.push(json)
+            }
+        }
+    }
+
     if (count > array.length) {
         //write to file /tmp/lotnews.json
         fs.writeFileSync('/tmp/lotnews.json', JSON.stringify(array))
