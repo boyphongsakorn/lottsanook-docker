@@ -2031,6 +2031,7 @@ fastify.get('/lotnews', async (request, reply) => {
                 }
             }
         }
+        console.log(`Extracted ${parsedItems.length} Siamrath items from scripts.`)
         // Respect limits using arrayofnews[4] if defined, else fall back to arrayofnews[3]
         const siamLimit = (typeof arrayofnews[4] === 'number' && arrayofnews[4] > 0) ? arrayofnews[4] : arrayofnews[3]
         for (const item of parsedItems.slice(0, siamLimit)) {
@@ -2045,6 +2046,7 @@ fastify.get('/lotnews', async (request, reply) => {
         }
     } catch (e) {
         // silently ignore extraction errors
+        console.error('Error extracting Siamrath script data:', e)
     }
     //for by count of d
     // for (let i = 0; i < arrayofnews[3]; i++) {
@@ -2084,18 +2086,18 @@ fastify.get('/lotnews', async (request, reply) => {
     //     }
     // }
 
-    response = await fetch('https://www.bangkokbiznews.com/tags/EconomicWealth');
+    response = await fetch('https://www.bangkokbiznews.com/tags/ครม.เศรษฐกิจ');
     $ = cheerio.load(await response.text());
-    const c = $('a.card-wrapper');
-    arrayofnews[3] = arrayofnews[3] > c.length ? c.length : arrayofnews[3]
+    const e = $('a.card-wrapper');
+    arrayofnews[3] = arrayofnews[3] > e.length ? e.length : arrayofnews[3]
     for (let i = 0; i < arrayofnews[3]; i++) {
         //if h3 class card-v-content-title text-excerpt-2
-        if ($(c[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(c[i]).find('h3').text().includes('ตรวจหวย') && !$(c[i]).find('h3').text().includes('ถ่ายทอดสด')) {
-            const title = $(c[i]).find('h3').text()
-            const link = 'https://www.bangkokbiznews.com' + $(c[i]).attr('href')
+        if ($(e[i]).find('h3').attr('class') === 'card-v-content-title  text-excerpt-2' && !$(e[i]).find('h3').text().includes('ตรวจหวย') && !$(e[i]).find('h3').text().includes('ถ่ายทอดสด')) {
+            const title = $(e[i]).find('h3').text()
+            const link = 'https://www.bangkokbiznews.com' + $(e[i]).attr('href')
             let description
-            const image = $(c[i]).find('img').attr('src')
-            const date = $(c[i]).find('span.date').text().split('|');
+            const image = $(e[i]).find('img').attr('src')
+            const date = $(e[i]).find('span.date').text().split('|');
             let time = date[1].trim().split(':')[0].padStart(2, '0') + ':' + date[1].trim().split(':')[1].padStart(2, '0');
             let number = '';
             switch (date[0].split(' ')[1]) {
