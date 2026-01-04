@@ -2192,6 +2192,13 @@ fastify.get('/lotnews', async (request, reply) => {
         return new Date(b.pubDate) - new Date(a.pubDate)
     })
 
+    //remove duplicate by link
+    array = array.filter((item, index, self) =>
+        index === self.findIndex((t) => (
+            t.link === item.link
+        ))
+    )
+
     //get only count of array
     if (count) {
         array = array.slice(0, count)
