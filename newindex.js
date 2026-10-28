@@ -1036,11 +1036,15 @@ fastify.get('/gdpy', async (request, reply) => {
     }
     //let test
 
+    // cache the gdpy api when bangkok time is outside 15:00-18:00
+    const bangkokHour = parseInt(new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour: 'numeric', hour12: false })) % 24
+    const inFreshWindow = bangkokHour >= 15 && bangkokHour < 18
+
     let peryear = []
     let yearlist = []
     var fileContents = null;
     try {
-        if (request.query.year == new Date().getFullYear() + 543) {
+        if (request.query.year == new Date().getFullYear() + 543 && inFreshWindow) {
             fs.unlinkSync(dir + request.query.year + '.txt');
             console.log('yes this year')
         }
